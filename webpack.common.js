@@ -1,4 +1,3 @@
-const path = require('path');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -42,14 +41,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.(css|less)$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader'
-                ]
-            },
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [

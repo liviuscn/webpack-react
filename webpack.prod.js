@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -20,7 +21,11 @@ module.exports = merge(common, {
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         new webpack.HashedModuleIdsPlugin(),//vendor缓存保持hash不变
-        new ManifestPlugin()
+        new ManifestPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].[hash].css',
+            chunkFilename: '[name].[hash].css'
+        })
     ],
     optimization: {
         splitChunks: {
@@ -35,5 +40,22 @@ module.exports = merge(common, {
         // minimizer: [
         //     new UglifyJsPlugin(),
         // ],
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(css|less)$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: false,
+                        },
+                    },
+                    'css-loader',
+                    'less-loader'
+                ]
+            }
+        ]
     }
 });

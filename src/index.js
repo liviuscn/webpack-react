@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './style.less'
+import User from './pages/user/user'
+import Home from './pages/home/home'
 
 class App extends React.Component {
     constructor(props) {
@@ -22,7 +23,11 @@ class App extends React.Component {
 
     render() {
         return (
-            <h1 className="hello">Hello World</h1>
+           <div>
+               <Home/>
+               <User/>
+           </div>
+
         );
     }
 };
