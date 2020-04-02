@@ -2,6 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+
+        }
+        this.state = {
+            ...this.state,
+            a: 'a'
+        }
+        this.f()
+    }
+
+    f = async () => {
+        await new Promise((x) => x('111'))
+        console.log('fffffffffffffff')
+    }
+
     render() {
         return (
             <h1>Hello World</h1>
@@ -11,6 +28,6 @@ class App extends React.Component {
 
 ReactDOM.render(
     //绑定redux、热加载
-    <App/>,
+    <App />,
     document.getElementById('root'),
 )

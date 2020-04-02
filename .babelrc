@@ -1,12 +1,12 @@
 {
-    "presets": ["@babel/preset-react"],
-    "env": {
-        "development": {
-            "presets": [
-                ["@babel/preset-react", {
-                    "development": true
-                }]
-            ]
-        }
-    }
+    "presets": ["@babel/preset-react", "@babel/preset-env"], 
+    "plugins": [
+        ["@babel/plugin-proposal-decorators", {
+            "legacy": true
+        }],
+        ["@babel/plugin-proposal-class-properties", {
+            "loose": true
+        }],
+        ["@babel/plugin-transform-runtime"]
+    ]
 }
