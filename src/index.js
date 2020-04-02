@@ -1,17 +1,16 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import _ from 'lodash';
-import './style.css';
-import A from "./a";
-import B from "./b";
-new A()
-new B().fn()
-function component() {
-    var element = document.createElement('div');
+class App extends React.Component {
+    render() {
+        return (
+            <h1>Hello World</h1>
+        );
+    }
+};
 
-    // Lodash, now imported by this script// Lodash, now imported by this script
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-    element.classList.add('hello');
-    return element;
-}
-
-document.body.appendChild(component());
+ReactDOM.render(
+    //绑定redux、热加载
+    <App/>,
+    document.getElementById('root'),
+)

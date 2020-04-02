@@ -4,6 +4,7 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
     devtool: 'inline-source-map',
+    mode: "development",
     devServer: {
         contentBase: './dist',
         headers: {
@@ -16,6 +17,9 @@ module.exports = merge(common, {
         }
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        }),
         new webpack.NamedModulesPlugin(),//将使用模块的路径，缓存时hash不变，测试环境使用，速度慢
         new webpack.HotModuleReplacementPlugin()
     ]

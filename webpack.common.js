@@ -6,12 +6,12 @@ module.exports = {
     entry: {
         app: './src/index.js',
         vendor: [
-            'lodash', 'aaa'
+            'react', 'react-dom'
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'webpack Demo',
+            title: 'webpack react',
             template: './src/index.html'
         }),
         new CopyWebpackPlugin([
@@ -25,12 +25,11 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            'aaa': './src/a.js',
-            'bbb': './src/b.js',
+            '@': './src'
         }
     },
     externals: {
-        "bbb": 'bbb'
+
     },
     module: {
         rules: [
@@ -52,6 +51,19 @@ module.exports = {
                 use: [
                     'file-loader'
                 ]
+            },
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: [
+                            ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                        ]
+                    },
+                }
             },
             {
                 test: /\.tsx?$/,

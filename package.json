@@ -1,14 +1,14 @@
 {
-  "name": "webpack-demo",
+  "name": "webpack-react",
   "sideEffects": [
     "*.css"
   ],
   "version": "1.0.0",
-  "description": "webpack-demo",
+  "description": "webpack-react",
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "webpack-dev-server --open --colors --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack-dev-server --inline --progress --colors --watch --compress --config ./config/webpack.dev.js",
     "theme": "webpack --watch --config ./config/webpack.theme.js",
@@ -16,21 +16,34 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liviuscn/webpack-demo.git"
+    "url": "git+https://github.com/liviuscn/webpack-react.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/liviuscn/webpack-demo/issues"
+    "url": "https://github.com/liviuscn/webpack-react/issues"
   },
-  "homepage": "https://github.com/liviuscn/webpack-demo#readme",
+  "homepage": "https://github.com/liviuscn/webpack-react#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.1",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "redux-devtools": "^3.5.0",
+    "redux-logger": "^3.0.6",
     "style-loader": "^1.1.3",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
@@ -42,6 +55,22 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "@babel/polyfill": "^7.8.7",
+    "@babel/runtime": "^7.9.2",
+    "axios": "^0.19.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "fastclick": "^1.0.6",
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.15",
+    "md5": "^2.2.1",
+    "object-assign": "^4.1.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   }
 }
