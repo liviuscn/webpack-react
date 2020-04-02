@@ -6,7 +6,16 @@ module.exports = {
     entry: {
         app: './src/index.js',
         vendor: [
-            'react', 'react-dom'
+            'react',
+            'react-dom',
+            // 'fastclick',
+            // 'axios',
+            // 'immutable',
+            // 'md5',
+            // 'react-redux',
+            // 'react-router-dom',
+            // 'redux',
+            // 'redux-thunk'
         ]
     },
     plugins: [
