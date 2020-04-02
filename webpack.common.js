@@ -43,10 +43,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.(css|less)$/,
                 use: [
                     'style-loader',
-                    'css-loader'
+                    'css-loader',
+                    'less-loader'
                 ]
             },
             {
@@ -64,7 +65,7 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /(node_modules|bower_components)/,
-                use:'babel-loader'
+                use: 'babel-loader'
             },
             {
                 test: /\.tsx?$/,
