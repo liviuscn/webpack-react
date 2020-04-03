@@ -10,7 +10,7 @@ const defaultProps = {
     name: 'world'
 }
 
-const User: React.FC<propsType> = (props: propsType) => {
+const User: React.FC = (props: propsType) => {
     const [color, setColor] = React.useState('blue')
     const [fontSize, setFontsize] = React.useState('16px')
 
