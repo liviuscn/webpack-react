@@ -6,15 +6,7 @@ module.exports = {
         app: './src/index.js',
         vendor: [
             'react',
-            'react-dom',
-            // 'fastclick',
-            // 'axios',
-            // 'immutable',
-            // 'md5',
-            // 'react-redux',
-            // 'react-router-dom',
-            // 'redux',
-            // 'redux-thunk'
+            'react-dom'
         ]
     },
     plugins: [
@@ -59,7 +51,7 @@ module.exports = {
                 use: 'babel-loader'
             },
             {
-                test: /\.tsx?$/,
+                test: /\.(ts|tsx)?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
             }
