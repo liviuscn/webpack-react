@@ -3,8 +3,20 @@ import ReactDOM from 'react-dom';
 import User from './pages/user/user'
 import Home from './pages/home/home'
 
-class App extends React.Component {
-    constructor(props) {
+
+interface AppProps {
+
+}
+
+interface AppState {
+
+}
+
+class App extends React.Component<AppProps, AppState> {
+
+    public state = {}
+
+    constructor(props: AppProps) {
         super(props)
         this.state = {
 
@@ -16,18 +28,17 @@ class App extends React.Component {
         this.f()
     }
 
-    f = async () => {
+    public f = async () => {
         await new Promise((x) => x('111'))
         console.log('fffffffffffffff')
     }
 
     render() {
         return (
-           <div>
-               <Home/>
-               <User/>
-           </div>
-
+            <div>
+                <Home name="" />
+                <User />
+            </div>
         );
     }
 };

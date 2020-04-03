@@ -16,6 +16,10 @@ export default class Home extends React.Component<HomeProps, HomeState> {
         name: 111,
         a: '111'
     }
+    
+    public props = {
+        name: ''
+    }
 
     state: HomeState = {
         title: '222'

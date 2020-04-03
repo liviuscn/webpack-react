@@ -1,13 +1,14 @@
 class context {
+    public _context: Object = {}
     constructor() {
         this._context = {}
     }
 
-    set(key, value) {
+    set(key: string, value: string | number) {
         this._context[key] = value
     }
 
-    get(key) {
+    get(key?: string) {
         return key ? this._context[key] : this._context
     }
 }
