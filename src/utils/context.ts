@@ -1,4 +1,9 @@
+/* 
+    上下文文件
+    相当于储存器
+*/
 class context {
+
     public _context: Object = {}
     constructor() {
         this._context = {}

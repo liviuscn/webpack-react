@@ -1,27 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from "./pages/login/login";
+import { Provider } from 'react-redux';
 
-class App extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            a: 'a'
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <Login />
-            </div>
-        );
-    }
-};
+import Router from '@/router';
+import store from '@/store';
 
 ReactDOM.render(
     //绑定redux、热加载
-    <App />,
+    <Provider store={store}>
+        <Router/>
+    </Provider>,
     document.getElementById('root'),
 )
