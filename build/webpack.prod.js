@@ -13,7 +13,7 @@ module.exports = merge(common, {
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
         chunkFilename: '[name].[chunkhash:8].chunk.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, '..', 'dist')
     },
     plugins: [
         new CleanWebpackPlugin(),

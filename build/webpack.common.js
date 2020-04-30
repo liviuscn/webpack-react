@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.tsx',
+        app: '../src/index.js',
         vendor: [
             'react',
             'react-dom'
@@ -12,11 +12,11 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'webpack react',
-            template: './src/index.html'
+            template: '../src/index.html'
         }),
         new CopyWebpackPlugin([
             {
-                from: "./version.txt",
+                from: "../version.txt",
                 to: "version.txt",
                 toType: "template"
             }
@@ -25,7 +25,7 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            '@': './src'
+            '@': '../src'
         }
     },
     externals: {

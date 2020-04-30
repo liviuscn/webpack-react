@@ -8,8 +8,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --colors --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --open --colors --config ./build/webpack.dev.js",
+    "build": "webpack --config ./build/webpack.prod.js",
     "dev": "webpack-dev-server --inline --progress --colors --watch --compress --config ./config/webpack.dev.js",
     "theme": "webpack --watch --config ./config/webpack.theme.js",
     "dll:dev": "webpack --progress --colors --config ./config/webpack.dev.dll.js"
