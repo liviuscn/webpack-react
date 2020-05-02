@@ -1,24 +1,29 @@
-import React, { Component } from 'react';
+import React, { Suspense, Component } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import asyncComponent from '@/utils/asyncComponent';
+import ErrorBoundary from '@/utils/errorBoundary';
 
-import home from "@/pages/home";
-const register = asyncComponent(() => import("@/pages/register"));
-const login = asyncComponent(() => import("@/pages/login"));
-const user = asyncComponent(() => import("@/pages/user"));
+//tips:React.lazy 目前只支持默认导出（default exports）
 
-// react-router4 不再推荐将所有路由规则放在同一个地方集中式路由，子路由应该由父组件动态配置，组件在哪里匹配就在哪里渲染，更加灵活
+const Home = React.lazy(() => import("@/pages/home"));
+const Register = React.lazy(() => import("@/pages/register"));
+const Login = React.lazy(() => import("@/pages/login"));
+const User = React.lazy(() => import("@/pages/user"));
+
 export default class RouteConfig extends Component {
     render() {
         return (
             <HashRouter>
-                <Switch>
-                    <Route path="/" exact component={home} />
-                    <Route path="/register" component={register} />
-                    <Route path="/login" component={login} />
-                    <Route path="/user" component={user} />
-                    <Redirect to="/" />
-                </Switch>
+                <ErrorBoundary>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Switch>
+                            <Route path="/" exact component={Home} />
+                            <Route path="/register" component={Register} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/user" component={User} />
+                            <Redirect to="/" />
+                        </Switch>
+                    </Suspense>
+                </ErrorBoundary>
             </HashRouter>
         )
     }
