@@ -24,3 +24,10 @@ webpack中直接配置options
 @babel/plugin-proposal-decorators 支持装饰器
 @babel/plugin-proposal-class-properties 支持es7比如class A{a=()=>{}}
 @babel/plugin-transform-runtime 支持async await
+
+
+//过时的生命周期
+UNSAFE_componentWillMount()
+UNSAFE_componentWillUpdate()
+UNSAFE_componentWillReceiveProps()
+React.createFactory()已弃用，用 React.createElement() 来替代它
