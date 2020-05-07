@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames'
+
 import confirm from './confirm'
 import error from './error'
 import info from './info'
@@ -62,8 +64,11 @@ class Modal extends React.Component {
     }
 
     render() {
+        let className = classNames({
+            'pdv-modal-root': true
+        })
         return ReactDOM.createPortal(
-            <div className='pdv-modal-root'>
+            <div className={className}>
                 <div className='pdv-modal-mask'></div>
                 <div className='pdv-modal-wrap'>
                     <div className='pdv-modal'>
