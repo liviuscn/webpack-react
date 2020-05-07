@@ -9,7 +9,7 @@ export default class Modal extends React.Component {
         super(props);
         this.el = document.createElement('div');
         //this.el.className = 'pdv-modal'
-        this.handleClose = this.handleClose.bind(this)
+     
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
     }
@@ -23,21 +23,30 @@ export default class Modal extends React.Component {
         // 或者在后代节点中使用 ‘autoFocus’，
         // 则需添加 state 到 Modal 中，
         // 仅当 Modal 被插入 DOM 树中才能渲染子元素。
-        modalRoot.appendChild(this.el);
+        if (this.props.visible) {
+            modalRoot.appendChild(this.el);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.visible !== prevProps.visible) {
+            if (this.props.visible) {
+                modalRoot.appendChild(this.el);
+            } else {
+                modalRoot.removeChild(this.el);
+            }
+        }
     }
 
     componentWillUnmount() {
         modalRoot.removeChild(this.el);
     }
 
-    handleClose() {
-        modalRoot.removeChild(this.el);
-    }
     handleOk() {
-        modalRoot.removeChild(this.el);
+        this.props.onOk && this.props.onOk()
     }
     handleCancel() {
-        modalRoot.removeChild(this.el);
+        this.props.onCancel && this.props.onCancel()
     }
     render() {
         return ReactDOM.createPortal(
@@ -46,7 +55,7 @@ export default class Modal extends React.Component {
                 <div className='pdv-modal-wrap'>
                     <div className='pdv-modal'>
                         <div className='pdv-modal-content'>
-                            <button className='pdv-modal-close' onClick={this.handleClose}>
+                            <button className='pdv-modal-close' onClick={this.handleCancel}>
                                 关闭
                             </button>
                             <div className='pdv-modal-header'>

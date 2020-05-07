@@ -4,21 +4,27 @@ import Modal from '@/components/modal'
 
 export default () => {
   const [count, setCount] = useState(0);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     document.title = `You clicked ${count} times`;
   });
-  function handleClick(params) {
 
-  }
-  return <div onClick={() => setCount(count + 1)}>
+  return <div >
     <Header></Header>
     <p>You clicked {count} times</p>
-      <button>
+    <button onClick={() => {
+      setCount(count + 1)
+      setVisible(true)
+    }}>
       Click me
       </button>
-    <Modal>
-      <div className="modal">
-        <button>Click</button>
+    <Modal
+      visible={visible}
+      onOk={() => { setVisible(false) }}
+      onCancel={() => { setVisible(false) }}
+    >
+      <div>
+         hello modal!
       </div>
     </Modal>
   </div>
