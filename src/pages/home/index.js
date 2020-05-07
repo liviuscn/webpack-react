@@ -8,12 +8,12 @@ export default () => {
     document.title = `You clicked ${count} times`;
   });
   function handleClick(params) {
-    
+
   }
-  return <div>
+  return <div onClick={() => setCount(count + 1)}>
     <Header></Header>
     <p>You clicked {count} times</p>
-    <button onClick={() => setCount(count + 1)}>
+      <button>
       Click me
       </button>
     <Modal>
