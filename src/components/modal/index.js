@@ -1,19 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import confirm from './confirm'
+import error from './error'
+import info from './info'
+import success from './success'
+import warning from "./warning";
+
 import './modal.less';
 // 在 DOM 中有两个容器是兄弟级 （siblings）
 const modalRoot = document.getElementById('modal-root');
-
-export default class Modal extends React.Component {
+class Modal extends React.Component {
     constructor(props) {
         super(props);
         this.el = document.createElement('div');
         //this.el.className = 'pdv-modal'
-     
+
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
     }
-
+    static defaultProps = {
+        cancelText: '取 消',
+        closable: true,
+        mask: true,
+        okText: '确 定',
+        title: '提示'
+    }
     componentDidMount() {
         // 在 Modal 的所有子元素被挂载后，
         // 这个 portal 元素会被嵌入到 DOM 树中，
@@ -45,9 +56,11 @@ export default class Modal extends React.Component {
     handleOk() {
         this.props.onOk && this.props.onOk()
     }
+
     handleCancel() {
         this.props.onCancel && this.props.onCancel()
     }
+
     render() {
         return ReactDOM.createPortal(
             <div className='pdv-modal-root'>
@@ -59,14 +72,14 @@ export default class Modal extends React.Component {
                                 关闭
                             </button>
                             <div className='pdv-modal-header'>
-                                <span className='pdv-modal-header-title'>提示</span>
+                                <span className='pdv-modal-header-title'>{this.props.title}</span>
                             </div>
                             <div className='pdv-modal-body'>
                                 {this.props.children}
                             </div>
                             <div className='pdv-modal-footer'>
-                                <button onClick={this.handleOk}><span>确 定</span></button>
-                                <button onClick={this.handleCancel}><span>取 消</span></button>
+                                <button onClick={this.handleOk}><span>{this.props.okText}</span></button>
+                                <button onClick={this.handleCancel}><span>{this.props.cancelText}</span></button>
                             </div>
                         </div>
                     </div>
@@ -76,3 +89,11 @@ export default class Modal extends React.Component {
         );
     }
 }
+
+Modal.confirm = confirm
+Modal.error = error
+Modal.info = info
+Modal.success = success
+Modal.warning = warning
+
+export default Modal
