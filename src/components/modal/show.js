@@ -2,18 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames'
 
-import show from './show'
-import confirm from './confirm'
-import error from './error'
-import info from './info'
-import success from './success'
-import warning from "./warning";
-
 import './modal.less';
 // 在 DOM 中有两个容器是兄弟级 （siblings）
 const modalRoot = document.getElementById('modal-root');
 class Modal extends React.Component {
     constructor(props) {
+        console.log(props)
         super(props);
         this.el = document.createElement('div');
         //this.el.className = 'pdv-modal'
@@ -37,19 +31,7 @@ class Modal extends React.Component {
         // 或者在后代节点中使用 ‘autoFocus’，
         // 则需添加 state 到 Modal 中，
         // 仅当 Modal 被插入 DOM 树中才能渲染子元素。
-        if (this.props.visible) {
-            modalRoot.appendChild(this.el);
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.visible !== prevProps.visible) {
-            if (this.props.visible) {
-                modalRoot.appendChild(this.el);
-            } else {
-                modalRoot.removeChild(this.el);
-            }
-        }
+        modalRoot.appendChild(this.el);
     }
 
     componentWillUnmount() {
@@ -57,11 +39,13 @@ class Modal extends React.Component {
     }
 
     handleOk() {
-        this.props.onOk && this.props.onOk()
+        this.props.onOk && this.props.onOk(true);
+        modalRoot.removeChild(this.el);
     }
 
     handleCancel() {
-        this.props.onCancel && this.props.onCancel()
+        this.props.onCancel && this.props.onCancel(false);
+        modalRoot.removeChild(this.el);
     }
 
     render() {
@@ -96,11 +80,9 @@ class Modal extends React.Component {
     }
 }
 
-Modal.show=show
-Modal.confirm = confirm
-Modal.error = error
-Modal.info = info
-Modal.success = success
-Modal.warning = warning
+export default (props) => {
+    
+    return <Modal {...props} />
 
-export default Modal
+
+}
