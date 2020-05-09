@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import Router from '@/router';
 import store from '@/store';
+import '@/assets/style/global.less'
 
 ReactDOM.render(
     //绑定redux、热加载
