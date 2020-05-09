@@ -9,9 +9,8 @@ const modalRoot = document.getElementById('modal-root');
 //通过方法来弹出modal
 export default (props)=>{
         if(!props){
-           props={
-                    
-         }}
+           props={}
+        }
         let {title="提示",okText="确定",cancelText="取消"}=props
         
         const el = document.createElement('div');
@@ -21,17 +20,27 @@ export default (props)=>{
             'pdv-modal-root': true
         })
 
+        const destroy=()=>{
+            ReactDOM.unmountComponentAtNode(el)
+            try{
+                 modalRoot.removeChild(el);
+            }catch(e){
+
+            }
+           
+        }
+
         const handleOk=()=>{
             props.onOk&&props.onOk()
-            ReactDOM.unmountComponentAtNode(el)
-            modalRoot.removeChild(el);
+            destroy()
         }
 
         const handleCancel=()=>{
             props.onCancel&&props.onCancel()
-            ReactDOM.unmountComponentAtNode(el)
-            modalRoot.removeChild(el);
+            destroy()
         }    
+        
+        props.destroy(destroy)
 
         ReactDOM.render(
             <div className={className}>
