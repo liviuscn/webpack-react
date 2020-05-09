@@ -21,7 +21,6 @@ class Modal extends React.Component {
         this.el = document.createElement('div');
         //this.el.className = 'pdv-modal'
 
-
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
     }
