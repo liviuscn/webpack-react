@@ -10,7 +10,10 @@ import success from './success'
 import warning from "./warning";
 
 import './modal.less';
-// 在 DOM 中有两个容器是兄弟级 （siblings）
+/*
+    Modal通过visible来控制弹出与否
+    还可以通过方法弹出其他弹框
+*/
 const modalRoot = document.getElementById('modal-root');
 class Modal extends React.Component {
     constructor(props) {
@@ -97,10 +100,10 @@ class Modal extends React.Component {
 }
 
 Modal.show=show
-Modal.confirm = confirm
-Modal.error = error
-Modal.info = info
-Modal.success = success
-Modal.warning = warning
+Modal.confirm=confirm
+Modal.error=error
+Modal.info=info
+Modal.success=success
+Modal.warning=warning
 
 export default Modal

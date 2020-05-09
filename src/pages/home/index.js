@@ -14,11 +14,10 @@ export default () => {
     <p>You clicked {count} times</p>
     <button onClick={() => {
       setCount(count + 1)
-      //setVisible(true)
+      setVisible(true)
       Modal.show({
           title:"弹框",
-          
-      })
+       })
     }}>
       Click me
       </button>
