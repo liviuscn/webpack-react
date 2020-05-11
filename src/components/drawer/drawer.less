@@ -18,6 +18,17 @@
     z-index: 1000;
     width: 80%;
     transition: transform .3s ease-in-out;
+
+}
+
+.transform-entering,
+.transform-entered {
+    transform: translateX(0%)
+}
+
+.transform-exiting,
+.transform-exited {
+    transform: translateX(-100%)
 }
 
 .drawer-mask {
@@ -28,6 +39,16 @@
     bottom: 0;
     background-color: #ccc;
     transition: opacity 300ms ease-in-out;
+}
+
+.opacity-entering,
+.opacity-entered {
+    opacity: 1
+}
+
+.opacity-exiting,
+.opacity-exited {
+    opacity: 0
 }
 
 .drawer-sidebar-list {
@@ -42,6 +63,7 @@
             text-decoration: none;
             display: block;
             position: relative;
+
             &:after {
                 content: '';
                 position: absolute;
