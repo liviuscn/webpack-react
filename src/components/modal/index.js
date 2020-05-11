@@ -56,7 +56,9 @@ class Modal extends React.Component {
     }
 
     componentWillUnmount() {
-        modalRoot.removeChild(this.el);
+        if (this.props.visible) {
+            modalRoot.removeChild(this.el);
+        }
     }
 
     handleOk() {
@@ -99,11 +101,11 @@ class Modal extends React.Component {
     }
 }
 
-Modal.show=show
-Modal.confirm=confirm
-Modal.error=error
-Modal.info=info
-Modal.success=success
-Modal.warning=warning
+Modal.show = show
+Modal.confirm = confirm
+Modal.error = error
+Modal.info = info
+Modal.success = success
+Modal.warning = warning
 
 export default Modal

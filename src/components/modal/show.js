@@ -7,65 +7,68 @@ import './modal.less';
 const modalRoot = document.getElementById('modal-root');
 
 //通过方法来弹出modal
-export default (props)=>{
-        if(!props){
-           props={}
+export default (props) => {
+    if (!props) {
+        props = {}
+    }
+    let { title = "提示", okText = "确定", cancelText = "取消" } = props
+
+
+    const el = document.createElement('div');
+    modalRoot.appendChild(el);
+
+    let className = classNames({
+        'pdv-modal-root': true
+    })
+
+    const destroy = () => {
+        ReactDOM.unmountComponentAtNode(el)
+        try {
+            modalRoot.removeChild(el);
+        } catch (e) {
+
         }
-        let {title="提示",okText="确定",cancelText="取消"}=props
-        
-        const el = document.createElement('div');
-        modalRoot.appendChild(el);
+        //移除事件
+        window.removeEventListener('hashchange', destroy, false);
+    }
 
-        let className = classNames({
-            'pdv-modal-root': true
-        })
+    //切换路由时移除modal
+    window.addEventListener('hashchange', destroy, false);
 
-        const destroy=()=>{
-            ReactDOM.unmountComponentAtNode(el)
-            try{
-                 modalRoot.removeChild(el);
-            }catch(e){
+    const handleOk = () => {
+        props.onOk && props.onOk()
+        destroy()
+    }
 
-            }
-           
-        }
+    const handleCancel = () => {
+        props.onCancel && props.onCancel()
+        destroy()
+    }
 
-        const handleOk=()=>{
-            props.onOk&&props.onOk()
-            destroy()
-        }
-
-        const handleCancel=()=>{
-            props.onCancel&&props.onCancel()
-            destroy()
-        }    
-        
-        props.destroy(destroy)
-
-        ReactDOM.render(
-            <div className={className}>
-                <div className='pdv-modal-mask'></div>
-                <div className='pdv-modal-wrap'>
-                    <div className='pdv-modal'>
-                        <div className='pdv-modal-content'>
-                            <button className='pdv-modal-close' onClick={handleCancel}>
-                                关闭
+    ReactDOM.render(
+        <div className={className}>
+            <div className='pdv-modal-mask'></div>
+            <div className='pdv-modal-wrap'>
+                <div className='pdv-modal'>
+                    <div className='pdv-modal-content'>
+                        <button className='pdv-modal-close' onClick={handleCancel}>
+                            关闭
                             </button>
-                            <div className='pdv-modal-header'>
-                                <span className='pdv-modal-header-title'>{title}</span>
-                            </div>
-                            <div className='pdv-modal-body'>
-                                {props.children}
-                            </div>
-                            <div className='pdv-modal-footer'>
-                                <button onClick={handleOk}><span>{okText}</span></button>
-                                <button onClick={handleCancel}><span>{cancelText}</span></button>
-                            </div>
+                        <div className='pdv-modal-header'>
+                            <span className='pdv-modal-header-title'>{title}</span>
+                        </div>
+                        <div className='pdv-modal-body'>
+                            {props.children}
+                        </div>
+                        <div className='pdv-modal-footer'>
+                            <button onClick={handleOk}><span>{okText}</span></button>
+                            <button onClick={handleCancel}><span>{cancelText}</span></button>
                         </div>
                     </div>
                 </div>
-            </div>,
-            el
-        );
+            </div>
+        </div>,
+        el
+    );
 }
-    
+
