@@ -35,17 +35,5 @@ module.exports = merge(common, {
         // minimizer: [
         //     new UglifyJsPlugin(),
         // ],
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(css|less)$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader'
-                ]
-            }
-        ]
     }
 });

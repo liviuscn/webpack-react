@@ -1,66 +1,73 @@
-.pdv-modal-root{
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.pdv-modal-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .45);
-}
-
-.pdv-modal-wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    overflow: auto;
-    outline: 0;
-}
-
-.pdv-modal {
-    width: 80%;
-    height: auto;
-    position: relative;
-    top: 20%;
-    margin: 0 auto;
-}
-
-.pdv-modal-content {
-    border-radius: 5px;
-    background-color: #fff;
-}
-.pdv-modal-close{
-    position: absolute;
-    top:0;
-    right: 0;
-    border:0;
-    height: 40px;
-    font-size: 40px;
-    line-height: 33px;
-}
-
-.pdv-modal-header{
-    border-bottom:solid 1px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-}
-.pdv-modal-body{
-    padding: 20px;
-}
-.pdv-modal-footer{
-    border-top:solid 1px;
-    text-align: center;
-    button{
-        margin:10px;
+:global {
+    .pdv-modal-root {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
+
+    .pdv-modal-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .45);
+    }
+
+    .pdv-modal-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        overflow: auto;
+        outline: 0;
+    }
+
+    .pdv-modal {
+        width: 80%;
+        height: auto;
+        position: relative;
+        top: 20%;
+        margin: 0 auto;
+    }
+
+    .pdv-modal-content {
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .pdv-modal-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: 0;
+        height: 40px;
+        font-size: 40px;
+        line-height: 33px;
+    }
+
+    .pdv-modal-header {
+        border-bottom: solid 1px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .pdv-modal-body {
+        padding: 20px;
+    }
+
+    .pdv-modal-footer {
+        border-top: solid 1px;
+        text-align: center;
+
+        button {
+            margin: 10px;
+        }
+    }
+
 }

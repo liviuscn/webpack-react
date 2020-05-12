@@ -35,6 +35,27 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(css|less)$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            modules: {
+                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                            }
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
                     'file-loader'
