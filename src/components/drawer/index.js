@@ -1,31 +1,40 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Transition } from 'react-transition-group';
+import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames'
 import './drawer.less'
 
+/* 
+    CSSTransition必须为TransitionGroup的根元素才能生效，不能使用Fragment包裹
+*/
 export default (props) => {
 
-    const { open } = props;
-
+    let { open } = props;
     const className = classNames({
         "pdv-drawer": true
     })
-    return <div className={className}>
-        <Transition in={open} timeout={300}>
-            {state => (
-                <Fragment>
-                    <aside className={`drawer-sidebar transform-${state}`}>
-                        <NavLink to="/" exact className="nav-link icon-jiantou-copy-copy">首页</NavLink>
-                        <NavLink to="/login" exact className="nav-link icon-jiantou-copy-copy">登录</NavLink>
-                    </aside>
-                    <div
-                        onClick={props.onOpenChange}
-                        className={`drawer-mask opacity-${state}`}
-                    />
-                </Fragment>
-            )
-            }
-        </Transition>
-    </div>
+    return <TransitionGroup>
+        {
+            open && <CSSTransition
+                timeout={300}
+                classNames="transform"
+            >
+                <aside className="drawer-sidebar">
+                    <NavLink to="/" exact className="nav-link icon-jiantou-copy-copy">首页</NavLink>
+                    <NavLink to="/login" exact className="nav-link icon-jiantou-copy-copy">登录</NavLink>
+                </aside>
+            </CSSTransition>
+        }
+        {
+            open && <CSSTransition
+                timeout={300}
+                classNames="opacity"
+            >
+                <div
+                    onClick={props.onOpenChange}
+                    className="drawer-mask" />
+            </CSSTransition>
+        }
+    </TransitionGroup>
 }
+

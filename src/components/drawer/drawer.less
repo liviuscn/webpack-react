@@ -9,16 +9,15 @@
 }
 
 .drawer-sidebar {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 40px;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #fff;
     z-index: 1000;
     width: 80%;
-    transition: transform .3s ease-in-out;
-
+    
     a {
         position: relative;
         text-decoration: none;
@@ -43,32 +42,47 @@
     }
 }
 
-.transform-entering,
-.transform-entered {
-    transform: translateX(0%)
-}
-
-.transform-exiting,
-.transform-exited {
-    transform: translateX(-100%)
-}
-
 .drawer-mask {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 40px;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: opacity 300ms ease-in-out;
 }
 
-.opacity-entering,
-.opacity-entered {
-    opacity: 1
+.transform-enter {
+    transform: translateX(-100%)
 }
 
-.opacity-exiting,
-.opacity-exited {
-    opacity: 0
+.transform-enter-active {
+    transform: translateX(0%);
+    transition: transform .3s ease-in-out;
+}
+
+.transform-exit {
+    transform: translateX(0%)
+}
+
+.transform-exit-active {
+    transform: translateX(-100%);
+    transition: transform .3s ease-in-out;
+}
+
+.opacity-enter {
+    opacity: 0;
+}
+
+.opacity-enter-active {
+    opacity: 1;
+    transition: opacity .3s ease-in-out;
+}
+
+.opacity-exit {
+    opacity: 1;
+}
+
+.opacity-exit-active {
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
 }
