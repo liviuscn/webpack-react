@@ -1,15 +1,12 @@
 import React from "react";
 import classNames from 'classnames'
-import './navbar.less'
+import styles from './navbar.less'
 
 export default (props) => {
-	let className = classNames({
-            'pdv-navbar': true,
-            'navbar-light':true
-    })
-    return (<div className={className}>
-        <span className='navbar-left' onClick={props.onLeftClick}>返回</span>
-        <span className='navbar-title'>首页</span>
-        <span className='navbar-right' onClick={props.onRightClick}></span>
+
+    return (<div className={classNames(styles.navbar)}>
+        <span className={styles.left} onClick={props.onLeftClick}>返回</span>
+        <span className={styles.title}>首页</span>
+        <span className={styles.right} onClick={props.onRightClick}></span>
     </div>)
 }

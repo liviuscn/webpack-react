@@ -8,8 +8,7 @@ import error from './error'
 import info from './info'
 import success from './success'
 import warning from "./warning";
-
-import './modal.less';
+import styles from './modal.less';
 /*
     Modal通过visible来控制弹出与否
     还可以通过方法弹出其他弹框
@@ -70,25 +69,23 @@ class Modal extends React.Component {
     }
 
     render() {
-        let className = classNames({
-            'pdv-modal-root': true
-        })
+
         return ReactDOM.createPortal(
-            <div className={className}>
-                <div className='pdv-modal-mask'></div>
-                <div className='pdv-modal-wrap'>
-                    <div className='pdv-modal'>
-                        <div className='pdv-modal-content'>
-                            <button className='pdv-modal-close' onClick={this.handleCancel}>
+            <div className={classNames(styles.root)}>
+                <div className={styles.mask}></div>
+                <div className={styles.wrap}>
+                    <div className={styles.modal}>
+                        <div className={styles.content}>
+                            <button className={styles.close} onClick={this.handleCancel}>
                                 &times;
                             </button>
-                            <div className='pdv-modal-header'>
-                                <span className='pdv-modal-header-title'>{this.props.title}</span>
+                            <div className={styles.header}>
+                                <span className={styles.title}>{this.props.title}</span>
                             </div>
-                            <div className='pdv-modal-body'>
+                            <div className={styles.body}>
                                 {this.props.children}
                             </div>
-                            <div className='pdv-modal-footer'>
+                            <div className={styles.footer}>
                                 <button onClick={this.handleOk}><span>{this.props.okText}</span></button>
                                 <button onClick={this.handleCancel}><span>{this.props.cancelText}</span></button>
                             </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames'
+import styles from './modal.less';
 
-import './modal.less';
 // 在 DOM 中有两个容器是兄弟级 （siblings）
 const modalRoot = document.getElementById('modal-root');
 
@@ -16,10 +16,6 @@ export default (props) => {
 
     const el = document.createElement('div');
     modalRoot.appendChild(el);
-
-    let className = classNames({
-        'pdv-modal-root': true
-    })
 
     const destroy = () => {
         ReactDOM.unmountComponentAtNode(el)
@@ -46,21 +42,21 @@ export default (props) => {
     }
 
     ReactDOM.render(
-        <div className={className}>
-            <div className='pdv-modal-mask'></div>
-            <div className='pdv-modal-wrap'>
-                <div className='pdv-modal'>
-                    <div className='pdv-modal-content'>
-                        <button className='pdv-modal-close' onClick={handleCancel}>
+        <div className={classNames(styles.root)}>
+            <div className={styles.mask}></div>
+            <div className={styles.wrap}>
+                <div className={styles.modal}>
+                    <div className={styles.content}>
+                        <button className={styles.close} onClick={handleCancel}>
                             &times;
                         </button>
-                        <div className='pdv-modal-header'>
-                            <span className='pdv-modal-header-title'>{title}</span>
+                        <div className={styles.header}>
+                            <span className={styles.title}>{title}</span>
                         </div>
-                        <div className='pdv-modal-body'>
+                        <div className={styles.body}>
                             {props.children}
                         </div>
-                        <div className='pdv-modal-footer'>
+                        <div className={styles.footer}>
                             <button onClick={handleOk}><span>{okText}</span></button>
                             <button onClick={handleCancel}><span>{cancelText}</span></button>
                         </div>
