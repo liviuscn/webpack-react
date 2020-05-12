@@ -6,6 +6,7 @@ import './drawer.less'
 
 /* 
     CSSTransition必须为TransitionGroup的根元素才能生效，不能使用Fragment包裹
+    注意CSSTransition的属性classNames而不是className
 */
 export default (props) => {
 
@@ -13,7 +14,16 @@ export default (props) => {
     const className = classNames({
         "pdv-drawer": true
     })
-    return <TransitionGroup>
+    return <TransitionGroup className={className}>
+        {
+            open && <CSSTransition
+                timeout={300}
+                classNames="opacity"
+            >
+                <div onClick={props.onOpenChange}
+                    className="drawer-mask" />
+            </CSSTransition>
+        }
         {
             open && <CSSTransition
                 timeout={300}
@@ -23,15 +33,6 @@ export default (props) => {
                     <NavLink to="/" exact className="nav-link icon-jiantou-copy-copy">首页</NavLink>
                     <NavLink to="/login" exact className="nav-link icon-jiantou-copy-copy">登录</NavLink>
                 </aside>
-            </CSSTransition>
-        }
-        {
-            open && <CSSTransition
-                timeout={300}
-                classNames="opacity"
-            >
-                <div onClick={props.onOpenChange}
-                    className="drawer-mask" />
             </CSSTransition>
         }
     </TransitionGroup>
