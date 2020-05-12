@@ -30,8 +30,7 @@ export default (props) => {
                 timeout={300}
                 classNames="opacity"
             >
-                <div
-                    onClick={props.onOpenChange}
+                <div onClick={props.onOpenChange}
                     className="drawer-mask" />
             </CSSTransition>
         }

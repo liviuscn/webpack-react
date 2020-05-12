@@ -80,7 +80,7 @@ class Modal extends React.Component {
                     <div className='pdv-modal'>
                         <div className='pdv-modal-content'>
                             <button className='pdv-modal-close' onClick={this.handleCancel}>
-                                关闭
+                                &times;
                             </button>
                             <div className='pdv-modal-header'>
                                 <span className='pdv-modal-header-title'>{this.props.title}</span>

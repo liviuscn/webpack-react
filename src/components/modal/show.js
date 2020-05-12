@@ -52,8 +52,8 @@ export default (props) => {
                 <div className='pdv-modal'>
                     <div className='pdv-modal-content'>
                         <button className='pdv-modal-close' onClick={handleCancel}>
-                            关闭
-                            </button>
+                            &times;
+                        </button>
                         <div className='pdv-modal-header'>
                             <span className='pdv-modal-header-title'>{title}</span>
                         </div>
