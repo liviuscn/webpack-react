@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NavBar from '@/components/navBar'
 import Modal from '@/components/modal'
 import Drawer from '@/components/drawer'
+import Spin from '@/components/spin'
 
 export default () => {
 
@@ -42,5 +43,6 @@ export default () => {
         hello modal!
       </div>
     </Modal>
+    <Spin></Spin>
   </div>
 }
