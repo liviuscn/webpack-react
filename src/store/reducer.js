@@ -1,18 +1,21 @@
-const initialState = {
-    count: 0
+import home from './home/reducer'
+/* 
+使用combineReducers拆分reducer
+reducer按照page拆分
+执行reducer后，返回state,相应的state也按照page拆分
+虽然拆分了，但是dispatch后，所有的reducer都会执行
+*/
+export default {
+    home
 }
-//支持了reducer,先尽量不使用
-export default (state = initialState, action) => {
-    switch (action.type) {
-        case 'increment':
-            return {
-                count: state.count + 1
-            };
-        case 'decrement':
-            return {
-                count: state.count - 1
-            };
-        default:
-            return state
+
+/* 
+combineReducers等同于合并为一个方法
+function reducer(state = {
+    home:{}
+}, action) {
+    return {
+        home: home(state.home, action),
     }
 }
+*/ 
