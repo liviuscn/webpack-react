@@ -1,7 +1,7 @@
 import React, { Suspense, Component } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import ErrorBoundary from '@/utils/errorBoundary';
-
+import Spinner from '@/components/spinner'
 //tips:React.lazy 目前只支持默认导出（default exports）
 
 const Home = React.lazy(() => import("@/pages/home"));
@@ -14,7 +14,7 @@ export default class RouteConfig extends Component {
         return (
             <HashRouter>
                 <ErrorBoundary>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<Spinner/>}>
                         <Switch>
                             <Route path="/" exact component={Home} />
                             <Route path="/register" component={Register} />
