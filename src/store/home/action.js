@@ -1,10 +1,19 @@
 import { INCREMENT, DECREMENT } from './actionTypes'
-
+import { fromJS } from 'immutable';
 //加一
-export const increment = {
+export const incrementAction = {
     type: INCREMENT
 }
+
 //减一
-export const decrement = {
+export const decrementAction = {
     type: DECREMENT
+}
+
+//action creator
+export const save = (path) => {
+    return {
+        type: "save",
+        path: path
+    }
 }
