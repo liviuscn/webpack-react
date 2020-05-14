@@ -1,3 +1,5 @@
+import Immutable from 'Immutable'
+
 import home from './home/reducer'
 /* 
 使用combineReducers拆分reducer
@@ -8,7 +10,7 @@ reducer按照page拆分
 export default {
     home
 }
-
+// Immutable.Map();
 /* 
 combineReducers等同于合并为一个方法
 function reducer(state = {
