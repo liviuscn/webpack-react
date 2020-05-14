@@ -1,5 +1,3 @@
-import Immutable from 'Immutable'
-
 import home from './home/reducer'
 /* 
 使用combineReducers拆分reducer
