@@ -12,13 +12,12 @@ if (process.env.NODE_ENV === "development") {
 
 const store = compose(applyMiddleware(...middlewares))(createStore)(combineReducers(reducer));
 let { subscribe, dispatch, getState } = store;
-const state = getState()
-let unsubscribe = subscribe(() => { console.log("store状态已改变：", getState() === state) });
 
+let unsubscribe = subscribe(() => { console.log("store状态已改变：", getState().toJS()) });
 
 setInterval(() => {
     dispatch({
-        type: "home_increment1"
+        type: "home_increment"
     })
 }, 1000);
 

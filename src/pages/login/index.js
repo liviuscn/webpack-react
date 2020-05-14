@@ -12,6 +12,8 @@ class Login extends React.Component {
             <NavBar>登录</NavBar>
             <div>
                 {this.props.count}
+                <div></div>
+                {Date.now()}
             </div>
         </div>)
     }
@@ -19,7 +21,7 @@ class Login extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        count: state.getIn(['home', 'count'])
+        count: state.getIn(['home', 'page'])
     }
 }
 
