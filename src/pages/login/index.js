@@ -52,4 +52,15 @@ function mapStateToProps(state) {
     }
 }
 
+function mapDispatchToProps(params) {
+    
+}
+
+const mergeProps={
+
+}
+
+const options={
+
+}
 export default connect(mapStateToProps, { increment, decrement })(Login)

@@ -12,7 +12,9 @@ if (process.env.NODE_ENV === "development") {
 
 const store = compose(applyMiddleware(...middlewares))(createStore)(combineReducers(reducer));
 let { subscribe, dispatch, getState } = store;
+let a = getState().getIn(['login', 'list']).toObject()
 
+console.log(a)
 let unsubscribe = subscribe(() => { console.log("store状态已改变：", getState().toJS()) });
 
 // setInterval(() => {
