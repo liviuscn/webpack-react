@@ -53,14 +53,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(params) {
-    
-}
-
-const mergeProps={
 
 }
 
-const options={
+function mergeProps(stateProps, dispatchProps, ownProps) {
+    return Object.assign({}, ownProps, stateProps, dispatchProps)
+}
 
+const options = {
+    pure:true,
+    withRef:true,
 }
 export default connect(mapStateToProps, { increment, decrement })(Login)
