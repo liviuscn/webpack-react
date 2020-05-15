@@ -15,11 +15,11 @@ let { subscribe, dispatch, getState } = store;
 
 let unsubscribe = subscribe(() => { console.log("store状态已改变：", getState().toJS()) });
 
-setInterval(() => {
-    dispatch({
-        type: "home_increment"
-    })
-}, 1000);
+// setInterval(() => {
+//     dispatch({
+//         type: "home_increment"
+//     })
+// }, 1000);
 
 //unsubscribe();//调用可解除监听
 

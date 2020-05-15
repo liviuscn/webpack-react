@@ -1,4 +1,5 @@
 import home from './home/reducer'
+import login from './login/reducer'
 /* 
 使用combineReducers拆分reducer
 reducer按照page拆分
@@ -6,7 +7,8 @@ reducer按照page拆分
 虽然拆分了，但是dispatch后，所有的reducer都会执行
 */
 export default {
-    home
+    home,
+    login
 }
 // Immutable.Map();
 /* 
