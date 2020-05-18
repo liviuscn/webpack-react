@@ -9,11 +9,12 @@ export default () => {
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
+
   const handleLeftClick = () => {
     setOpen(!open)
   }
 
-  return <div>
+  return <div >
     <NavBar
       onLeftClick={handleLeftClick}
     >首页</NavBar>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import NavBar from '@/components/navBar'
 import styles from './login.less'
 import List from '@/components/list'
+import Swiper from '@/components/swiper'
 import { toJS } from '@/utils/to-js'
 
 import { increment, decrement } from '@/store/login/actionCreator'
@@ -35,6 +36,11 @@ class Login extends React.Component {
     render() {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
+            <Swiper>
+                <div style={{ height: 300, backgroundColor: 'red' }}>111111111111111</div>
+                <div style={{ height: 300, backgroundColor: 'yellow' }}>22222222222222</div>
+                <div style={{ height: 300, backgroundColor: 'blue' }}>3333333333333333</div>
+            </Swiper>
             <div>
                 {this.props.count}
                 <List2 dataSource={this.props.list} />
@@ -61,7 +67,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 }
 
 const options = {
-    pure:true,
-    withRef:true,
+    pure: true,
+    withRef: true,
 }
 export default connect(mapStateToProps, { increment, decrement })(Login)

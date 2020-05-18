@@ -1,5 +1,8 @@
 import React from 'react';
+import NavBar from '@/components/navBar'
 
 export default () => {
-    return <div>user</div>
+    return <div>
+        <NavBar>用户中心</NavBar>
+    </div>
 }
