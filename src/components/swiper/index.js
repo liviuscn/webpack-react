@@ -12,7 +12,8 @@ export default class Swiper extends Component {
             disY: 0,
             preDisX: 0,
             preDisY: 0,
-            styleArr: []
+            styleArr: [],
+            arr: [{ left: 2 }]
         }
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
@@ -69,11 +70,13 @@ export default class Swiper extends Component {
         this.ulRef.removeEventListener('touchend', this.dragEnd)
     }
 
-    dragStart(ev) {
+    dragStart = (ev) => {
         let activeIndex = this.state.activeIndex;//当前位置
-        let styleArr = [...this.state.styleArr]
-        styleArr[0].aaaaa = 1
-        console.log(styleArr, 'styleArr')
+
+        let styleArr = this.state.styleArr.slice()
+
+        console.log(styleArr)
+
         if (activeIndex === 0) {
             styleArr[this.length - 1].left = -this.clientWidth
             this.setState({
@@ -149,6 +152,7 @@ export default class Swiper extends Component {
     }
 
     render() {
+        let { styleArr } = this.state
         return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
             <div className={styles.frame}>
                 <ul ref={ref => this.ulRef = ref} style={{
@@ -158,7 +162,7 @@ export default class Swiper extends Component {
                 }}>
                     {
                         React.Children.map(this.props.children, (child, index) => {
-                            return <li style={this.state.styleArr[index] || {}}>{child}</li>;
+                            return <li key={index} style={{ ...styleArr[index] }}>{child}</li>;
                         })
                     }
                 </ul>
