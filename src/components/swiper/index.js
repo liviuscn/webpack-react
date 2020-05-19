@@ -18,7 +18,7 @@ export default class Swiper extends Component {
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
         this.dragEnd = this.dragEnd.bind(this);
-        this.loop = this.loop.bind(this);
+        this.startAnimation = this.startAnimation.bind(this);
         this.changeStyle = this.changeStyle.bind(this)
     }
 
@@ -65,7 +65,7 @@ export default class Swiper extends Component {
         setTimeout(() => {
             this.beginTime = performance.now();
             this.changeStyle();
-            this.loop()
+            this.startAnimation()
         }, 2000);
 
     }
@@ -150,7 +150,7 @@ export default class Swiper extends Component {
             disY: this.clientHeight * activeIndex,
             styleArr: this.styleArr
         })
-        this.loop();//重新循环
+        this.startAnimation();//重新循环
     }
 
     //d=b+vt
@@ -187,72 +187,67 @@ export default class Swiper extends Component {
         })
     }
 
-    //循环
-    loop(activeIndex) {
-        if (typeof activeIndex !== 'number') {
-            activeIndex = this.state.activeIndex
-        }
-
-
-        let direction = this.state.direction
-
-        let beginX
-        let endX
+    startAnimation() {
         const duration = 2000;
         const frameTime = 1000 / 60;
         const beginTime = this.beginTime
-        if (direction === 'right') {
-            //0~320 -640~-320 -320~0 left->right
-            beginX = -this.clientWidth * activeIndex;
-            endX = -this.clientWidth * (activeIndex - 1);
-            if (activeIndex === 0) {
-                beginX = this.clientWidth * activeIndex;
-                endX = this.clientWidth * (activeIndex + 1);
-            }
-        } else {
-            //0~-320 -320~-640 -640~0 right->left
-            beginX = -this.clientWidth * activeIndex;
-            endX = -this.clientWidth * (activeIndex + 1);
-            if (activeIndex === this.number - 1) {
-                beginX = -this.clientWidth * (this.number - 1);
-                endX = 0;
-            }
-        }
-        const currX = this.cal(beginX, endX, duration, beginTime);
-        console.log(currX)
-        if (Math.abs(currX) > Math.abs(endX)) {
-            if (direction === 'leftToRight') {
-                //end
-                activeIndex--;
+        //循环
+        const loop = () => {
+            let activeIndex = this.state.activeIndex
+            let direction = this.state.direction
+            let beginX
+            let endX
+            if (direction === 'right') {
+                //0~320 -640~-320 -320~0 left->right
+                beginX = -this.clientWidth * activeIndex;
+                endX = -this.clientWidth * (activeIndex - 1);
+                if (activeIndex === 0) {
+                    beginX = this.clientWidth * activeIndex;
+                    endX = this.clientWidth * (activeIndex + 1);
+                }
             } else {
-                activeIndex++
-            }
-            if (activeIndex > this.number - 1) {
-                activeIndex = 0
-            }
-            if (activeIndex < 0) {
-                activeIndex = this.number - 1
-            }
-            this.beginTime = performance.now();
-            this.changeStyle(activeIndex)
-            this.setState(() => {
-                return {
-                    activeIndex,
-                    disX: -this.clientWidth * activeIndex,
-                    disY: 0,
+                //0~-320 -320~-640 -640~0 right->left
+                beginX = -this.clientWidth * activeIndex;
+                endX = -this.clientWidth * (activeIndex + 1);
+                if (activeIndex === this.number - 1) {
+                    beginX = -this.clientWidth * (this.number - 1);
+                    endX = 0;
                 }
-            })
-        } else {
-            //move
-            this.setState(() => {
-                return {
-                    disX: currX,
+            }
+            const currX = this.cal(beginX, endX, duration, beginTime);
+            console.log(currX)
+            if (Math.abs(currX) > Math.abs(endX)) {
+                if (direction === 'leftToRight') {
+                    //end
+                    activeIndex--;
+                } else {
+                    activeIndex++
                 }
-            })
+                if (activeIndex > this.number - 1) {
+                    activeIndex = 0
+                }
+                if (activeIndex < 0) {
+                    activeIndex = this.number - 1
+                }
+                this.beginTime = performance.now();
+                this.changeStyle(activeIndex)
+                this.setState(
+                    {
+                        activeIndex,
+                        disX: -this.clientWidth * activeIndex,
+                        disY: 0,
+                    })
+            } else {
+                //move
+                this.setState({
+                    disX: currX
+                })
+            }
         }
-        this.timer = setTimeout(this.loop, frameTime);
-
+        this.timer = setTimeout(loop, frameTime);
     }
+
+
 
     render() {
         return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
