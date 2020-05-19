@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import classNames from 'classnames'
 import styles from './swiper.less'
 
 export default class Swiper extends Component {
@@ -12,8 +12,7 @@ export default class Swiper extends Component {
             disY: 0,
             preDisX: 0,
             preDisY: 0,
-            styleArr: [],
-            arr: [{ left: 2 }]
+            styleArr: []
         }
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
@@ -23,9 +22,8 @@ export default class Swiper extends Component {
 
     static defaultProps = {
         loop: true,  //循环
-        autoplay: {   //滑动后继续播放（不写官方默认暂停）
-            disableOnInteraction: false,
-        },
+        autoplay: true,//
+        direction: 'left',//方向
         pagination: {  //分页器
             el: '.swiper-pagination'
         }
@@ -39,10 +37,10 @@ export default class Swiper extends Component {
         this.clientWidth = this.ref.offsetWidth;//容器宽度
         this.clientHeight = this.ref.offsetHeight;//容器高度
 
-        this.length = 3//图片个数
+        this.number = React.Children.count(this.props.children) //图片个数
         let activeIndex = this.state.activeIndex;//当前位置
         this.styleArr = []
-        for (let i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.number; i++) {
             this.styleArr.push({
                 position: 'absolute',
                 top: 0,
@@ -62,6 +60,7 @@ export default class Swiper extends Component {
         this.ulRef.addEventListener('touchstart', this.dragStart)
         this.ulRef.addEventListener('touchmove', this.dragMove)
         this.ulRef.addEventListener('touchend', this.dragEnd)
+        this.loop()
     }
 
     componentWillUnmount() {
@@ -71,20 +70,26 @@ export default class Swiper extends Component {
     }
 
     dragStart = (ev) => {
+        clearInterval(this.timer);//暂停循环
         let activeIndex = this.state.activeIndex;//当前位置
+        let styleArr = this.state.styleArr.map(o => Object.assign({}, o))
 
-        let styleArr = this.state.styleArr.slice()
+        //let styleArr=this.state.styleArr.slice()浅复制后数组元素为应用类型，相当于直接修改了state报错
+        //例如
+        //this.state中arr = [{ left: 1 }]
+        //let arr = this.state.arr.slice();
+        //arr[0].left = 22;//不会报错
+        //但当render中有使用this.state.arr[0]时就会报错
 
-        console.log(styleArr)
-
+        //
         if (activeIndex === 0) {
-            styleArr[this.length - 1].left = -this.clientWidth
+            styleArr[this.number - 1].left = -this.clientWidth
             this.setState({
                 styleArr
             })
         }
-        if (activeIndex === this.length - 1) {
-            styleArr[0].left = this.clientWidth * this.length
+        if (activeIndex === this.number - 1) {
+            styleArr[0].left = this.clientWidth * this.number
             this.setState({
                 styleArr
             })
@@ -149,10 +154,31 @@ export default class Swiper extends Component {
             disY: this.clientHeight * activeIndex,
             styleArr: this.styleArr
         })
+        this.loop();//重新循环
+    }
+
+    //循环
+    loop() {
+        this.timer = setInterval(() => {
+            let activeIndex = this.state.activeIndex;
+            activeIndex++
+            if (activeIndex < 0) {
+                activeIndex = 2
+            }
+            if (activeIndex > 2) {
+                activeIndex = 0
+            }
+
+            this.setState({
+                activeIndex,
+                disX: -this.clientWidth * activeIndex,
+                disY: this.clientHeight * activeIndex,
+                styleArr: this.styleArr
+            })
+        }, 3000);
     }
 
     render() {
-        let { styleArr } = this.state
         return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
             <div className={styles.frame}>
                 <ul ref={ref => this.ulRef = ref} style={{
@@ -162,10 +188,21 @@ export default class Swiper extends Component {
                 }}>
                     {
                         React.Children.map(this.props.children, (child, index) => {
-                            return <li key={index} style={{ ...styleArr[index] }}>{child}</li>;
+                            return <li style={this.state.styleArr[index] || {}}>{child}</li>;
                         })
                     }
                 </ul>
+            </div>
+            <div className={styles.decorator}>
+                <div className={styles.carousel}>
+                    {
+                        React.Children.map(this.props.children, (child, index) => {
+                            return <div className={classNames(styles.dot, {
+                                [styles.active]: this.state.activeIndex === index
+                            })}><span></span></div>
+                        })
+                    }
+                </div>
             </div>
         </div>)
     }

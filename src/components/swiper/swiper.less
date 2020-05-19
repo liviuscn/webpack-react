@@ -71,4 +71,39 @@
         }
     }
 
+    .decorator {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        text-align: center;
+
+        .carousel {
+            font-size: 18px;
+            color: #000;
+            background: 0 0;
+            text-align: center;
+            zoom: 1;
+            width: 100%;
+
+            .dot {
+                display: inline-block;
+                zoom: 1;
+
+                span {
+                    display: block;
+                    width: 8px;
+                    height: 8px;
+                    margin: 0 3px;
+                    border-radius: 50%;
+                    background: #ccc;
+                }
+            }
+
+            .active {
+                span {
+                    background: #888
+                }
+            }
+        }
+    }
 }
