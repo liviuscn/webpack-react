@@ -12,12 +12,14 @@ export default class Swiper extends Component {
             disY: 0,
             preDisX: 0,
             preDisY: 0,
-            styleArr: []
+            styleArr: [],
+            direction: 'right'
         }
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
         this.dragEnd = this.dragEnd.bind(this);
-
+        this.loop = this.loop.bind(this);
+        this.changeStyle = this.changeStyle.bind(this)
     }
 
     static defaultProps = {
@@ -60,7 +62,12 @@ export default class Swiper extends Component {
         this.ulRef.addEventListener('touchstart', this.dragStart)
         this.ulRef.addEventListener('touchmove', this.dragMove)
         this.ulRef.addEventListener('touchend', this.dragEnd)
-        this.loop()
+        setTimeout(() => {
+            this.beginTime = performance.now();
+            this.changeStyle();
+            this.loop()
+        }, 2000);
+
     }
 
     componentWillUnmount() {
@@ -70,30 +77,9 @@ export default class Swiper extends Component {
     }
 
     dragStart = (ev) => {
-        clearInterval(this.timer);//暂停循环
-        let activeIndex = this.state.activeIndex;//当前位置
-        let styleArr = this.state.styleArr.map(o => Object.assign({}, o))
+        clearTimeout(this.timer);//暂停循环
+        this.changeStyle()
 
-        //let styleArr=this.state.styleArr.slice()浅复制后数组元素为应用类型，相当于直接修改了state报错
-        //例如
-        //this.state中arr = [{ left: 1 }]
-        //let arr = this.state.arr.slice();
-        //arr[0].left = 22;//不会报错
-        //但当render中有使用this.state.arr[0]时就会报错
-
-        //
-        if (activeIndex === 0) {
-            styleArr[this.number - 1].left = -this.clientWidth
-            this.setState({
-                styleArr
-            })
-        }
-        if (activeIndex === this.number - 1) {
-            styleArr[0].left = this.clientWidth * this.number
-            this.setState({
-                styleArr
-            })
-        }
         if (ev.changedTouches) {
             this.startX = ev.changedTouches[0].pageX;
             this.startY = ev.changedTouches[0].pageY;
@@ -136,18 +122,28 @@ export default class Swiper extends Component {
 
     dragEnd(e) {
         let activeIndex = this.state.activeIndex;//当前位置
-        if (this.disX > 0 && (this.disX > this.clientWidth / 2)) {
-            activeIndex--
-        } else if (this.disX < 0 && ((-1 * this.disX) > this.clientWidth / 2)) {
-            activeIndex++
+        let direction
+        if (Math.abs(this.disX) > this.clientWidth / 2) {
+            //滑动超过一半的距离
+            if (this.disX > 0) {
+                activeIndex--
+                direction = 'right'
+            } else {
+                activeIndex++
+                direction = 'left'
+            }
         }
         if (activeIndex < 0) {
             activeIndex = 2
         }
-        if (activeIndex > 2) {
+        if (activeIndex > this.number - 1) {
             activeIndex = 0
         }
-
+        if (direction) {
+            this.setState({
+                direction
+            })
+        }
         this.setState({
             activeIndex,
             disX: -this.clientWidth * activeIndex,
@@ -157,25 +153,105 @@ export default class Swiper extends Component {
         this.loop();//重新循环
     }
 
+    //d=b+vt
+    cal(beginX, endX, duration, beginTime) {
+        const now = performance.now();
+        const passedTime = now - beginTime;
+
+        return (endX - beginX) / duration * passedTime + beginX;
+    }
+
+
+    changeStyle(activeIndex) {
+        if (typeof activeIndex !== 'number') {
+            activeIndex = this.state.activeIndex;//当前位置
+        }
+
+        let styleArr = this.styleArr.map(o => Object.assign({}, o))
+        //let styleArr=this.state.styleArr.slice()浅复制后数组元素为应用类型，相当于直接修改了state报错
+        //例如
+        //this.state中arr = [{ left: 1 }]
+        //let arr = this.state.arr.slice();
+        //arr[0].left = 22;//不会报错
+        //但当render中有使用this.state.arr[0]时就会报错
+
+        //
+        if (activeIndex === 0) {
+            styleArr[this.number - 1].left = -this.clientWidth
+        } else if (activeIndex === this.number - 1) {
+            styleArr[0].left = this.clientWidth * this.number
+        }
+
+        this.setState({
+            styleArr: styleArr
+        })
+    }
+
     //循环
-    loop() {
-        this.timer = setInterval(() => {
-            let activeIndex = this.state.activeIndex;
-            activeIndex++
-            if (activeIndex < 0) {
-                activeIndex = 2
+    loop(activeIndex) {
+        if (typeof activeIndex !== 'number') {
+            activeIndex = this.state.activeIndex
+        }
+
+
+        let direction = this.state.direction
+
+        let beginX
+        let endX
+        const duration = 2000;
+        const frameTime = 1000 / 60;
+        const beginTime = this.beginTime
+        if (direction === 'right') {
+            //0~320 -640~-320 -320~0 left->right
+            beginX = -this.clientWidth * activeIndex;
+            endX = -this.clientWidth * (activeIndex - 1);
+            if (activeIndex === 0) {
+                beginX = this.clientWidth * activeIndex;
+                endX = this.clientWidth * (activeIndex + 1);
             }
-            if (activeIndex > 2) {
+        } else {
+            //0~-320 -320~-640 -640~0 right->left
+            beginX = -this.clientWidth * activeIndex;
+            endX = -this.clientWidth * (activeIndex + 1);
+            if (activeIndex === this.number - 1) {
+                beginX = -this.clientWidth * (this.number - 1);
+                endX = 0;
+            }
+        }
+        const currX = this.cal(beginX, endX, duration, beginTime);
+        console.log(currX)
+        if (Math.abs(currX) > Math.abs(endX)) {
+            if (direction === 'leftToRight') {
+                //end
+                activeIndex--;
+            } else {
+                activeIndex++
+            }
+            if (activeIndex > this.number - 1) {
                 activeIndex = 0
             }
-
-            this.setState({
-                activeIndex,
-                disX: -this.clientWidth * activeIndex,
-                disY: this.clientHeight * activeIndex,
-                styleArr: this.styleArr
+            if (activeIndex < 0) {
+                activeIndex = this.number - 1
+            }
+            this.beginTime = performance.now();
+            this.changeStyle(activeIndex)
+            this.setState(() => {
+                return {
+                    activeIndex,
+                    disX: -this.clientWidth * activeIndex,
+                    disY: 0,
+                }
             })
-        }, 3000);
+        } else {
+            //move
+            this.setState(() => {
+                return {
+                    disX: currX,
+                }
+            })
+        }
+        this.timer = setTimeout(this.loop, frameTime);
+
     }
 
     render() {
@@ -184,7 +260,13 @@ export default class Swiper extends Component {
                 <ul ref={ref => this.ulRef = ref} style={{
                     transform: `translate3d(${this.state.disX}px, 0px, 0px)`,
                     width: 960,
-                    height: 300
+                    height: 300,
+                    position: 'relative',
+                    display: 'block',
+                    margin: '0px',
+                    padding: '0px',
+                    cursor: 'inherit',
+                    boxSizing: 'border-box'
                 }}>
                     {
                         React.Children.map(this.props.children, (child, index) => {
