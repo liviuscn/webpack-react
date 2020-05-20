@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './swiper.less'
 import { store as storeX, startAnimation } from './createStoreX'
+
 export default class Swiper extends Component {
 
     constructor(props) {
@@ -31,16 +32,12 @@ export default class Swiper extends Component {
     }
 
     componentDidMount() {
-
         storeX.subscribe(this.handleChangeX)
-
         React.Children.map(this.props.children, function (params) {
             console.log(params)
         })
-
         this.clientWidth = this.ref.offsetWidth;//容器宽度
         this.clientHeight = this.ref.offsetHeight;//容器高度
-
         this.number = React.Children.count(this.props.children) //图片个数
         let activeIndex = this.state.activeIndex;//当前位置
         this.styleArr = []
