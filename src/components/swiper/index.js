@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './swiper.less'
-
+import { store as storeX, startAnimation } from './createStoreX'
 export default class Swiper extends Component {
 
     constructor(props) {
@@ -18,8 +18,7 @@ export default class Swiper extends Component {
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
         this.dragEnd = this.dragEnd.bind(this);
-        this.startAnimation = this.startAnimation.bind(this);
-        this.changeStyle = this.changeStyle.bind(this)
+        this.handleChangeX = this.handleChangeX.bind(this)
     }
 
     static defaultProps = {
@@ -32,6 +31,9 @@ export default class Swiper extends Component {
     }
 
     componentDidMount() {
+
+        storeX.subscribe(this.handleChangeX)
+
         React.Children.map(this.props.children, function (params) {
             console.log(params)
         })
@@ -59,14 +61,11 @@ export default class Swiper extends Component {
         this.setState({
             styleArr: this.styleArr
         })
+
         this.ulRef.addEventListener('touchstart', this.dragStart)
         this.ulRef.addEventListener('touchmove', this.dragMove)
         this.ulRef.addEventListener('touchend', this.dragEnd)
-        setTimeout(() => {
-            this.beginTime = performance.now();
-            this.changeStyle();
-            this.startAnimation()
-        }, 2000);
+        this.stopAnimation = startAnimation()
 
     }
 
@@ -77,8 +76,8 @@ export default class Swiper extends Component {
     }
 
     dragStart = (ev) => {
-        clearTimeout(this.timer);//暂停循环
-        this.changeStyle()
+        this.stopAnimation();//停止
+        //this.changeStyle()
 
         if (ev.changedTouches) {
             this.startX = ev.changedTouches[0].pageX;
@@ -150,104 +149,15 @@ export default class Swiper extends Component {
             disY: this.clientHeight * activeIndex,
             styleArr: this.styleArr
         })
-        this.startAnimation();//重新循环
+        this.stopAnimation = startAnimation()
     }
 
-    //d=b+vt
-    cal(beginX, endX, duration, beginTime) {
-        const now = performance.now();
-        const passedTime = now - beginTime;
-
-        return (endX - beginX) / duration * passedTime + beginX;
-    }
-
-
-    changeStyle(activeIndex) {
-        if (typeof activeIndex !== 'number') {
-            activeIndex = this.state.activeIndex;//当前位置
-        }
-
-        let styleArr = this.styleArr.map(o => Object.assign({}, o))
-        //let styleArr=this.state.styleArr.slice()浅复制后数组元素为应用类型，相当于直接修改了state报错
-        //例如
-        //this.state中arr = [{ left: 1 }]
-        //let arr = this.state.arr.slice();
-        //arr[0].left = 22;//不会报错
-        //但当render中有使用this.state.arr[0]时就会报错
-
-        //
-        if (activeIndex === 0) {
-            styleArr[this.number - 1].left = -this.clientWidth
-        } else if (activeIndex === this.number - 1) {
-            styleArr[0].left = this.clientWidth * this.number
-        }
-
+    handleChangeX() {
+        let state = storeX.getState()
         this.setState({
-            styleArr: styleArr
+            ...state
         })
     }
-
-    startAnimation() {
-        const duration = 2000;
-        const frameTime = 1000 / 60;
-        const beginTime = this.beginTime
-        //循环
-        const loop = () => {
-            let activeIndex = this.state.activeIndex
-            let direction = this.state.direction
-            let beginX
-            let endX
-            if (direction === 'right') {
-                //0~320 -640~-320 -320~0 left->right
-                beginX = -this.clientWidth * activeIndex;
-                endX = -this.clientWidth * (activeIndex - 1);
-                if (activeIndex === 0) {
-                    beginX = this.clientWidth * activeIndex;
-                    endX = this.clientWidth * (activeIndex + 1);
-                }
-            } else {
-                //0~-320 -320~-640 -640~0 right->left
-                beginX = -this.clientWidth * activeIndex;
-                endX = -this.clientWidth * (activeIndex + 1);
-                if (activeIndex === this.number - 1) {
-                    beginX = -this.clientWidth * (this.number - 1);
-                    endX = 0;
-                }
-            }
-            const currX = this.cal(beginX, endX, duration, beginTime);
-            console.log(currX)
-            if (Math.abs(currX) > Math.abs(endX)) {
-                if (direction === 'leftToRight') {
-                    //end
-                    activeIndex--;
-                } else {
-                    activeIndex++
-                }
-                if (activeIndex > this.number - 1) {
-                    activeIndex = 0
-                }
-                if (activeIndex < 0) {
-                    activeIndex = this.number - 1
-                }
-                this.beginTime = performance.now();
-                this.changeStyle(activeIndex)
-                this.setState(
-                    {
-                        activeIndex,
-                        disX: -this.clientWidth * activeIndex,
-                        disY: 0,
-                    })
-            } else {
-                //move
-                this.setState({
-                    disX: currX
-                })
-            }
-        }
-        this.timer = setTimeout(loop, frameTime);
-    }
-
-
 
     render() {
         return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
