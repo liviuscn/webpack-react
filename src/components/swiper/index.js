@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './swiper.less'
-import { store as storeX, startAnimation } from './createStoreX'
+import store from './store'
+import bweenFunctions from './tween-functions'
 
 export default class Swiper extends Component {
 
@@ -20,6 +21,7 @@ export default class Swiper extends Component {
         this.dragMove = this.dragMove.bind(this);
         this.dragEnd = this.dragEnd.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this)
+        this.startAnimation = this.startAnimation.bind(this)
     }
 
     static defaultProps = {
@@ -32,14 +34,13 @@ export default class Swiper extends Component {
     }
 
     componentDidMount() {
-        storeX.subscribe(this.handleChangeX)
-        React.Children.map(this.props.children, function (params) {
-            console.log(params)
-        })
+        store.subscribe(this.handleChangeX)
         this.clientWidth = this.ref.offsetWidth;//容器宽度
         this.clientHeight = this.ref.offsetHeight;//容器高度
         this.number = React.Children.count(this.props.children) //图片个数
         let activeIndex = this.state.activeIndex;//当前位置
+
+        //初始化样式
         this.styleArr = []
         for (let i = 0; i < this.number; i++) {
             this.styleArr.push({
@@ -55,6 +56,7 @@ export default class Swiper extends Component {
                 width: this.clientWidth,
             })
         }
+
         this.setState({
             styleArr: this.styleArr
         })
@@ -62,7 +64,7 @@ export default class Swiper extends Component {
         this.ulRef.addEventListener('touchstart', this.dragStart)
         this.ulRef.addEventListener('touchmove', this.dragMove)
         this.ulRef.addEventListener('touchend', this.dragEnd)
-        this.stopAnimation = startAnimation()
+        this.stopAnimation = this.startAnimation();//开始动画
 
     }
 
@@ -74,8 +76,11 @@ export default class Swiper extends Component {
 
     dragStart = (ev) => {
         this.stopAnimation();//停止
-        //this.changeStyle()
 
+        let styleArr = this.getStyle(this.state.activeIndex)
+        this.setState({
+            styleArr
+        })
         if (ev.changedTouches) {
             this.startX = ev.changedTouches[0].pageX;
             this.startY = ev.changedTouches[0].pageY;
@@ -146,15 +151,110 @@ export default class Swiper extends Component {
             disY: this.clientHeight * activeIndex,
             styleArr: this.styleArr
         })
-        this.stopAnimation = startAnimation()
+        this.stopAnimation = this.startAnimation()
     }
 
     handleChangeX() {
-        let state = storeX.getState()
+        let state = store.getState()
         this.setState({
             ...state
         })
     }
+
+    getStyle(activeIndex) {
+        let styleArr2 = this.styleArr.map(o => Object.assign({}, o))
+        let number = this.number;
+        let width = this.clientWidth;
+        if (activeIndex === 0) {
+            styleArr2[number - 1].left = -width
+            return styleArr2
+        } else if (activeIndex === number - 1) {
+            styleArr2[0].left = width * number
+            return styleArr2
+        } else {
+            return this.styleArr
+        }
+    }
+
+    //开始动画
+    startAnimation(duration = 1000, frameTime = 17, direction = 'left') {
+
+        let activeIndex = this.state.activeIndex
+        let now = performance.now();
+        let number = this.number
+        let width = this.clientWidth
+
+        let styleArr = this.getStyle(activeIndex)
+        store.dispatch({
+            type: 'move',
+            payload: {
+                styleArr
+            }
+        });
+        let timer0, timer1, timer2
+        const loop = () => {
+            let beginPos = -width * activeIndex
+            let endPos = direction === 'left' ? -width * (activeIndex + 1) : -width * (activeIndex - 1)
+
+            const passedTime = performance.now() - now;
+
+            let currX = bweenFunctions.easeOutCubic(passedTime, beginPos, endPos, duration)
+            console.log(currX)
+            if (!currX) currX = 0
+            if (Math.abs(currX - beginPos) > width) {
+
+                now = performance.now();
+                direction === 'left' ? activeIndex++ : activeIndex--
+                if (activeIndex > number - 1) {
+                    activeIndex = 0
+                }
+                if (activeIndex < 0) {
+                    activeIndex = number - 1
+                }
+
+                let styleArr = this.getStyle(activeIndex)
+
+                //停留3s后再执行
+                store.dispatch({
+                    type: 'move',
+                    payload: {
+                        disX: -width * activeIndex,
+                        styleArr: styleArr,
+                        activeIndex: activeIndex
+                    }
+                });
+                timer2 = setTimeout(() => {
+                    //暂停3s
+                    now = performance.now();
+                    loop()
+                }, 3000);
+                //return clearTimeout(timer1)
+                return window.cancelAnimationFrame(timer1)
+            } else {
+                console.log(currX)
+                store.dispatch({
+                    type: 'move',
+                    payload: {
+                        disX: currX
+                    }
+                });
+            }
+            //  timer1 = setTimeout(loop, frameTime);
+            timer1 = window.requestAnimationFrame(loop);
+        }
+        //loop()
+        timer0 = setTimeout(() => {
+            now = performance.now();
+            timer1 = window.requestAnimationFrame(loop);
+        }, 3000);
+
+        return () => {
+            clearTimeout(timer0)
+            window.cancelAnimationFrame(timer1)
+            clearTimeout(timer2)
+
+        }
+    };
 
     render() {
         return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
