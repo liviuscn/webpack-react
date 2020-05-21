@@ -72,6 +72,7 @@ export default class Swiper extends Component {
         this.ulRef.removeEventListener('touchstart', this.dragStart)
         this.ulRef.removeEventListener('touchmove', this.dragMove)
         this.ulRef.removeEventListener('touchend', this.dragEnd)
+        this.stopAnimation();//停止动画
     }
 
     dragStart = (ev) => {
@@ -145,6 +146,7 @@ export default class Swiper extends Component {
                 direction
             })
         }
+        //
         this.setState({
             activeIndex,
             disX: -this.clientWidth * activeIndex,
@@ -177,13 +179,10 @@ export default class Swiper extends Component {
     }
 
     //开始动画
-    startAnimation(duration = 1000, frameTime = 17, direction = 'left') {
+    startAnimation(duration = 1000, frameTime = 17) {
 
-        let activeIndex = this.state.activeIndex
-        let now = performance.now();
-        let number = this.number
-        let width = this.clientWidth
-        let timer0, timer1, timer2
+        let activeIndex, direction, timer0, timer1, timer2, now, number = this.number, width = this.clientWidth
+
         const loop = () => {
             let beginPos = -width * activeIndex
             let endPos = direction === 'left' ? -width * (activeIndex + 1) : -width * (activeIndex - 1)
@@ -237,6 +236,7 @@ export default class Swiper extends Component {
         //loop()
         timer0 = setTimeout(() => {
             activeIndex = this.state.activeIndex
+            direction = this.state.direction
             let styleArr = this.getStyle(activeIndex)
             store.dispatch({
                 type: 'move',
