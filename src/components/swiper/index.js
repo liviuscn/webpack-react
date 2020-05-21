@@ -135,7 +135,7 @@ export default class Swiper extends Component {
             }
         }
         if (activeIndex < 0) {
-            activeIndex = 2
+            activeIndex = this.number - 1
         }
         if (activeIndex > this.number - 1) {
             activeIndex = 0
@@ -148,7 +148,7 @@ export default class Swiper extends Component {
         this.setState({
             activeIndex,
             disX: -this.clientWidth * activeIndex,
-            disY: this.clientHeight * activeIndex,
+            disY: -this.clientHeight * activeIndex,
             styleArr: this.styleArr
         })
         this.stopAnimation = this.startAnimation()
@@ -183,14 +183,6 @@ export default class Swiper extends Component {
         let now = performance.now();
         let number = this.number
         let width = this.clientWidth
-
-        let styleArr = this.getStyle(activeIndex)
-        store.dispatch({
-            type: 'move',
-            payload: {
-                styleArr
-            }
-        });
         let timer0, timer1, timer2
         const loop = () => {
             let beginPos = -width * activeIndex
@@ -244,6 +236,14 @@ export default class Swiper extends Component {
         }
         //loop()
         timer0 = setTimeout(() => {
+            activeIndex = this.state.activeIndex
+            let styleArr = this.getStyle(activeIndex)
+            store.dispatch({
+                type: 'move',
+                payload: {
+                    styleArr
+                }
+            });
             now = performance.now();
             timer1 = window.requestAnimationFrame(loop);
         }, 3000);
