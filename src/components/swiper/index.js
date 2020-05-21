@@ -22,6 +22,9 @@ export default class Swiper extends Component {
         this.dragEnd = this.dragEnd.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this)
         this.startAnimation = this.startAnimation.bind(this)
+        this.preDisX = 0;
+        this.preDisY = 0;
+        this.preIndex = 0;
     }
 
     static defaultProps = {
@@ -92,12 +95,6 @@ export default class Swiper extends Component {
         //鼠标边界性
         this.startX > this.clientWidth ? this.startX = this.clientWidth : null
         this.startY > this.clientHeight ? this.startY = this.clientHeight : null
-
-        //上次滑动的距离
-        this.preDisX = this.state.disX;
-        this.preDisY = this.state.disY;
-        this.disX = 0
-        this.disY = 0
     }
 
     dragMove(ev) {
@@ -116,36 +113,15 @@ export default class Swiper extends Component {
         this.disX = this.clientX - this.startX;
         this.disY = this.clientY - this.startY;
 
-        this.setState({
-            disX: this.preDisX + this.disX,
-            disY: this.preDisY + this.disY
-        })
+        let activeIndex = this.preIndex;//当前位置
 
-    }
-
-    dragEnd(e) {
-        let activeIndex = this.state.activeIndex;//当前位置
-        let direction='', endPos
         if (Math.abs(this.disX) > this.clientWidth / 2) {
-
             //滑动超过一半的距离
             if (this.disX > 0) {
-                if (activeIndex === 0) {
-                    //0~320
-                    endPos = this.clientWidth
-                }
                 activeIndex--
-                direction = 'right'
-
             } else {
-                if (activeIndex == this.number - 1) {
-                    //-640~-960
-                    endPos = - this.clientWidth * this.number
-                }
                 activeIndex++
-                direction = 'left'
             }
-
         }
 
         if (activeIndex < 0) {
@@ -154,30 +130,58 @@ export default class Swiper extends Component {
         if (activeIndex > this.number - 1) {
             activeIndex = 0
         }
-        let styleArr = this.getStyle(activeIndex)
 
+        //异步操作
         this.setState({
-            direction,
-            activeIndex,
-            styleArr
+            disX: this.preDisX + this.disX,
+            disY: this.preDisY + this.disY,
+            activeIndex
         })
 
-        if (!endPos) endPos = - this.clientWidth * activeIndex
-        //
-        // this.setState({
-        //     activeIndex,
-        //     disX: -this.clientWidth * activeIndex,
-        //     disY: -this.clientHeight * activeIndex,
-        //     styleArr: this.styleArr
-        // })
+    }
 
-        console.log(activeIndex, this.state.disX, endPos)
-        this.stopAnimation = this.startAnimation({
+    dragEnd() {
+        //使用state中的数据是不准确的
+        this.preDisX = this.preDisX + this.disX
+        this.preDisY = this.preDisY + this.disY
+
+        let activeIndex = this.preIndex;
+        let direction = '', beginPos, endPos
+        if (Math.abs(this.disX) > this.clientWidth / 2) {
+            //滑动超过一半的距离
+            if (this.disX > 0) {
+                if (activeIndex === 0) {
+                    //0~320
+                    endPos = this.clientWidth
+                }
+                activeIndex--
+                direction = 'right'
+            } else {
+                if (activeIndex === this.number - 1) {
+                    //-640~-960
+                    endPos = - this.clientWidth * this.number
+                }
+                activeIndex++
+                direction = 'left'
+            }
+        }
+        if (activeIndex < 0) {
+            activeIndex = this.number - 1
+        }
+        if (activeIndex > this.number - 1) {
+            activeIndex = 0
+        }
+        beginPos = this.preDisX;//开始位置
+        if (!endPos) endPos = - this.clientWidth * activeIndex//结束位置
+        this.preIndex = activeIndex
+        console.log(activeIndex, beginPos, endPos)
+        this.stopAnimation = this.dragEndAnimation({
             activeIndex,
             direction,
-            beginPos: this.state.disX,
-            endPos: endPos
+            beginPos,
+            endPos
         })
+
     }
 
     handleChangeX() {
@@ -203,7 +207,7 @@ export default class Swiper extends Component {
     }
 
     //开始动画
-    startAnimation(dragEnd) {
+    startAnimation() {
         let duration = 1000,
             frameTime = 17,
             activeIndex,
@@ -216,25 +220,14 @@ export default class Swiper extends Component {
             width = this.clientWidth,
             beginPos,
             endPos,
-            autoplay = true;
+            autoplay = false;
 
         const loop = () => {
             const passedTime = performance.now() - now;
             let currX = bweenFunctions.easeOutCubic(passedTime, beginPos, endPos, duration)
-            // console.log(currX)
+
             if (!currX) currX = 0
             if (Math.abs(currX - beginPos) > Math.abs(endPos - beginPos)) {
-                let styleArr = this.getStyle(activeIndex)
-                if (dragEnd) {
-                    store.dispatch({
-                        type: 'move',
-                        payload: {
-                            disX: -width * activeIndex,
-                            styleArr,
-                            activeIndex: activeIndex
-                        }
-                    });
-                }
 
                 if (autoplay) {
                     if (direction === 'left') {
@@ -270,7 +263,6 @@ export default class Swiper extends Component {
                         timer1 = window.requestAnimationFrame(loop);
                     }, 3000);
                 }
-                //return clearTimeout(timer1)
                 return window.cancelAnimationFrame(timer1)
             } else {
                 store.dispatch({
@@ -280,18 +272,10 @@ export default class Swiper extends Component {
                     }
                 });
             }
-            //  timer1 = setTimeout(loop, frameTime);
             timer1 = window.requestAnimationFrame(loop);
         }
 
-        if (dragEnd) {
-            activeIndex = this.state.activeIndex
-            direction = dragEnd.direction
-            beginPos = dragEnd.beginPos;
-            endPos = dragEnd.endPos;
-            now = performance.now();
-            timer1 = window.requestAnimationFrame(loop);
-        } else if (autoplay) {
+        if (autoplay) {
             timer0 = setTimeout(() => {
                 activeIndex = this.state.activeIndex
                 direction = this.state.direction
@@ -308,6 +292,63 @@ export default class Swiper extends Component {
                 timer1 = window.requestAnimationFrame(loop);
             }, 3000);
         }
+        return () => {
+            clearTimeout(timer0)
+            window.cancelAnimationFrame(timer1)
+            clearTimeout(timer2)
+        }
+    };
+
+    //滑动后的动画
+    dragEndAnimation(dragEnd) {
+        let duration = 1000,
+            frameTime = 17,
+            activeIndex,
+            direction,
+            timer0,
+            timer1,
+            timer2,
+            now,
+            number = this.number,
+            width = this.clientWidth,
+            beginPos,
+            endPos,
+            autoplay = true;
+
+        const loop = () => {
+            const passedTime = performance.now() - now;
+            let currX = bweenFunctions.easeOutCubic(passedTime, beginPos, endPos, duration)
+            if (!currX) currX = 0
+            if (Math.abs(currX - beginPos) > Math.abs(endPos - beginPos)) {
+                let styleArr = this.getStyle(activeIndex)
+                this.preDisX = -width * activeIndex;
+                store.dispatch({
+                    type: 'move',
+                    payload: {
+                        disX: -width * activeIndex,
+                        styleArr,
+                        activeIndex: activeIndex
+                    }
+                });
+                return window.cancelAnimationFrame(timer1)
+            } else {
+                store.dispatch({
+                    type: 'move',
+                    payload: {
+                        disX: currX
+                    }
+                });
+            }
+            timer1 = window.requestAnimationFrame(loop);
+        }
+
+        activeIndex = dragEnd.activeIndex
+        direction = dragEnd.direction
+        beginPos = dragEnd.beginPos;
+        endPos = dragEnd.endPos;
+        now = performance.now();
+        timer1 = window.requestAnimationFrame(loop);
+
         return () => {
             clearTimeout(timer0)
             window.cancelAnimationFrame(timer1)
