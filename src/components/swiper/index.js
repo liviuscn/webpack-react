@@ -83,7 +83,7 @@ export default class Swiper extends Component {
 
         //设置图片位置
         let styleArr = this.getStyle(this.currIndex)
-        this.preIndex = this.currIndex;//上一次的index
+        //this.preIndex = this.currIndex;//上一次的index
         this.setState({
             styleArr
         })
@@ -122,6 +122,7 @@ export default class Swiper extends Component {
         let b = Math.round(a)
 
         if (b > a) {
+            console.log('aaa')
             //滑动超过一半的距离
             if (this.disX > 0) {
                 activeIndex--
@@ -174,15 +175,14 @@ export default class Swiper extends Component {
                 activeIndex++
                 direction = 'left'
             }
+            if (activeIndex < 0) {
+                activeIndex = this.number - 1
+            }
+            if (activeIndex > this.number - 1) {
+                activeIndex = 0
+            }
         } else {
-            activeIndex = this.preIndex
-        }
-
-        if (activeIndex < 0) {
-            activeIndex = this.number - 1
-        }
-        if (activeIndex > this.number - 1) {
-            activeIndex = 0
+            activeIndex = this.currIndex
         }
 
         beginPos = this.preDisX;//开始位置
@@ -315,7 +315,7 @@ export default class Swiper extends Component {
 
     //滑动后的动画
     dragEndAnimation(dragEnd) {
-        let duration = 5000,
+        let duration = 1000,
             frameTime = 17,
             activeIndex,
             direction,

@@ -19,7 +19,16 @@ class Login extends React.Component {
         this.handleDecrement = this.handleDecrement.bind(this)
     }
     componentDidMount() {
-
+      //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
+       // this.open_new_window(url)
+    }
+    open_new_window(link) {
+        try {
+            window.open('javascript:window.name;', '<script>location.replace("' + link + '")</script>');
+        } catch (e) {
+            window.open(link);
+           // window.open(link, '', 'height=500,width=611,scrollbars=yes,status =yes')
+        }
     }
     componentDidUpdate() {
 

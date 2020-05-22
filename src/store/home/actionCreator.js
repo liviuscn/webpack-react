@@ -13,8 +13,11 @@ export const decrementAction = {
 
 //action creator
 export const save = (path) => {
-    return {
-        type: "save",
-        path: path
+    return (dispath, getState) => {
+        console.log(getState())
+        return dispath({
+            type: "save",
+            path: path
+        })
     }
 }
