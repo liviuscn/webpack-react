@@ -1,7 +1,6 @@
 
 const initialState = {
-    disX: 0,
-    styleArr: []
+    disX: 0
 }
 
 export default (state = initialState, action) => {

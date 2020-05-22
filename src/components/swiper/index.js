@@ -24,7 +24,7 @@ export default class Swiper extends Component {
         this.startAnimation = this.startAnimation.bind(this)
         this.preDisX = 0;
         this.preDisY = 0;
-        this.preIndex = 0;
+        this.currIndex = 0;
     }
 
     static defaultProps = {
@@ -67,7 +67,7 @@ export default class Swiper extends Component {
         this.ulRef.addEventListener('touchstart', this.dragStart)
         this.ulRef.addEventListener('touchmove', this.dragMove)
         this.ulRef.addEventListener('touchend', this.dragEnd)
-        this.stopAnimation = this.startAnimation();//开始动画
+        // this.stopAnimation = this.startAnimation();//开始动画
 
     }
 
@@ -79,12 +79,15 @@ export default class Swiper extends Component {
     }
 
     dragStart = (ev) => {
-        this.stopAnimation();//停止
+        this.stopDragEndAnimation && this.stopDragEndAnimation();//停止
 
-        let styleArr = this.getStyle(this.state.activeIndex)
+        //设置图片位置
+        let styleArr = this.getStyle(this.currIndex)
+        this.preIndex = this.currIndex;//上一次的index
         this.setState({
             styleArr
         })
+
         if (ev.changedTouches) {
             this.startX = ev.changedTouches[0].pageX;
             this.startY = ev.changedTouches[0].pageY;
@@ -113,22 +116,24 @@ export default class Swiper extends Component {
         this.disX = this.clientX - this.startX;
         this.disY = this.clientY - this.startY;
 
-        let activeIndex = this.preIndex;//当前位置
+        let activeIndex = this.currIndex;//当前位置
 
-        if (Math.abs(this.disX) > this.clientWidth / 2) {
+        let a = Math.abs(this.preDisX + this.disX) / this.clientWidth
+        let b = Math.round(a)
+
+        if (b > a) {
             //滑动超过一半的距离
             if (this.disX > 0) {
                 activeIndex--
             } else {
                 activeIndex++
             }
-        }
-
-        if (activeIndex < 0) {
-            activeIndex = this.number - 1
-        }
-        if (activeIndex > this.number - 1) {
-            activeIndex = 0
+            if (activeIndex < 0) {
+                activeIndex = this.number - 1
+            }
+            if (activeIndex > this.number - 1) {
+                activeIndex = 0
+            }
         }
 
         //异步操作
@@ -142,13 +147,18 @@ export default class Swiper extends Component {
 
     dragEnd() {
         //使用state中的数据是不准确的
-        this.preDisX = this.preDisX + this.disX
-        this.preDisY = this.preDisY + this.disY
+        this.preDisX = this.preDisX + this.disX//this.state.disX
+        this.preDisY = this.preDisY + this.disY//this.state.disY
 
-        let activeIndex = this.preIndex;
+        let activeIndex = this.currIndex;
         let direction = '', beginPos, endPos
-        if (Math.abs(this.disX) > this.clientWidth / 2) {
-            //滑动超过一半的距离
+
+        let a = Math.abs(this.preDisX) / this.clientWidth
+        let b = Math.round(a)
+
+        if (b > a) {
+            //超过一半的距离
+            //0~2 0~1
             if (this.disX > 0) {
                 if (activeIndex === 0) {
                     //0~320
@@ -164,18 +174,22 @@ export default class Swiper extends Component {
                 activeIndex++
                 direction = 'left'
             }
+        } else {
+            activeIndex = this.preIndex
         }
+
         if (activeIndex < 0) {
             activeIndex = this.number - 1
         }
         if (activeIndex > this.number - 1) {
             activeIndex = 0
         }
+
         beginPos = this.preDisX;//开始位置
         if (!endPos) endPos = - this.clientWidth * activeIndex//结束位置
-        this.preIndex = activeIndex
         console.log(activeIndex, beginPos, endPos)
-        this.stopAnimation = this.dragEndAnimation({
+        //拖动完成后从当前位置恢复到指定位置
+        this.stopDragEndAnimation = this.dragEndAnimation({
             activeIndex,
             direction,
             beginPos,
@@ -249,7 +263,7 @@ export default class Swiper extends Component {
                         type: 'move',
                         payload: {
                             disX: -width * activeIndex,
-                            styleArr: styleArr,
+                            styleArr,
                             activeIndex: activeIndex
                         }
                     });
@@ -301,7 +315,7 @@ export default class Swiper extends Component {
 
     //滑动后的动画
     dragEndAnimation(dragEnd) {
-        let duration = 1000,
+        let duration = 5000,
             frameTime = 17,
             activeIndex,
             direction,
@@ -320,18 +334,19 @@ export default class Swiper extends Component {
             let currX = bweenFunctions.easeOutCubic(passedTime, beginPos, endPos, duration)
             if (!currX) currX = 0
             if (Math.abs(currX - beginPos) > Math.abs(endPos - beginPos)) {
-                let styleArr = this.getStyle(activeIndex)
                 this.preDisX = -width * activeIndex;
+                this.currIndex = activeIndex
+                console.log('end')
                 store.dispatch({
                     type: 'move',
                     payload: {
                         disX: -width * activeIndex,
-                        styleArr,
-                        activeIndex: activeIndex
+                        styleArr: this.styleArr//图片位置重置
                     }
                 });
                 return window.cancelAnimationFrame(timer1)
             } else {
+                this.preDisX = currX
                 store.dispatch({
                     type: 'move',
                     payload: {
@@ -372,7 +387,7 @@ export default class Swiper extends Component {
                 }}>
                     {
                         React.Children.map(this.props.children, (child, index) => {
-                            return <li style={this.state.styleArr[index] || {}}>{child}</li>;
+                            return <li style={this.state.styleArr[index]}>{child}</li>;
                         })
                     }
                 </ul>
