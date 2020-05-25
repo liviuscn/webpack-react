@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './swiper.less'
-import store from './store'
 import bweenFunctions from './tween-functions'
 
 export default class Swiper extends Component {
@@ -20,7 +19,6 @@ export default class Swiper extends Component {
         this.dragStart = this.dragStart.bind(this);
         this.dragMove = this.dragMove.bind(this);
         this.dragEnd = this.dragEnd.bind(this);
-        this.handleChangeX = this.handleChangeX.bind(this)
         this.startAnimation = this.startAnimation.bind(this)
         this.preDisX = 0;
         this.preDisY = 0;
@@ -37,7 +35,6 @@ export default class Swiper extends Component {
     }
 
     componentDidMount() {
-        store.subscribe(this.handleChangeX)
         this.clientWidth = this.ref.offsetWidth;//容器宽度
         this.clientHeight = this.ref.offsetHeight;//容器高度
         this.number = React.Children.count(this.props.children) //图片个数
@@ -170,13 +167,6 @@ export default class Swiper extends Component {
 
     }
 
-    handleChangeX() {
-        let state = store.getState()
-        this.setState({
-            ...state
-        })
-    }
-
     getStyle(activeIndex) {
         let styleArr2 = this.styleArr.map(o => Object.assign({}, o))
         let number = this.number;
@@ -231,15 +221,11 @@ export default class Swiper extends Component {
                     let styleArr = this.getStyle(activeIndex)
 
                     //停留3s后再执行
-                    store.dispatch({
-                        type: 'move',
-                        payload: {
-                            disX: -width * activeIndex,
-                            styleArr,
-                            activeIndex: activeIndex
-                        }
-                    });
-
+                    this.setState({
+                        disX: -width * activeIndex,
+                        styleArr,
+                        activeIndex: activeIndex
+                    })
                     //自动
                     timer2 = setTimeout(() => {
                         //暂停3s
@@ -251,12 +237,9 @@ export default class Swiper extends Component {
                 }
                 return window.cancelAnimationFrame(timer1)
             } else {
-                store.dispatch({
-                    type: 'move',
-                    payload: {
-                        disX: currX
-                    }
-                });
+                this.setState({
+                    disX: currX
+                })
             }
             timer1 = window.requestAnimationFrame(loop);
         }
@@ -266,12 +249,9 @@ export default class Swiper extends Component {
                 activeIndex = this.state.activeIndex
                 direction = this.state.direction
                 let styleArr = this.getStyle(activeIndex)
-                store.dispatch({
-                    type: 'move',
-                    payload: {
-                        styleArr
-                    }
-                });
+                this.setState({
+                    styleArr
+                })
                 beginPos = -width * activeIndex
                 endPos = direction === 'left' ? -width * (activeIndex + 1) : -width * (activeIndex - 1)
                 now = performance.now();
@@ -306,23 +286,18 @@ export default class Swiper extends Component {
             let currX = bweenFunctions.easeOutCubic(passedTime, beginPos, endPos, duration)
             if (!currX) currX = 0
             if (Math.abs(currX - beginPos) > Math.abs(endPos - beginPos)) {
+                console.log('end')
                 this.preDisX = -width * activeIndex;
-                store.dispatch({
-                    type: 'move',
-                    payload: {
-                        disX: -width * activeIndex,
-                        styleArr: this.styleArr//图片位置重置
-                    }
-                });
+                this.setState({
+                    disX: -width * activeIndex,
+                    styleArr: this.styleArr//图片位置重置
+                })
                 return window.cancelAnimationFrame(timer1)
             } else {
                 this.preDisX = currX
-                store.dispatch({
-                    type: 'move',
-                    payload: {
-                        disX: currX
-                    }
-                });
+                this.setState({
+                    disX: currX
+                })
             }
             timer1 = window.requestAnimationFrame(loop);
         }
