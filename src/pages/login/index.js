@@ -46,9 +46,10 @@ class Login extends React.Component {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
             <Swiper>
-                <div style={{ height: 300, backgroundColor: 'red' }}>111111111111111</div>
-                <div style={{ height: 300, backgroundColor: 'yellow' }}>22222222222222</div>
-                <div style={{ height: 300, backgroundColor: 'blue' }}>3333333333333333</div>
+                <div style={{ height: 300, backgroundColor: 'red' }}>0000000000000000</div>
+                <div style={{ height: 300, backgroundColor: 'yellow' }}>111111111111111</div>
+                <div style={{ height: 300, backgroundColor: 'blue' }}>222222222222222</div>
+                <div style={{ height: 300, backgroundColor: 'black' }}>333333333333333</div>
             </Swiper>
             <div>
                 {this.props.count}
