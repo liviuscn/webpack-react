@@ -15,14 +15,7 @@ class Login extends React.Component {
         //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
         // this.open_new_window(url)
     }
-    open_new_window(link) {
-        try {
-            window.open('javascript:window.name;', '<script>location.replace("' + link + '")</script>');
-        } catch (e) {
-            window.open(link);
-            // window.open(link, '', 'height=500,width=611,scrollbars=yes,status =yes')
-        }
-    }
+
     componentDidUpdate() {
 
     }
@@ -35,15 +28,15 @@ class Login extends React.Component {
     render() {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
-            <div>
+            <form>
                 <div className={styles.item}>
-                    <input placeholder='账号' />
+                    <input placeholder='账号' required oninvalid="console.log('invalid input')" />
                 </div>
                 <div className={styles.item}>
-                    <input placeholder='密码' />
+                    <input placeholder='密码' required oninvalid="console.log('invalid input')" />
                 </div>
-                <button onClick={this.handleSubmit}>登录</button>
-            </div>
+                <button type="submit" onClick={this.handleSubmit}>登录</button>
+            </form>
         </div>)
     }
 }
