@@ -2,32 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux'
 import NavBar from '@/components/navBar'
 import styles from './login.less'
-import List from '@/components/list'
-
-import { toJS } from '@/utils/to-js'
-
 import { increment, decrement } from '@/store/login/actionCreator'
-
-const List2 = toJS(List)
 class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             dataSource: props.list
         }
-        this.handleIncrement = this.handleIncrement.bind(this)
-        this.handleDecrement = this.handleDecrement.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
-      //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
-       // this.open_new_window(url)
+        //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
+        // this.open_new_window(url)
     }
     open_new_window(link) {
         try {
             window.open('javascript:window.name;', '<script>location.replace("' + link + '")</script>');
         } catch (e) {
             window.open(link);
-           // window.open(link, '', 'height=500,width=611,scrollbars=yes,status =yes')
+            // window.open(link, '', 'height=500,width=611,scrollbars=yes,status =yes')
         }
     }
     componentDidUpdate() {
@@ -36,20 +29,20 @@ class Login extends React.Component {
     componentWillUnMount() {
 
     }
-    handleIncrement() {
-        this.props.increment()
-    }
-    handleDecrement() {
-        this.props.decrement()
+    handleSubmit() {
+        //登录
     }
     render() {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
             <div>
-                {this.props.count}
-                <List2 dataSource={this.props.list} />
-                <button onClick={this.handleIncrement}>+</button>
-                <button onClick={this.handleDecrement}>-</button>
+                <div className={styles.item}>
+                    <input placeholder='账号' />
+                </div>
+                <div className={styles.item}>
+                    <input placeholder='密码' />
+                </div>
+                <button onClick={this.handleSubmit}>登录</button>
             </div>
         </div>)
     }

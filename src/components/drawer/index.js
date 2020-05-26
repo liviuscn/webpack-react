@@ -30,6 +30,7 @@ export default (props) => {
                 <aside className={styles.sidebar}>
                     <NavLink to="/" exact className="nav-link icon-jiantou-copy-copy">首页</NavLink>
                     <NavLink to="/login" exact className="nav-link icon-jiantou-copy-copy">登录</NavLink>
+                    <NavLink to="/orderlist" exact className="nav-link icon-jiantou-copy-copy">我的订单</NavLink>
                 </aside>
             </CSSTransition>
         }
