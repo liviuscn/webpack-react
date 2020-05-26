@@ -3,7 +3,7 @@ import NavBar from '@/components/navBar'
 import Modal from '@/components/modal'
 import Drawer from '@/components/drawer'
 import Spin from '@/components/spin'
-
+import Swiper from '@/components/swiper'
 export default () => {
 
   const [count, setCount] = useState(0);
@@ -18,12 +18,17 @@ export default () => {
     <NavBar
       onLeftClick={handleLeftClick}
     >首页</NavBar>
-
     <Drawer
       open={open}
       onOpenChange={handleLeftClick}
     ></Drawer>
-
+    <Swiper>
+      <div style={{ height: 300, backgroundColor: 'red' }}>0000000000000000</div>
+      <div style={{ height: 300, backgroundColor: 'yellow' }}>111111111111111</div>
+      <div style={{ height: 300, backgroundColor: 'blue' }}>222222222222222</div>
+      <div style={{ height: 300, backgroundColor: 'black' }}>333333333333333</div>
+    </Swiper>
+    
     <p>You clicked {count} times</p>
     <button onClick={() => {
       setCount(count + 1)

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import NavBar from '@/components/navBar'
 import styles from './login.less'
 import List from '@/components/list'
-import Swiper from '@/components/swiper'
+
 import { toJS } from '@/utils/to-js'
 
 import { increment, decrement } from '@/store/login/actionCreator'
@@ -45,12 +45,6 @@ class Login extends React.Component {
     render() {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
-            <Swiper>
-                <div style={{ height: 300, backgroundColor: 'red' }}>0000000000000000</div>
-                <div style={{ height: 300, backgroundColor: 'yellow' }}>111111111111111</div>
-                <div style={{ height: 300, backgroundColor: 'blue' }}>222222222222222</div>
-                <div style={{ height: 300, backgroundColor: 'black' }}>333333333333333</div>
-            </Swiper>
             <div>
                 {this.props.count}
                 <List2 dataSource={this.props.list} />
