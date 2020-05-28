@@ -4,6 +4,8 @@ import Modal from '@/components/modal'
 import Drawer from '@/components/drawer'
 import Spin from '@/components/spin'
 import Swiper from '@/components/swiper'
+import Tabbar from '@/components/tabbar'
+
 export default () => {
 
   const [count, setCount] = useState(0);
@@ -28,7 +30,7 @@ export default () => {
       <div style={{ height: 300, backgroundColor: 'blue' }}>222222222222222</div>
       <div style={{ height: 300, backgroundColor: 'black' }}>333333333333333</div>
     </Swiper>
-    
+
     <p>You clicked {count} times</p>
     <button onClick={() => {
       setCount(count + 1)
@@ -50,5 +52,11 @@ export default () => {
       </div>
     </Modal>
     <Spin></Spin>
+    <Tabbar>
+      <Tabbar.Item active={true}> tab1 </Tabbar.Item>
+      <Tabbar.Item> tab2 </Tabbar.Item>
+      <Tabbar.Item> tab3 </Tabbar.Item>
+      <Tabbar.Item> tab4 </Tabbar.Item>
+    </Tabbar>
   </div>
 }
