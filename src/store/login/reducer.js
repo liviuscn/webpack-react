@@ -1,5 +1,5 @@
 import * as types from './actionTypes'
-import Immutable, { fromJS } from 'Immutable'
+import Immutable, { fromJS } from 'immutable'
 
 const initialState = Immutable.fromJS({
     count: 0,
