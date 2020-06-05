@@ -228,7 +228,7 @@ module.exports = {
     devtool: false,
     // devtool: 'source-map',
     entry: {
-        bundle: path.resolve(projectRootPath, "./build/index.js")
+        bundle: path.resolve(projectRootPath, "./config/index.js")
     },
     optimization: {
         splitChunks: {

@@ -12,7 +12,9 @@
     "build": "webpack --config ./build/webpack.prod.js",
     "dev": "webpack-dev-server --inline --progress --colors --watch --compress --config ./config/webpack.dev.js",
     "theme": "webpack --watch --config ./config/webpack.theme.js",
-    "dll:dev": "webpack --progress --colors --config ./config/webpack.dev.dll.js"
+    "dll:dev": "webpack --progress --colors --config ./config/webpack.dev.dll.js",
+    "dll": "webpack --config ./build/webpack.dll.js",
+    "d":"npm run dll&&npm run start"
   },
   "repository": {
     "type": "git",
@@ -67,7 +69,7 @@
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
-    "moment": "^2.25.3",
+    "moment": "^2.26.0",
     "object-assign": "^4.1.1",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
