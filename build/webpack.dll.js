@@ -25,11 +25,11 @@ module.exports = {
             "redux-immutable",
             "redux-thunk",
             "./src/assets/js/alpha",
-            "./src/assets/js/a",
+            "./src/assets/js/a",//为了测试
         ],
         assets: [
             //纯粹是为了验证这种写法
-            "./src/assets/js/b",
+            "./src/assets/js/b",//为了测试
             "./src/assets/js/c",
         ]
     },
