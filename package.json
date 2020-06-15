@@ -8,13 +8,11 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --colors --config ./build/webpack.dev.js",
-    "build": "webpack --config ./build/webpack.prod.js",
-    "dev": "webpack-dev-server --inline --progress --colors --watch --compress --config ./config/webpack.dev.js",
-    "theme": "webpack --watch --config ./config/webpack.theme.js",
-    "dll:dev": "webpack --progress --colors --config ./config/webpack.dev.dll.js",
-    "dll": "webpack --config ./build/webpack.dll.js",
-    "d":"npm run dll&&npm run start"
+    "start": "webpack-dev-server --open --progress --colors --config ./build/webpack.dev.js",
+    "build": "webpack --progress --colors --config ./build/webpack.prod.js",
+    "dll": "webpack --progress --colors --config ./build/webpack.dll.js",
+    "module": "webpack --progress --colors --config ./build/webpack.module.js",
+    "module:all": "webpack --progress --colors --config ./build/webpack.module.js"
   },
   "repository": {
     "type": "git",
@@ -62,6 +60,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "@babel/runtime": "^7.9.2",
+    "@loadable/component": "^5.12.0",
     "axios": "^0.19.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "classnames": "^2.2.6",

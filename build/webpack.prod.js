@@ -6,6 +6,11 @@ const merge = require('webpack-merge');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const common = require('./webpack.common.js');
+const argv = JSON.parse(process.env.npm_config_argv)
+// console.log(process.argv, process.env.npm_config_arg, argv.original)
+let argName = process.env.npm_config_arg || 'all'
+
+console.log('开始构建', process.env.npm_config_arg, '模块')
 
 module.exports = merge(common, {
     // devtool: 'source-map',
@@ -13,7 +18,7 @@ module.exports = merge(common, {
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
         chunkFilename: '[name].[chunkhash:8].chunk.js',
-        path: path.resolve(__dirname, '..', 'dist')
+        path: path.resolve(__dirname, '..', 'dist', argName)
     },
     plugins: [
         new CleanWebpackPlugin(),

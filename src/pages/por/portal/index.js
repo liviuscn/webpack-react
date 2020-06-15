@@ -3,7 +3,7 @@ import NavBar from '@/components/navBar'
 
 export default () => {
     return <div>
-        <NavBar>商品列表</NavBar>
-        <div>商品1</div>
+        <NavBar>门户</NavBar>
+        <div>门户</div>
     </div>
 }
