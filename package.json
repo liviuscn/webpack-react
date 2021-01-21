@@ -12,7 +12,8 @@
     "build": "webpack --progress --colors --config ./build/webpack.prod.js",
     "dll": "webpack --progress --colors --config ./build/webpack.dll.js",
     "module": "webpack --progress --colors --config ./build/webpack.module.js",
-    "module:all": "webpack --progress --colors --config ./build/webpack.module.js"
+    "modules": "npm run module --edf",
+    "modules:all": "npm run build && npm run modules"
   },
   "repository": {
     "type": "git",
