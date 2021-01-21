@@ -1,17 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const merge = require('webpack-merge');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const common = require('./webpack.common.js');
 
-module.exports = merge(common, {
+module.exports = {
     devtool: false,
     mode: "production",
-    entry:{
-        edf:[]
+    entry: {
+        index: path.join(__dirname, '..', 'src', 'index.js')
     },
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
@@ -31,9 +29,7 @@ module.exports = merge(common, {
             manifest: require("../dll/assets-manifest.json"),
             extensions: [".js", ".jsx"]
         }),
-        new CleanWebpackPlugin(["dist"], {
-            root: path.join(__dirname, '..')
-        }),
+        new CleanWebpackPlugin(),
         new webpack.HashedModuleIdsPlugin(), //vendor缓存保持hash不变
         new ManifestPlugin(),
         new HtmlWebpackPlugin({
@@ -41,7 +37,7 @@ module.exports = merge(common, {
             template: './index.html'
         }),
         new CopyWebpackPlugin([{
-            from: '../dll',
+            from: './dll',
             to: './dll',
             ignore: ['.*']
         }])
@@ -67,5 +63,57 @@ module.exports = merge(common, {
                 }
             }
         }
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        alias: {
+            '@': path.join(__dirname, '..', 'src')
+        }
+    },
+    module: {
+        rules: [{
+            test: /\.(css|less)$/,
+            use: [
+                'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true,
+                        modules: {
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                        }
+                    }
+                },
+                {
+                    loader: 'less-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }
+            ]
+        },
+        {
+            test: /\.(png|svg|jpg|gif)$/,
+            use: [
+                'file-loader'
+            ]
+        },
+        {
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [
+                'file-loader'
+            ]
+        },
+        {
+            test: /\.m?js$/,
+            exclude: /(node_modules|bower_components)/,
+            use: 'babel-loader'
+        },
+        {
+            test: /\.(ts|tsx)?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+        }
+        ]
     }
-});
+};

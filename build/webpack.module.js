@@ -33,7 +33,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: [`${path.join(__dirname, '..')}/dist/${argName}/*`]
+            cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), `dist/${argName}/*`)]
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
