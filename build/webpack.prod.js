@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     devtool: false,
@@ -26,8 +27,8 @@ module.exports = {
         }),
         new webpack.DllReferencePlugin({
             scope: "assets",
+            extensions: [".js", ".jsx"],
             manifest: require("../dll/assets-manifest.json"),
-            extensions: [".js", ".jsx"]
         }),
         new CleanWebpackPlugin(),
         new webpack.HashedModuleIdsPlugin(), //vendor缓存保持hash不变
@@ -40,7 +41,11 @@ module.exports = {
             from: './dll',
             to: './dll',
             ignore: ['.*']
-        }])
+        }]),
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+            chunkFilename: '[id].[contenthash].css',
+        }),
     ],
     optimization: {
         splitChunks: {
@@ -60,9 +65,20 @@ module.exports = {
                     minChunks: 2,
                     priority: -20,
                     reuseExistingChunk: true
-                }
+                },
+                styles: {
+                    name: 'styles',
+                    type: 'css/mini-extract',
+                    // For webpack@4
+                    // test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true,
+                },
             }
-        }
+        },
+        minimizer: [
+            new CssMinimizerPlugin(),
+        ],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
@@ -78,7 +94,7 @@ module.exports = {
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
+                        sourceMap: false,
                         modules: {
                             localIdentName: '[path][name]__[local]--[hash:base64:5]'
                         }
@@ -87,7 +103,7 @@ module.exports = {
                 {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: false
                     }
                 }
             ]

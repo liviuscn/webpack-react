@@ -1,5 +1,7 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 /**
  * 这些文件将被打包
  * 修改源文件如果不重新打包将不会更新
@@ -24,29 +26,33 @@ module.exports = {
             "react-transition-group",
             "redux-immutable",
             "redux-thunk",
-            "./src/assets/js/alpha",
-            "./src/assets/js/a",//为了测试
+            "./src/assets/js/beta",
         ],
         assets: [
-            //纯粹是为了验证这种写法
-            "./src/assets/js/b",//为了测试
+            //验证Scoped Mode
+            "./src/assets/js/a",
+            "./src/assets/js/b",
             "./src/assets/js/c",
+            "./src/assets/js/d",
         ]
     },
     output: {
         path: path.join(__dirname, '..', 'dll'),
         filename: '[name].dll.js',
-        library: "[name]_lib"
+        library: "[name]_[fullhash]"
         // library 与 DllPlugin 中的 name 一致
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': { 'NODE_ENV': JSON.stringify('production') },
+            'process.env.NODE_ENV': JSON.stringify('production'),
+        }),
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), 'dll/*')]
         }),
         new webpack.DllPlugin({
             context: path.join(__dirname, '..'),
             path: path.join(__dirname, '..', 'dll', '[name]-manifest.json'),
-            name: "[name]_lib",
+            name: "[name]_[fullhash]"
         })
     ],
     resolve: {
@@ -54,42 +60,5 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src')
         }
-    },
-    module: {
-        rules: [{
-            test: /\.(css|less)$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader'
-                },
-                {
-                    loader: 'less-loader',
-                }
-            ]
-        },
-        {
-            test: /\.(png|svg|jpg|gif|ico)$/,
-            use: [
-                'file-loader'
-            ]
-        },
-        {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            use: [
-                'file-loader'
-            ]
-        },
-        {
-            test: /\.m?js$/,
-            exclude: /(node_modules|bower_components)/,
-            use: 'babel-loader'
-        },
-        {
-            test: /\.(ts|tsx)?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
-        }
-        ]
     }
 };

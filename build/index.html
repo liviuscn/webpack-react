@@ -1,62 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>router</title>
+    <meta charset="utf-8">
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
+
 <body>
-    <ul> 
-        <li><a href="#/">turn white</a></li> 
-        <li><a href="#/blue">turn blue</a></li> 
-        <li><a href="#/green">turn green</a></li> 
-    </ul> 
-<script>
-    function Router() {
-        this.routes = {};
-        this.currentUrl = '';
-    }
-    <!--
-    //针对不同的地址进行回调的匹配
-    //1:用户在调用Router.route('address',function),在this.routes对象中进行记录或者说address与function的匹配
-    -->
-    Router.prototype.route = function(path, callback) {
-        this.routes[path] = callback || function(){};
-    };
-    <!--
-    //处理hash的变化，针对不同的值，进行页面的处理
-    //1:在init中注册过事件，在页面load的时候，进行页面的处理
-    //2：在hashchange变化时，进行页面的处理
-    -->
-    Router.prototype.refresh = function() {
-        this.currentUrl = location.hash.slice(1) || '/';
-        this.routes[this.currentUrl]();
-    };
-    <!--
-    //1：在Router的prototype中定义init
-    //2：在页面load/hashchange事件触发时，进行回调处理
-    //3：利用addEventListener来添加事件，注意第三个参数的用处
-    //4：bind的使用区别于apply/call的使用
-    -->
-    Router.prototype.init = function() {
-        window.addEventListener('load', this.refresh.bind(this), false);
-        window.addEventListener('hashchange', this.refresh.bind(this), false);
-    }
-    window.Router = new Router();//在window对象中构建一个Router对象
-    window.Router.init();//页面初始化处理
-    var content = document.querySelector('body');
-    // change Page anything
-    function changeBgColor(color) {
-        content.style.backgroundColor = color;
-    }
-    Router.route('/', function() {
-        changeBgColor('white');
-    });
-    Router.route('/blue', function() {
-        changeBgColor('blue');
-    });
-    Router.route('/green', function() {
-        changeBgColor('green');
-    });
-</script>
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script src='./dll/vendor.dll.js'></script>
+    <script src='./dll/assets.dll.js'></script>
 </body>
+
 </html>
