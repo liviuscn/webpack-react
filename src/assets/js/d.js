@@ -1,3 +1,3 @@
-const alpha='alpha11111111111111111';
+const d='d';
 
-module.exports = "alpha";
+module.exports = "d";

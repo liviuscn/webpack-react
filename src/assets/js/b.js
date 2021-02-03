@@ -1,1 +1,1 @@
-module.exports = "bb";
+module.exports = "b";

@@ -12,14 +12,17 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, '..'),
         compress: true,
+        open: true,
+        hot: true,
         port: 9000,
         headers: {
             'Access-Control-Allow-Origin': '*'
         },
-        hot: true,
         proxy: {
-            "/v1/*": "http://debug.aierp.cn:8085/",
-            "/share-oss/*": "http://debug.aierp.cn:8085/"
+            "/v1/*": {
+                target: "http://debug.aierp.cn:8085/",
+                secure: false
+            }
         }
     },
     plugins: [

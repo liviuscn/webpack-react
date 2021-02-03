@@ -1,3 +1,3 @@
-const a1='a1aaaaaaaaaaaaaaa'
+const a1='a'
 
-module.exports = "aaaaaaaaaaaa1";
+module.exports = "a";

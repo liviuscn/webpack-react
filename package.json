@@ -8,7 +8,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --open --progress --config ./build/webpack.dev.js",
+    "start": "webpack serve --info --progress --config ./build/webpack.dev.js",
     "build": "webpack --progress --config ./build/webpack.prod.js",
     "dll": "webpack --progress --config ./build/webpack.dll.js",
     "module": "webpack --progress --config ./build/webpack.module.js",
