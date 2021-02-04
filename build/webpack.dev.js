@@ -2,44 +2,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
-const fs = require("fs");
-
-let start_params;
-try {
-    start_params = JSON.parse(process.env.npm_config_argv)
-    if (!start_params || start_params && (!start_params.original || start_params.original.length == 1)) {
-        start_params = false;
-    }
-    start_params = start_params.original.join('').toUpperCase();
-    //console.log('start_params：' + start_params)
-} catch (err) {
-    start_params = false;
-}
-
-function checkRunParams(name) {
-    let flag;
-    if (!start_params) {
-        flag = true;
-    } else if (start_params.indexOf('--ARG') == -1) {
-        flag = true;
-    } else {
-        flag = start_params.split('=')[1].split(' ').includes(name.toUpperCase());
-    }
-    console.log(`***********检测${name}模块是否编译***********`, flag);
-    return flag;
-}
-
-const aliasModule = {};
-const mudules = ['edf', 'por', 'scm'];
-mudules.forEach(item => {
-    let file = path.resolve(__dirname, `../src/pages/${item}/index.js`);
-    if (fs.existsSync(file) && checkRunParams(item)) {
-        //存在目录,启动参数中有此模块
-        aliasModule[item] = file;
-    } else {
-        aliasModule[item] = path.resolve(__dirname, `./empty.js`);
-    }
-});
+const webpackCompileParams = require('./webpackCompileParams')
+const { aliasModule } = webpackCompileParams('development')
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -87,8 +51,8 @@ module.exports = {
             ignore: ['.*']
         }]),
         new HtmlWebpackPlugin({
-            title: '测试',
-            template: './build/index-dev.html',
+            title: '开发环境',
+            template: './build/index.html',
             filename: 'index.html',
             //chunks: ['app'],//允许添加的chunks
             hash: true,

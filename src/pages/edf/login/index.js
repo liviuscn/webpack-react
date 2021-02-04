@@ -11,6 +11,7 @@ class Login extends React.Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this)
     }
+    
     componentDidMount() {
         //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
         // this.open_new_window(url)
@@ -19,12 +20,15 @@ class Login extends React.Component {
     componentDidUpdate() {
 
     }
+
     componentWillUnMount() {
 
     }
+
     handleSubmit() {
         //登录
     }
+
     render() {
         return (<div className={styles.root}>
             <NavBar>登录</NavBar>
@@ -43,8 +47,8 @@ class Login extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        count: state.getIn(['login', 'count']),
-        list: state.getIn(['login', 'list'])
+        count: state.login.count,
+        list: state.login.list
     }
 }
 

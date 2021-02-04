@@ -7,9 +7,28 @@ import por from 'por'
 //tips:React.lazy 目前只支持默认导出（default exports）
 // 路由守卫
 export default class RouteConfig extends Component {
+    state = {
+        apps: []
+    }
+    componentDidMount() {
+        Promise.all([edf, scm, por]).then((res) => {
+            let apps = []
+            res.forEach((item) => {
+                apps = [...apps, ...item]
+            })
+            console.log(apps,'apps')
+            this.setState({
+                apps
+            })
+        })
+    }
+
     render() {
         let pathname = this.props.location.pathname;
-        let apps = [...edf, ...scm, ...por];
+        let { apps } = this.state;
+        if (apps.length === 0) {
+            return null
+        }
         if (apps.find(item => item.path === pathname)) {
             return <>
                 {

@@ -10,7 +10,6 @@ export default {
     home,
     login
 }
-// Immutable.Map();
 /* 
 combineReducers等同于合并为一个方法
 function reducer(state = {

@@ -7,12 +7,14 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpackCompileParams = require('./webpackCompileParams')
+const { aliasModule } = webpackCompileParams();
 
 module.exports = {
     devtool: false,
     mode: "production",
     entry: {
-        index: path.join(__dirname, '..', 'src', 'index.js')
+        app: path.join(__dirname, '..', 'src', 'index.js')
     },
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
@@ -48,19 +50,20 @@ module.exports = {
             ignore: ['.*']
         }]),
         new HtmlWebpackPlugin({
-            title: '测试',
-            template: './build/index-dev.html',
+            title: '生产环境',
+            template: './build/index.html',
             filename: 'index.html',
-            //chunks: ['app'],//允许添加的chunks
-            hash: true,
-            //inject: 'body',//允许插件修改哪些内容，包括head与body`
+            chunks: ['app'],//允许添加的chunks
+            hash: false,
+            inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
         })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            '@': path.join(__dirname, '..', 'src')
+            '@': path.join(__dirname, '..', 'src'),
+            ...aliasModule
         }
     },
     externals: {

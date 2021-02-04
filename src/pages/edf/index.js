@@ -3,7 +3,8 @@ import React from 'react';
 const Login = React.lazy(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
 const Register = React.lazy(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
 
-export default [
+
+const arr= [
     {
         exact: true,
         path: '/login',
@@ -15,3 +16,7 @@ export default [
         component: Register
     }
 ]
+
+window.publicModule && window.publicModule.callback(arr, 'edf')
+
+export default arr;

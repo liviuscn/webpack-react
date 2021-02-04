@@ -11,7 +11,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
+const webpackCompileParams = require('./webpackCompileParams')
 const argv = JSON.parse(process.env.npm_config_argv)
 let argName = null
 
@@ -29,7 +29,7 @@ switch (argv.original[2]) {
         argName = null;
 }
 console.log('开始构建', argName, '模块')
-
+const { aliasModule } = webpackCompileParams();
 module.exports = {
     mode: "production",
     entry: {
@@ -58,21 +58,13 @@ module.exports = {
             scope: "assets",
             extensions: [".js", ".jsx"],
             manifest: require("../dll/assets-manifest.json"),
-        }),
-        new HtmlWebpackPlugin({
-            title: '测试',
-            template: './build/index-dev.html',
-            filename: 'index.html',
-            //chunks: ['app'],//允许添加的chunks
-            hash: true,
-            //inject: 'body',//允许插件修改哪些内容，包括head与body`
-            favicon: './build/favicon.ico', //favicon路径
         })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            '@': path.join(__dirname, '..', 'src')
+            '@': path.join(__dirname, '..', 'src'),
+            ...aliasModule
         }
     },
     externals: {

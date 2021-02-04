@@ -24,7 +24,6 @@ module.exports = {
             "react-redux",
             "react-router-dom",
             "react-transition-group",
-            "redux-immutable",
             "redux-thunk",
             "classnames",
             "./src/assets/js/beta",
