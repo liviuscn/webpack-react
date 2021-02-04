@@ -5,9 +5,12 @@
 
 const path = require("path");
 const webpack = require('webpack');
-const ManifestPlugin = require("webpack-manifest-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const argv = JSON.parse(process.env.npm_config_argv)
 let argName = null
@@ -15,6 +18,12 @@ let argName = null
 switch (argv.original[2]) {
     case '--edf':
         argName = 'edf';
+        break;
+    case '--por':
+        argName = 'por';
+        break;
+    case '--scm':
+        argName = 'scm';
         break;
     default:
         argName = null;
@@ -29,7 +38,8 @@ module.exports = {
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
         chunkFilename: '[name].[chunkhash:8].chunk.js',
-        path: path.resolve(__dirname, '..', 'dist', argName)
+        path: path.resolve(__dirname, '..', 'dist', argName),
+        publicPath: `/${argName}/`
     },
     plugins: [
         new CleanWebpackPlugin({
@@ -38,20 +48,25 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
+        new webpack.ProgressPlugin(),
+        new WebpackManifestPlugin(),
         new webpack.DllReferencePlugin({
             context: path.join(__dirname, '..'),//修改为其他后不生效
             manifest: require("../dll/vendor-manifest.json"),
         }),
         new webpack.DllReferencePlugin({
             scope: "assets",
+            extensions: [".js", ".jsx"],
             manifest: require("../dll/assets-manifest.json"),
-            extensions: [".js", ".jsx"]
         }),
-        new webpack.HashedModuleIdsPlugin(), //vendor缓存保持hash不变
-        new ManifestPlugin(),
         new HtmlWebpackPlugin({
-            title: 'production',
-            template: './index.html'
+            title: '测试',
+            template: './build/index-dev.html',
+            filename: 'index.html',
+            //chunks: ['app'],//允许添加的chunks
+            hash: true,
+            //inject: 'body',//允许插件修改哪些内容，包括head与body`
+            favicon: './build/favicon.ico', //favicon路径
         })
     ],
     resolve: {
@@ -74,6 +89,17 @@ module.exports = {
                         sourceMap: true,
                         modules: {
                             localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                        }
+                    }
+                },
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        sourceMap: true,
+                        postcssOptions: {
+                            plugins: [
+                                ['autoprefixer', {}]
+                            ]
                         }
                     }
                 },
@@ -111,24 +137,11 @@ module.exports = {
     },
     optimization: {
         splitChunks: {
-            chunks: "async",
-            minSize: 30000,
-            minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
-            automaticNameDelimiter: '~',
-            name: true,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10
-                },
-                default: {
-                    minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true
-                }
-            }
-        }
-    }
+            chunks:'async'
+        },
+        minimizer: [
+            new CssMinimizerPlugin(),//生产模式压缩css
+            new UglifyJsPlugin(),//生产模式压缩js
+        ],
+    },
 };

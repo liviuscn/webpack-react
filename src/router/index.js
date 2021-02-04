@@ -1,30 +1,25 @@
-import React, { Suspense, Component } from 'react';
+import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import ErrorBoundary from '@/utils/errorBoundary';
-import Spinner from '@/components/spinner'
+import edf from 'edf'
+import scm from 'scm'
+import por from 'por'
+
 //tips:React.lazy 目前只支持默认导出（default exports）
-import edf from '@/pages/edf'
-// import scm from '@/pages/scm'
-
-const apps = [...edf]
-
+// 路由守卫
 export default class RouteConfig extends Component {
     render() {
-        return (
-            <HashRouter>
-                <ErrorBoundary>
-                    <Suspense fallback={<Spinner />}>
-                        <Switch>
-                            {
-                                apps.map((item, index) => {
-                                    return <Route key={index}  {...item} />
-                                })
-                            }
-                            <Redirect to="/" />
-                        </Switch>
-                    </Suspense>
-                </ErrorBoundary>
-            </HashRouter>
-        )
+        let pathname = this.props.location.pathname;
+        let apps = [...edf, ...scm, ...por];
+        if (apps.find(item => item.path === pathname)) {
+            return <>
+                {
+                    apps.map((item, index) => {
+                        return <Route key={index}  {...item} />
+                    })
+                }
+            </>
+        } else {
+            return <Redirect to="/login" />
+        }
     }
 }

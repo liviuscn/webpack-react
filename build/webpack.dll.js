@@ -26,6 +26,7 @@ module.exports = {
             "react-transition-group",
             "redux-immutable",
             "redux-thunk",
+            "classnames",
             "./src/assets/js/beta",
         ],
         assets: [

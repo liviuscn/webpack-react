@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Login = React.lazy(() => import(/* webpackChunkName: "edf.[request][index]" */`@/pages/edf/login`))
-const Register = React.lazy(() => import(/* webpackChunkName: "edf.[request][index]" */`@/pages/edf/register`))
+const Login = React.lazy(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
+const Register = React.lazy(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
 
 export default [
     {

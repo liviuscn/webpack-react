@@ -2,6 +2,44 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
+const fs = require("fs");
+
+let start_params;
+try {
+    start_params = JSON.parse(process.env.npm_config_argv)
+    if (!start_params || start_params && (!start_params.original || start_params.original.length == 1)) {
+        start_params = false;
+    }
+    start_params = start_params.original.join('').toUpperCase();
+    //console.log('start_params：' + start_params)
+} catch (err) {
+    start_params = false;
+}
+
+function checkRunParams(name) {
+    let flag;
+    if (!start_params) {
+        flag = true;
+    } else if (start_params.indexOf('--ARG') == -1) {
+        flag = true;
+    } else {
+        flag = start_params.split('=')[1].split(' ').includes(name.toUpperCase());
+    }
+    console.log(`***********检测${name}模块是否编译***********`, flag);
+    return flag;
+}
+
+const aliasModule = {};
+const mudules = ['edf', 'por', 'scm'];
+mudules.forEach(item => {
+    let file = path.resolve(__dirname, `../src/pages/${item}/index.js`);
+    if (fs.existsSync(file) && checkRunParams(item)) {
+        //存在目录,启动参数中有此模块
+        aliasModule[item] = file;
+    } else {
+        aliasModule[item] = path.resolve(__dirname, `./empty.js`);
+    }
+});
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -26,6 +64,9 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        }),
         new webpack.DllReferencePlugin({
             context: path.join(__dirname, '..'),//修改为其他后不生效
             manifest: require("../dll/vendor-manifest.json"),
@@ -45,9 +86,6 @@ module.exports = {
             to: './dll',
             ignore: ['.*']
         }]),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
-        }),
         new HtmlWebpackPlugin({
             title: '测试',
             template: './build/index-dev.html',
@@ -56,13 +94,13 @@ module.exports = {
             hash: true,
             //inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
-        }),
-        new webpack.HotModuleReplacementPlugin(),//only enable hot in development
+        })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            '@': path.join(__dirname, '..', 'src')
+            '@': path.join(__dirname, '..', 'src'),
+            ...aliasModule,
         }
     },
     externals: {
@@ -79,6 +117,17 @@ module.exports = {
                         sourceMap: true,
                         modules: {
                             localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                        }
+                    }
+                },
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        sourceMap: true,
+                        postcssOptions: {
+                            plugins: [
+                                ['autoprefixer', {}]
+                            ]
                         }
                     }
                 },
@@ -113,5 +162,8 @@ module.exports = {
             exclude: /node_modules/
         }
         ]
+    },
+    optimization: {
+        minimize: true
     }
 }
