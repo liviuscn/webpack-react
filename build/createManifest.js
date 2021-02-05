@@ -53,18 +53,15 @@ function createManifest() {
 * ${writeTime}
 */
 window.moduleManifest = {}
-
 window.moduleManifest.mergeJsName = '${mergeJsName}'
-
 window.moduleManifest.nowtime = '${now}'
-
 `
     moduleName.forEach(item => {
         try {
-            const res = fs.readFileSync(`./dist/${item}/manifest.json`)
+            const res = fs.readFileSync(path.resolve(__dirname, `../dist/${item}/manifest.json`))
             result = result + `
-    window.moduleManifest.${item} = ${filterUseful(res)}
-    `
+window.moduleManifest.${item} = ${filterUseful(res)}
+`
         }
         catch (err) {
             if (err && err.code !== 'ENOENT') throw e;
@@ -72,7 +69,7 @@ window.moduleManifest.nowtime = '${now}'
 
     })
 
-    fs.writeFileSync(path.join(__dirname, './dist/modulemanifest.js'), result, (err) => {
+    fs.writeFileSync(path.join(__dirname, '../dist/modulemanifest.js'), result, (err) => {
         if (err) {
             // 读文件是不存在报错
             // 意外错误
@@ -90,18 +87,16 @@ createManifest()
 function mergeBaseJs() {
     let content = ""
     moduleName.forEach(item => {
-
         let res = ''
         try {
-            res = fs.readFileSync(`./dist/${item}/manifest.json`)
+            res = fs.readFileSync(path.join(__dirname, `../dist/${item}/manifest.json`))
         }
         catch (ex) {
             throw ex
         }
-        //const res = fs.readFileSync(`./dist/${item}/manifest.json`)
         const result = JSON.parse(res)
         const modulePath = result[`${item}.js`]
-        const str = fs.readFileSync(path.resolve(__dirname, `./dist${modulePath}`))
+        const str = fs.readFileSync(path.resolve(__dirname, `../dist${modulePath}`))
         content = content + `
 /*
 *${item}.js
@@ -109,9 +104,8 @@ function mergeBaseJs() {
 */
 ${str}
 `
-
     })
-    const lastPath = path.join(__dirname, `./dist/${mergeJsName}`)
+    const lastPath = path.join(__dirname, `../dist/${mergeJsName}`)
     fs.writeFile(lastPath, content, 'utf8', (err) => {
         if (err) {
             // 读文件是不存在报错
@@ -136,11 +130,10 @@ function mergeCss() {
         moduleName.forEach(name => {
             let res = ''
             try {
-                res = fs.readFileSync(`./dist/${name}/manifest.json`)
+                res = fs.readFileSync(path.resolve(__dirname, `./dist/${name}/manifest.json`))
                 const result = JSON.parse(res)
                 const cssPath = result[`${name}${item}.css`]
-
-                const str = fs.readFileSync(path.resolve(__dirname, `./dist${cssPath}`))
+                const str = fs.readFileSync(path.resolve(__dirname, `../dist${cssPath}`))
                 themeContent = themeContent + `
 /*
 *${name}.css
@@ -155,7 +148,7 @@ ${str}
             }
 
         })
-        const lastPath = path.join(__dirname, `./dist/${output}/merge${item}.${now}.css`)
+        const lastPath = path.join(__dirname, `../dist/${output}/merge${item}.${now}.css`)
         fs.writeFile(lastPath, themeContent, 'utf8', (err) => {
             if (err) {
                 // 读文件是不存在报错
@@ -223,7 +216,7 @@ function deleteFile(path) {
 }
 
 function clearFile() {
-    const a = path.resolve(__dirname, './dist/mergeModule')
+    const a = path.resolve(__dirname, '../dist/mergeModule')
     deleteFile(a)
     fs.mkdirSync(a)
 
