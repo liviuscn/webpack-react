@@ -5,6 +5,7 @@ import Drawer from '@/components/drawer'
 import Spin from '@/components/spin'
 import Swiper from '@/components/swiper'
 import Tabbar from '@/components/tabbar'
+import styles from './home.less'
 
 export default () => {
 
@@ -42,6 +43,12 @@ export default () => {
     }}>
       Click me
       </button>
+      <div className={styles.hello}>
+        hello modal!
+      </div>
+      <div className='hello'>
+        hello modal!
+      </div>
     <Modal
       visible={visible}
       onOk={() => { setVisible(false) }}

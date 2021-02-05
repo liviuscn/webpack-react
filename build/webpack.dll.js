@@ -6,10 +6,19 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
  * 这些文件将被打包
  * 修改源文件如果不重新打包将不会更新
  *  实例：
+ * 
     console.log(require("react"));
     console.log(require('../src/assets/js/a'))
+
     console.log(require('assets/src/assets/js/b'))
     console.log(require('assets/src/assets/js/c'))
+//DLL Mapped Mode 
+import beta from '@/assets/js/beta';
+//DLL Scoped Mode
+import a from 'assets/src/assets/js/a';
+import b from 'assets/src/assets/js/b';
+import c from 'assets/src/assets/js/c';
+import d from 'assets/src/assets/js/d';
  */
 module.exports = {
     mode: "production",

@@ -11,22 +11,6 @@ module.exports = {
     entry: {
         app: path.join(__dirname, '..', 'src', 'index.js')
     },
-    devServer: {
-        contentBase: path.join(__dirname, '..'),
-        compress: true,
-        open: true,
-        hot: true,
-        port: 9000,
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        },
-        proxy: {
-            "/v1/*": {
-                target: "http://debug.aierp.cn:8085/",
-                secure: false
-            }
-        }
-    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
@@ -54,7 +38,7 @@ module.exports = {
             title: '开发环境',
             template: './build/index.html',
             filename: 'index.html',
-            //chunks: ['app'],//允许添加的chunks
+            //chunks: ['app','edf','scm','por'],//允许添加的chunks
             hash: true,
             //inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
@@ -81,17 +65,6 @@ module.exports = {
                         sourceMap: true,
                         modules: {
                             localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                        }
-                    }
-                },
-                {
-                    loader: "postcss-loader",
-                    options: {
-                        sourceMap: true,
-                        postcssOptions: {
-                            plugins: [
-                                ['autoprefixer', {}]
-                            ]
                         }
                     }
                 },
@@ -129,5 +102,21 @@ module.exports = {
     },
     optimization: {
         minimize: true
-    }
+    },
+    devServer: {
+        contentBase: path.join(__dirname, '..'),
+        compress: true,
+        open: true,
+        hot: true,
+        port: 9000,
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        proxy: {
+            "/v1/*": {
+                target: "http://debug.aierp.cn:8085/",
+                secure: false
+            }
+        }
+    },
 }
