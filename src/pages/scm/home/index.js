@@ -19,6 +19,7 @@ export default () => {
 
   return <div >
     <NavBar
+      left={false}
       onLeftClick={handleLeftClick}
     >首页</NavBar>
     <Drawer
