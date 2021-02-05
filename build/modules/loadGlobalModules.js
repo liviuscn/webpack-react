@@ -32,68 +32,60 @@ var getCurrentTime = function (type) {
 class moduleGlobal {
     constructor() {
         this.loadsCallback = {}
-        this.data = null
+        this.manifest = null
         this.loadJSCallback = {}
-        this.apps = {}
-        this.loadGlobal()
+        this.modules = {}
+        this.loadGlobal();
     }
 
     moduleName = ['edf', 'por', 'scm']
 
     loadGlobal = () => {
+        console.log('1、loadGlobal')
         const script = document.createElement('script');
         script.src = `./modulemanifest.js?${getCurrentTime()}`
-        if (window.txtDomain) {
-            script.src = `${window.txtDomain}/modulemanifest.js?${getCurrentTime()}`
-        }
         script.onerror = function () {
-
+            console.error("请先进行代码合并")
         }
         script.onload = () => {
             if (window.moduleManifest) {
-                this.data = window.moduleManifest
-                this.publish()
-                this.loadJS()
+                this.manifest = window.moduleManifest
+                this.publish();
+                this.loadJS();
             }
         }
-
         document.body.appendChild(script)
     }
 
     get = (module) => {
-        if (this.data) {
-            return Promise.resolve(this.data[module])
+        if (this.manifest) {
+            return Promise.resolve(this.manifest[module])
         }
         return new Promise((resolve, reject) => {
-            this.registerModule(module, resolve)
+            this.loadsCallback[module] = resolve
         })
     }
-
-    registerModule = (module, callBack) => {
-        this.loadsCallback[module] = callBack
-    }
-
     publish = () => {
-        if (this.data) {
+        console.log('3、publish')
+        if (this.manifest) {
             Object.entries(this.loadsCallback).forEach(([key, callBack]) => {
-                callBack(this.data[key])
+                callBack(this.manifest[key])
             })
         }
     }
 
     //因为加载js肯定只有一次，不需要多次加载所以和css有些不一样
     loadJS = () => {
-        const path = this.data['mergeJsName']
+        console.log('4、loadJS')
+        const path = this.manifest['mergeJsName']
         const script = document.createElement('script')
         script.type = "text/javascript"
         script.async = true
         script.defer = true
         script.src = `${path}`
 
-        if (window.txtDomain) {
-            script.src = `${window.txtDomain}/${path}`
-        }
         script.onerror = function () {
+            console.error('loadJs error')
             if (this.publishJS) {
                 this.publishJS()
             }
@@ -104,28 +96,35 @@ class moduleGlobal {
         document.body.appendChild(script)
     }
 
+    //加载顺序
+    publishJS = () => {
+        console.log('6、publisJS')
+        Object.entries(this.loadJSCallback).forEach(([key, callBack]) => {
+            callBack(this.modules[key] ? this.modules[key] : [])
+        })
+    }
+
+    //存放modeles
+    callback = (result, name) => {
+        console.log(`5、callback-${name}`)
+        this.modules[name] = result
+    }
+
+    //读取module
     getJS = (module) => {
+        console.log(`2、getJS-${module}`)
         return new Promise((resolve, reject) => {
-            if (this.apps[module]) {
-                resolve(this.apps[module])
+            if (this.modules[module]) {
+                console.log(`${module}已加载完成`)
+                resolve(this.modules[module])
             } else {
+                console.log(`${module}还未加载`)
                 this.loadJSCallback[module] = resolve
             }
         })
     }
-
-    publishJS = () => {
-        Object.entries(this.loadJSCallback).forEach(([key, callBack]) => {
-            callBack(this.apps[key] ? this.apps[key] : {})
-        })
-    }
-
-    callback = (result, name) => {
-        this.apps[name] = result
-    }
 }
 
 const result = new moduleGlobal();
-window.publicModule = result
+window.publicModule = result;
 export default result;
-
