@@ -2,10 +2,13 @@ import React from 'react'
 import classNames from 'classnames'
 import styles from './tabbar.less'
 
-const tabbar = (props) => {
-
+const Tabbar = (props) => {
+    const handleClick=(e)=>{
+        console.log(e.target,'e')
+        props.onClick()
+    }
     return <div className={styles.root}>
-        <ul className={styles.ul}>
+        <ul className={styles.ul} onClick={handleClick}>
             {
                 props.children
             }
@@ -13,7 +16,14 @@ const tabbar = (props) => {
     </div>
 }
 
-tabbar.Item = (props) => {
+
+
+
+
+
+
+
+Tabbar.Item = (props) => {
     return <li className={classNames(styles.li, {
         active: props.active
     })} >
@@ -21,4 +31,4 @@ tabbar.Item = (props) => {
     </li>
 }
 
-export default tabbar
+export default Tabbar

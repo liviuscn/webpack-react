@@ -63,6 +63,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
+            'loadGlobalModules': path.join(__dirname, "../build/modules/loadGlobalModules"),
             ...aliasModule
         }
     },

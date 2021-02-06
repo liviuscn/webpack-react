@@ -36,6 +36,7 @@ module.exports = {
             "redux-thunk",
             "classnames",
             "./src/assets/js/beta",
+            "./build/modules/loadGlobalModules"
         ],
         assets: [
             //验证Scoped Mode
@@ -67,7 +68,65 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            '@': path.join(__dirname, '..', 'src')
+            '@': path.join(__dirname, '..', 'src'),
+            'loadGlobalModules': path.join(__dirname, "../build/modules/loadGlobalModules") 
         }
-    }
+    },
+    module: {
+        rules: [{
+            test: /\.(css|less)$/,
+            use: [
+                'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true,
+                        modules: {
+                            localIdentName: '[path]-[name]-[local]-[hash:base64:5]'
+                        }
+                    }
+                },
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        sourceMap: true,
+                        postcssOptions: {
+                            plugins: [
+                                ['autoprefixer', {}]
+                            ]
+                        }
+                    }
+                },
+                {
+                    loader: 'less-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }
+            ]
+        },
+        {
+            test: /\.(png|svg|jpg|gif)$/,
+            use: [
+                'file-loader'
+            ]
+        },
+        {
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [
+                'file-loader'
+            ]
+        },
+        {
+            test: /\.m?js$/,
+            exclude: /(node_modules|bower_components)/,
+            use: 'babel-loader'
+        },
+        {
+            test: /\.(ts|tsx)?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+        }
+        ]
+    }, 
 };

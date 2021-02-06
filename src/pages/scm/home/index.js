@@ -7,7 +7,7 @@ import Swiper from '@/components/swiper'
 import Tabbar from '@/components/tabbar'
 import styles from './home.less'
 
-export default () => {
+export default (props) => {
 
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -16,7 +16,9 @@ export default () => {
   const handleLeftClick = () => {
     setOpen(!open)
   }
-
+  const handleTabClick=(e)=>{
+    
+  }
   return <div >
     <NavBar
       left={false}
@@ -60,11 +62,11 @@ export default () => {
       </div>
     </Modal>
     <Spin></Spin>
-    <Tabbar>
-      <Tabbar.Item active={true}> tab1 </Tabbar.Item>
-      <Tabbar.Item> tab2 </Tabbar.Item>
-      <Tabbar.Item> tab3 </Tabbar.Item>
-      <Tabbar.Item> tab4 </Tabbar.Item>
+    <Tabbar onClick={handleTabClick}>
+      <Tabbar.Item key='0' active={true}> tab1 </Tabbar.Item>
+      <Tabbar.Item key='1'> tab2 </Tabbar.Item>
+      <Tabbar.Item key='2'> tab3 </Tabbar.Item>
+      <Tabbar.Item key='3'> tab4 </Tabbar.Item>
     </Tabbar>
   </div>
 }

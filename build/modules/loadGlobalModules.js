@@ -126,5 +126,5 @@ class moduleGlobal {
 }
 
 const result = new moduleGlobal();
-window.publicModule = result;
+
 export default result;

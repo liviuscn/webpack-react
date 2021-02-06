@@ -12,8 +12,9 @@
     "build": "webpack --progress --config ./build/webpack.prod.js",
     "dll": "webpack --progress --config ./build/webpack.dll.js",
     "module": "webpack --progress --config ./build/webpack.module.js",
-    "modules": "npm run module --edf&&npm run module --por&&npm run module --scm",
-    "modules:all": "npm run build && npm run modules && node ./build/createManifest.js"
+    "modules": "npm run module --edf && npm run module --por && npm run module --scm",
+    "modules:all": "npm run build && npm run modules && npm run merge:manifest",
+    "merge:manifest": "node ./build/createManifest.js"
   },
   "repository": {
     "type": "git",
