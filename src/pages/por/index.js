@@ -1,11 +1,11 @@
 import React from 'react';
-import publicModule from 'loadGlobalModules'
+import publicModule from 'publicModule'
 const Portal = React.lazy(() => import(/* webpackChunkName: "por.portal" */`@/pages/por/portal`))
 
 const arr = [
     { exact: true, path: '/portal', component: Portal }
 ]
 
-publicModule.callback(arr, 'por')
+publicModule.set('por', arr)
 
 export default arr;

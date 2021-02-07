@@ -11,39 +11,25 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const { moduleName } = require('./config');
 const webpackCompileParams = require('./webpackCompileParams')
-const argv = JSON.parse(process.env.npm_config_argv)
-let argName = null
 
-switch (argv.original[2]) {
-    case '--edf':
-        argName = 'edf';
-        break;
-    case '--por':
-        argName = 'por';
-        break;
-    case '--scm':
-        argName = 'scm';
-        break;
-    default:
-        argName = null;
-}
-console.log('开始构建', argName, '模块')
+console.log('开始构建', moduleName, '模块')
 const { aliasModule } = webpackCompileParams();
 module.exports = {
     mode: "production",
     entry: {
-        [argName]: path.join(__dirname, '..', 'src', 'pages', argName, 'index.js')
+        [moduleName]: path.join(__dirname, '..', 'src', 'pages', moduleName, 'index.js')
     },
     output: {
         filename: '[name].[chunkhash:8].bundle.js',
         chunkFilename: '[name].[chunkhash:8].chunk.js',
-        path: path.resolve(__dirname, '..', 'dist', argName),
-        publicPath: `/${argName}/`
+        path: path.resolve(__dirname, '..', 'dist', moduleName),
+        publicPath: `/${moduleName}/`
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), `dist/${argName}/*`)]
+            cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), `dist/${moduleName}/*`)]
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
@@ -64,7 +50,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'loadGlobalModules': path.join(__dirname, "../build/modules/loadGlobalModules"),
+            'publicModule': path.join(__dirname, "../build/publicModule"),
             ...aliasModule
         }
     },
@@ -130,7 +116,7 @@ module.exports = {
     },
     optimization: {
         splitChunks: {
-            chunks:'async'
+            chunks: 'async'
         },
         minimizer: [
             new CssMinimizerPlugin(),//生产模式压缩css

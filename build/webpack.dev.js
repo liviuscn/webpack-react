@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const webpackCompileParams = require('./webpackCompileParams')
@@ -39,15 +40,32 @@ module.exports = {
             template: './build/index.html',
             filename: 'index.html',
             //chunks: ['app','edf','scm','por'],//允许添加的chunks
-            hash: true,
+            hash: false,
             //inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
-        })
+        }),
+        new AddAssetHtmlPlugin([
+            {
+                filepath: path.resolve(__dirname, '../dll/assets.dll.js'),
+                outputPath: './dll',
+                publicPath: './dll',
+                includeSourcemap: false,
+                hash: false
+            },
+            {
+                filepath: path.resolve(__dirname, '../dll/vendor.dll.js'),
+                outputPath: './dll',
+                publicPath: './dll',
+                includeSourcemap: false,
+                hash: false
+            }
+        ]),
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
+            'publicModule': path.join(__dirname, "../build/publicModule"),
             ...aliasModule,
         }
     },

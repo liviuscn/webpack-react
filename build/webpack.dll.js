@@ -35,8 +35,8 @@ module.exports = {
             "react-transition-group",
             "redux-thunk",
             "classnames",
-            "./src/assets/js/beta",
-            "./build/modules/loadGlobalModules"
+            "./build/publicModule",
+            "./src/assets/js/beta"
         ],
         assets: [
             //验证Scoped Mode
@@ -69,7 +69,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'loadGlobalModules': path.join(__dirname, "../build/modules/loadGlobalModules") 
+            'publicModule': path.join(__dirname, "../build/publicModule") 
         }
     },
     module: {

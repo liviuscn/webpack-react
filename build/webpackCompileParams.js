@@ -1,6 +1,6 @@
 const path = require("path")
 const fs = require("fs");
-
+const { moduleNames } = require('./config');
 let start_params;
 try {
     start_params = JSON.parse(process.env.npm_config_argv)
@@ -26,11 +26,9 @@ function checkRunParams(name) {
     return flag;
 }
 
-const mudules = ['edf', 'por', 'scm'];
-
 function webpackCompileParams(mode) {
     const aliasModule = {};
-    mudules.forEach(item => {
+    moduleNames.forEach(item => {
         if (mode == 'development') {
             let file = path.resolve(__dirname, `../src/pages/${item}/index.js`);
             if (fs.existsSync(file) && checkRunParams(item)) {
@@ -40,7 +38,18 @@ function webpackCompileParams(mode) {
                 aliasModule[item] = path.resolve(__dirname, `./empty.js`);
             }
         } else {
-            aliasModule[item] = path.resolve(__dirname, `./modules/${item}.js`);
+            let file = path.resolve(__dirname, `../dist/${item}.js`)
+            if (!fs.existsSync(file)) {
+                let result = `import publicModule from 'publicModule'\nexport default publicModule.get('${item}')`
+                fs.writeFileSync(file, result, 'utf8', (err) => {
+                    if (err) {
+                        console.error(err, `create ${item}.js error`);
+                    } else {
+                        console.log(`create ${item}.js`)
+                    }
+                });
+            }
+            aliasModule[item] = file;
         }
     });
     return {

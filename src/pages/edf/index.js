@@ -1,8 +1,7 @@
 import React from 'react';
-import publicModule from 'loadGlobalModules'
+import publicModule from 'publicModule'
 const Login = React.lazy(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
 const Register = React.lazy(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
-
 
 const arr= [
     {
@@ -17,6 +16,6 @@ const arr= [
     }
 ]
 
-publicModule.callback(arr, 'edf')
+publicModule.set('edf',arr)
 
 export default arr;

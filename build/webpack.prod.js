@@ -54,16 +54,16 @@ module.exports = {
             template: './build/index.html',
             filename: 'index.html',
             chunks: ['app'],//允许添加的chunks
-            hash: false,
+            hash: true,
             inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
-        })
+        }),
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'loadGlobalModules': path.join(__dirname, "../build/modules/loadGlobalModules"),
+            'publicModule': path.join(__dirname, "../build/publicModule"),
             ...aliasModule
         }
     },
