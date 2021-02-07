@@ -14,7 +14,7 @@
     "module": "webpack --progress --config ./build/webpack.module.js",
     "modules": "npm run module --edf && npm run module --por && npm run module --scm",
     "merge": "webpack --progress --config ./build/webpack.merge.js",
-    "all": "npm run dll && npm run build && npm run modules && npm run merge"
+    "all": "npm run build && npm run modules && npm run merge"
   },
   "repository": {
     "type": "git",
