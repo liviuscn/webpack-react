@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import NavBar from '@/components/navBar'
 import Modal from '@/components/modal'
 import Drawer from '@/components/drawer'
@@ -6,9 +7,11 @@ import Spin from '@/components/spin'
 import Swiper from '@/components/swiper'
 import Tabbar from '@/components/tabbar'
 import styles from './home.less'
+import * as actions from '@/store/home/action'
 
 export default (props) => {
-
+  const dispatch = useDispatch();
+  const home = useSelector(state => state.home)
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
@@ -16,9 +19,11 @@ export default (props) => {
   const handleLeftClick = () => {
     setOpen(!open)
   }
-  const handleTabClick=(e)=>{
-    
+
+  const handleTabClick = (e) => {
+    dispatch(actions.incrementAction)
   }
+
   return <div >
     <NavBar
       left={false}
@@ -36,8 +41,8 @@ export default (props) => {
     </Swiper>
 
     <p>You clicked {count} times</p>
+    <button onClick={() => setCount(count + 1)}>+</button>
     <button onClick={() => {
-      setCount(count + 1)
       // setVisible(true)
       Modal.show({
         title: "弹框",
@@ -46,11 +51,11 @@ export default (props) => {
     }}>
       Click me
       </button>
-      <div className={styles.hello}>
-        hello modal!
+    <div className={styles.hello}>
+      hello modal!
       </div>
-      <div className='hello'>
-        hello modal!
+    <div className='hello'>
+      hello modal!
       </div>
     <Modal
       visible={visible}
@@ -61,6 +66,10 @@ export default (props) => {
         hello modal!
       </div>
     </Modal>
+    <div>
+      <div>数量：{home.count}</div>
+      <button onClick={()=>dispatch(actions.incrementAction)}>+</button>
+    </div>
     <Spin></Spin>
     <Tabbar onClick={handleTabClick}>
       <Tabbar.Item key='0' active={true}> tab1 </Tabbar.Item>
@@ -68,5 +77,6 @@ export default (props) => {
       <Tabbar.Item key='2'> tab3 </Tabbar.Item>
       <Tabbar.Item key='3'> tab4 </Tabbar.Item>
     </Tabbar>
+
   </div>
 }

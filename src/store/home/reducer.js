@@ -1,29 +1,21 @@
-import * as types from './actionTypes'
+import * as types from './actionType'
+
 const initialState = {
-    count: 0,
-    list: [
-        {
-            id: 1,
-            name: 'a'
-        },
-        {
-            id: 2,
-            name: 'b'
-        }
-    ],
-    page: 1
+    count: 0
 };
-//支持了reducer,先尽量不使用
+
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.INCREMENT:
-            return state;
+            return {
+                ...state,
+                count: state.count + 1
+            };
         case types.DECREMENT:
-            return state;
-        case 'merge':
-            return state;
-        case 'reset':
-            return state;
+            return {
+                ...state,
+                count: state.count - 1
+            };
         default:
             return state
     }

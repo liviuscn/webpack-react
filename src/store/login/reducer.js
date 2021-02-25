@@ -1,6 +1,7 @@
-import * as types from './actionTypes'
+import * as types from './actionType'
+import update from "immutability-helper";
 
-const initialState ={
+const initialState = {
     count: 0,
     list: [
         {
@@ -14,13 +15,17 @@ const initialState ={
     ],
     page: 1
 };
-//支持了reducer,先尽量不使用
+
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.INCREMENT:
-            return state;
+            return update(state, {
+                count: { $set: state.count + action.payload }
+            });
         case types.DECREMENT:
-            return state;
+            return update(state, {
+                count: { $set: state.count - 1 }
+            });
         case 'merge':
             return state;
         case 'reset':
