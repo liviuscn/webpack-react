@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import edf from 'edf'
 import scm from 'scm'
-import por from 'por'
 
 //tips:React.lazy 目前只支持默认导出（default exports）
 // 路由守卫
@@ -11,12 +10,11 @@ export default class RouteConfig extends Component {
         apps: []
     }
     componentDidMount() {
-        Promise.all([edf, scm, por]).then((res) => {
+        Promise.all([edf, scm]).then((res) => {
             let apps = []
             res.forEach((item) => {
                 apps = [...apps, ...item]
             })
-            console.log(apps,'apps')
             this.setState({
                 apps
             })

@@ -68,7 +68,7 @@ export default (props) => {
     </Modal>
     <div>
       <div>数量：{home.count}</div>
-      <button onClick={()=>dispatch(actions.incrementAction)}>+</button>
+      <button onClick={() => dispatch(actions.incrementAction)}>+</button>
     </div>
     <Spin></Spin>
     <Tabbar onClick={handleTabClick}>

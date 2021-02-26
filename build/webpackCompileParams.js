@@ -40,7 +40,7 @@ function webpackCompileParams(mode) {
         } else {
             let file = path.resolve(__dirname, `../dist/${item}.js`)
             if (!fs.existsSync(file)) {
-                let result = `import publicModule from 'publicModule'\nexport default publicModule.get('${item}')`
+                let result = `import publicModule from 'publicModule'\n export default publicModule.get('${item}')`
                 fs.writeFileSync(file, result, 'utf8', (err) => {
                     if (err) {
                         console.error(err, `create ${item}.js error`);

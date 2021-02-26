@@ -39,7 +39,7 @@ module.exports = {
             title: '开发环境',
             template: './build/index.html',
             filename: 'index.html',
-            //chunks: ['app','edf','scm','por'],//允许添加的chunks
+            //chunks: ['app','edf','scm'],//允许添加的chunks
             hash: false,
             //inject: 'body',//允许插件修改哪些内容，包括head与body`
             favicon: './build/favicon.ico', //favicon路径
