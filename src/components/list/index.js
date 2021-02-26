@@ -9,7 +9,6 @@ export default class List extends Component {
     }
     render() {
         const { dataSource } = this.props
-        console.log(dataSource)
         return (
             <div>
                 <ul>

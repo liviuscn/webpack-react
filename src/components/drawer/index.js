@@ -18,8 +18,7 @@ export default (props) => {
                 timeout={300}
                 classNames="opacity"
             >
-                <div onClick={props.onOpenChange}
-                    className={styles.mask} />
+                <div onClick={props.onOpenChange} className={styles.mask} />
             </CSSTransition>
         }
         {
