@@ -7,7 +7,7 @@ import Spin from '@/components/spin'
 import Swiper from '@/components/swiper'
 import Tabbar from '@/components/tabbar'
 import styles from './home.less'
-import * as actions from '@/store/home/action'
+import * as actions from '@/redux/home/action'
 
 export default (props) => {
   const dispatch = useDispatch();

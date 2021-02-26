@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import NavBar from '@/components/navBar'
 import styles from './login.less'
-import * as actions from '@/store/login/action'
+import * as actions from '@/redux/login/action'
 class Login extends React.Component {
     constructor(props) {
         super(props)
