@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const webpackCompileParams = require('./webpackCompileParams')
 const { aliasModule } = webpackCompileParams();
 
@@ -78,16 +79,13 @@ module.exports = {
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
-                        modules: {
-                            localIdentName: '[path]-[name]-[local]-[hash:base64:5]'
-                        }
+                        sourceMap: false,
                     }
                 },
                 {
                     loader: "postcss-loader",
                     options: {
-                        sourceMap: true,
+                        sourceMap: false,
                         postcssOptions: {
                             plugins: [
                                 ['autoprefixer', {}]
@@ -98,7 +96,8 @@ module.exports = {
                 {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: false,
+                        javascriptEnabled: true
                     }
                 }
             ]

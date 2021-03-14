@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const autoprefixer = require('autoprefixer');
 const path = require("path");
 const webpackCompileParams = require('./webpackCompileParams')
 const { aliasModule } = webpackCompileParams('development')
@@ -80,16 +81,25 @@ module.exports = {
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
-                        modules: {
-                            localIdentName: '[path]-[name]-[local]-[hash:base64:5]'
+                        sourceMap: true
+                    }
+                },
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        sourceMap: false,
+                        postcssOptions: {
+                            plugins: [
+                                ['autoprefixer', {}]
+                            ]
                         }
                     }
                 },
                 {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: true,
+                        javascriptEnabled: true
                     }
                 }
             ]

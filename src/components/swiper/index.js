@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import styles from './swiper.less'
 import bweenFunctions from './tween-functions'
-
+import './index.less'
 export default class Swiper extends Component {
 
     constructor(props) {
@@ -322,8 +321,8 @@ export default class Swiper extends Component {
     };
 
     render() {
-        return (<div className={styles.slider} ref={(ref) => this.ref = ref}>
-            <div className={styles.frame}>
+        return (<div className="pdv-slider" ref={(ref) => this.ref = ref}>
+            <div className="frame">
                 <ul ref={ref => this.ulRef = ref} style={{
                     transform: `translate3d(${this.state.disX}px, 0px, 0px)`,
                     width: 960,
@@ -342,12 +341,12 @@ export default class Swiper extends Component {
                     }
                 </ul>
             </div>
-            <div className={styles.decorator}>
-                <div className={styles.carousel}>
+            <div className="decorator">
+                <div className="carousel">
                     {
                         React.Children.map(this.props.children, (child, index) => {
-                            return <div className={classNames(styles.dot, {
-                                [styles.active]: this.state.activeIndex === index
+                            return <div className={classNames('dot', {
+                                "active": this.state.activeIndex === index
                             })}><span></span></div>
                         })
                     }

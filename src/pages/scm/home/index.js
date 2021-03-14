@@ -6,8 +6,8 @@ import Drawer from '@/components/drawer'
 import Spin from '@/components/spin'
 import Swiper from '@/components/swiper'
 import Tabbar from '@/components/tabbar'
-import styles from './home.less'
 import * as actions from '@/redux/home/action'
+import './index.less'
 
 export default (props) => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ export default (props) => {
     }}>
       Click me
       </button>
-    <div className={styles.hello}>
+    <div className="hello">
       hello modal!
       </div>
     <div className='hello'>

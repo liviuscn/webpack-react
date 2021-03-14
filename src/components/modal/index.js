@@ -8,7 +8,7 @@ import error from './error'
 import info from './info'
 import success from './success'
 import warning from "./warning";
-import styles from './modal.less';
+import './index.less';
 /*
     Modal通过visible来控制弹出与否
     还可以通过方法弹出其他弹框
@@ -71,21 +71,21 @@ class Modal extends React.Component {
     render() {
 
         return ReactDOM.createPortal(
-            <div className={classNames(styles.root)}>
-                <div className={styles.mask}></div>
-                <div className={styles.wrap}>
-                    <div className={styles.modal}>
-                        <div className={styles.content}>
-                            <button className={styles.close} onClick={this.handleCancel}>
+            <div className="pdv-modal">
+                <div className="mask"></div>
+                <div className="wrap">
+                    <div className="modal">
+                        <div className="content">
+                            <button className="close" onClick={this.handleCancel}>
                                 &times;
                             </button>
-                            <div className={styles.header}>
-                                <span className={styles.title}>{this.props.title}</span>
+                            <div className="header">
+                                <span className="title">{this.props.title}</span>
                             </div>
-                            <div className={styles.body}>
+                            <div className="body">
                                 {this.props.children}
                             </div>
-                            <div className={styles.footer}>
+                            <div className="footer">
                                 <button onClick={this.handleOk}><span>{this.props.okText}</span></button>
                                 <button onClick={this.handleCancel}><span>{this.props.cancelText}</span></button>
                             </div>

@@ -11,6 +11,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const { moduleName } = require('./config');
 const webpackCompileParams = require('./webpackCompileParams')
 
@@ -65,10 +66,7 @@ module.exports = {
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
-                        modules: {
-                            localIdentName: '[path]-[name]-[local]-[hash:base64:5]'
-                        }
+                        sourceMap: true
                     }
                 },
                 {
@@ -85,7 +83,8 @@ module.exports = {
                 {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: true,
+                        javascriptEnabled: true
                     }
                 }
             ]

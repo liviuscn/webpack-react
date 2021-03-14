@@ -2,7 +2,7 @@ import React from 'react';
 import publicModule from 'publicModule'
 const Login = React.lazy(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
 const Register = React.lazy(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
-const Portal = React.lazy(() => import(/* webpackChunkName: "por.portal" */`@/pages/por/portal`))
+const Portal = React.lazy(() => import(/* webpackChunkName: "edf.portal" */`@/pages/edf/portal`))
 
 const arr = [
     {

@@ -18,8 +18,8 @@ import a from 'assets/src/assets/js/a'
 import b from 'assets/src/assets/js/b'
 import c from 'assets/src/assets/js/c'
 import d from 'assets/src/assets/js/d'
-
-import styles from '@/assets/style/global.less'
+import "antd/dist/antd.css";
+import '@/assets/style/global.less'
 
 moment.locale('zh-cn');
 
@@ -27,7 +27,7 @@ console.log(beta, 'beta');
 console.log(a, b, c, d, 'a,b,c,d');
 
 const App = () => {
-    return <Provider store={store} className={styles.root}>
+    return <Provider store={store}>
         <HashRouter>
             <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>

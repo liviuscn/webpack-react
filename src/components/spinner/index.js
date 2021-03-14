@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import Spin from '@/components/spin'
-
-import styles from './spinner.less'
+import './index.less'
 
 export default (props) => {
-    return <div className={styles.root}>
-        <div className={styles.mask}></div>
-        <div className={styles.spin}>
+    return <div className="pdv-spinner">
+        <div className="mask"></div>
+        <div className="spin">
             <Spin></Spin>
             <div>加载中……</div>
         </div>

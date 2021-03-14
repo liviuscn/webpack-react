@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames'
-import styles from './modal.less';
+import './index.less';
 
 // 在 DOM 中有两个容器是兄弟级 （siblings）
 const modalRoot = document.getElementById('modal-root');
@@ -42,21 +42,21 @@ export default (props) => {
     }
 
     ReactDOM.render(
-        <div className={classNames(styles.root)}>
-            <div className={styles.mask}></div>
-            <div className={styles.wrap}>
-                <div className={styles.modal}>
-                    <div className={styles.content}>
-                        <button className={styles.close} onClick={handleCancel}>
+        <div className="pdv-modal">
+            <div className="mask"></div>
+            <div className="wrap">
+                <div className="modal">
+                    <div className="content">
+                        <button className="close" onClick={handleCancel}>
                             &times;
                         </button>
-                        <div className={styles.header}>
-                            <span className={styles.title}>{title}</span>
+                        <div className="header">
+                            <span className="title">{title}</span>
                         </div>
-                        <div className={styles.body}>
+                        <div className="body">
                             {props.children}
                         </div>
-                        <div className={styles.footer}>
+                        <div className="footer">
                             <button onClick={handleOk}><span>{okText}</span></button>
                             <button onClick={handleCancel}><span>{cancelText}</span></button>
                         </div>

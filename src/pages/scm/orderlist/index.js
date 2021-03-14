@@ -1,6 +1,6 @@
 import React from 'react'
 import NavBar from '@/components/navBar'
-import styles from './orderlist.less'
+import './index.less'
 
 export default () => {
     return <div>

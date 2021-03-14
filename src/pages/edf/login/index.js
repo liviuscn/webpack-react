@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import NavBar from '@/components/navBar'
-import styles from './login.less'
 import * as actions from '@/redux/login/action'
+import './index.less';
 class Login extends React.Component {
     constructor(props) {
         super(props)
@@ -36,13 +36,13 @@ class Login extends React.Component {
 
     render() {
         const { count,actions, decrement, increment,incrementAsync } = this.props;
-        return (<div className={styles.root}>
+        return (<div className="pdv-edf-login">
             <NavBar>登录</NavBar>
             <form>
-                <div className={styles.item}>
+                <div className="item">
                     <input placeholder='账号'/>
                 </div>
-                <div className={styles.item}>
+                <div className="item">
                     <input placeholder='密码'/>
                 </div>
                 {/* <button type="submit" onClick={this.handleSubmit}>登录</button> */}

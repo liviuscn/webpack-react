@@ -1,4 +1,4 @@
-    .drawer {
+    .pdv-drawer {
         position: absolute;
         top: 0;
         left: 0;
@@ -49,42 +49,41 @@
 
         }
 
-        :global {
-            .transform-enter {
-                transform: translateX(-100%)
-            }
-
-            .transform-enter-active {
-                transform: translateX(0%);
-                transition: transform .3s ease-in-out;
-            }
-
-            .transform-exit {
-                transform: translateX(0%)
-            }
-
-            .transform-exit-active {
-                transform: translateX(-100%);
-                transition: transform .3s ease-in-out;
-            }
-
-            .opacity-enter {
-                opacity: 0;
-            }
-
-            .opacity-enter-active {
-                opacity: 1;
-                transition: opacity .3s ease-in-out;
-            }
-
-            .opacity-exit {
-                opacity: 1;
-            }
-
-            .opacity-exit-active {
-                opacity: 0;
-                transition: opacity .3s ease-in-out;
-            }
+        .transform-enter {
+            transform: translateX(-100%)
         }
+
+        .transform-enter-active {
+            transform: translateX(0%);
+            transition: transform .3s ease-in-out;
+        }
+
+        .transform-exit {
+            transform: translateX(0%)
+        }
+
+        .transform-exit-active {
+            transform: translateX(-100%);
+            transition: transform .3s ease-in-out;
+        }
+
+        .opacity-enter {
+            opacity: 0;
+        }
+
+        .opacity-enter-active {
+            opacity: 1;
+            transition: opacity .3s ease-in-out;
+        }
+
+        .opacity-exit {
+            opacity: 1;
+        }
+
+        .opacity-exit-active {
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+        }
+        
 
     }

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 /**
@@ -80,16 +81,13 @@ module.exports = {
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
-                        modules: {
-                            localIdentName: '[path]-[name]-[local]-[hash:base64:5]'
-                        }
+                        sourceMap: false
                     }
                 },
                 {
                     loader: "postcss-loader",
                     options: {
-                        sourceMap: true,
+                        sourceMap: false,
                         postcssOptions: {
                             plugins: [
                                 ['autoprefixer', {}]
@@ -100,7 +98,8 @@ module.exports = {
                 {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: false,
+                        javascriptEnabled: true
                     }
                 }
             ]

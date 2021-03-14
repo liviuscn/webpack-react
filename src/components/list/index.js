@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import './index.less'
 export default class List extends Component {
     constructor(props) {
         super(props)
@@ -10,7 +10,7 @@ export default class List extends Component {
     render() {
         const { dataSource } = this.props
         return (
-            <div>
+            <div class="pdv-list">
                 <ul>
                     {
                         dataSource.map(item => {
