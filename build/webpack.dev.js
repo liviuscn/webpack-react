@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const autoprefixer = require('autoprefixer');
 const path = require("path");
 const webpackCompileParams = require('./webpackCompileParams')
 const { aliasModule } = webpackCompileParams('development')
@@ -74,58 +73,66 @@ module.exports = {
 
     },
     module: {
-        rules: [{
-            test: /\.(css|less)$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true
-                    }
-                },
-                {
-                    loader: "postcss-loader",
-                    options: {
-                        sourceMap: false,
-                        postcssOptions: {
-                            plugins: [
-                                ['autoprefixer', {}]
-                            ]
+        rules: [
+            {
+                test: /\.less$/i,
+                use: [
+                    {
+                        loader:'style-loader'
+                    },
+                    {
+                        loader: "css-loader",
+                        options:{
+                            sourceMap: true,
+                            modules: false,
+                        }
+                    },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            sourceMap: true,
+                            javascriptEnabled: true,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader:'style-loader'
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            modules: false,
                         }
                     }
-                },
-                {
-                    loader: 'less-loader',
-                    options: {
-                        sourceMap: true,
-                        javascriptEnabled: true
-                    }
-                }
-            ]
-        },
-        {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: [
-                'file-loader'
-            ]
-        },
-        {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            use: [
-                'file-loader'
-            ]
-        },
-        {
-            test: /\.m?js$/,
-            exclude: /(node_modules|bower_components)/,
-            use: 'babel-loader'
-        },
-        {
-            test: /\.(ts|tsx)?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
-        }
+                ]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader'
+                ]
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    'file-loader'
+                ]
+            },
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: 'babel-loader'
+            },
+            {
+                test: /\.(ts|tsx)?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            }
         ]
     },
     optimization: {

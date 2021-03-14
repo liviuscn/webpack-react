@@ -1,7 +1,8 @@
 {
   "name": "webpack-react",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "*.less"
   ],
   "version": "1.0.0",
   "description": "webpack-react",
@@ -78,6 +79,7 @@
     "md5": "^2.2.1",
     "moment": "^2.26.0",
     "object-assign": "^4.1.1",
+    "postcss-flexbugs-fixes": "^5.0.2",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
     "react": "^16.13.1",

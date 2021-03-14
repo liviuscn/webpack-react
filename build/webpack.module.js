@@ -59,32 +59,39 @@ module.exports = {
 
     },
     module: {
-        rules: [{
-            test: /\.(css|less)$/,
+        rules: [            {
+            test: /\.less$/i,
             use: [
-                'style-loader',
+                {
+                    loader:'style-loader'
+                },
+                {
+                    loader: "css-loader",
+                    options:{
+                        sourceMap: true,
+                        modules: false,
+                    }
+                },
+                {
+                    loader: "less-loader",
+                    options: {
+                        sourceMap: true,
+                        javascriptEnabled: true,
+                    },
+                },
+            ],
+        },
+        {
+            test: /\.css$/i,
+            use: [
+                {
+                    loader:'style-loader'
+                },
                 {
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true
-                    }
-                },
-                {
-                    loader: "postcss-loader",
-                    options: {
                         sourceMap: true,
-                        postcssOptions: {
-                            plugins: [
-                                ['autoprefixer', {}]
-                            ]
-                        }
-                    }
-                },
-                {
-                    loader: 'less-loader',
-                    options: {
-                        sourceMap: true,
-                        javascriptEnabled: true
+                        modules: false,
                     }
                 }
             ]
