@@ -21,6 +21,8 @@ import b from 'assets/src/assets/js/b';
 import c from 'assets/src/assets/js/c';
 import d from 'assets/src/assets/js/d';
  */
+const library_name = "[name]_[fullhash]"
+
 module.exports = {
     mode: "production",
     resolve: {
@@ -36,6 +38,10 @@ module.exports = {
             "react-transition-group",
             "redux-thunk",
             "classnames",
+            "axios",
+            "moment",
+            "prop-types",
+            "antd",
             "./build/publicModule",
             "./src/assets/js/beta"
         ],
@@ -50,7 +56,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, '..', 'dll'),
         filename: '[name].dll.js',
-        library: "[name]_[fullhash]"
+        library: library_name
         // library 与 DllPlugin 中的 name 一致
     },
     plugins: [
@@ -63,7 +69,7 @@ module.exports = {
         new webpack.DllPlugin({
             context: path.join(__dirname, '..'),
             path: path.join(__dirname, '..', 'dll', '[name]-manifest.json'),
-            name: "[name]_[fullhash]"
+            name: library_name
         })
     ],
     resolve: {
@@ -71,7 +77,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             'publicModule': path.join(__dirname, "../build/publicModule"),
-            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
+            'pdv': path.join(__dirname, '..', 'src', 'pdv-components'),
         }
     },
     module: {
@@ -80,11 +86,11 @@ module.exports = {
                 test: /\.less$/i,
                 use: [
                     {
-                        loader:'style-loader'
+                        loader: 'style-loader'
                     },
                     {
                         loader: "css-loader",
-                        options:{
+                        options: {
                             sourceMap: true,
                             modules: false,
                         }
@@ -102,7 +108,7 @@ module.exports = {
                 test: /\.css$/i,
                 use: [
                     {
-                        loader:'style-loader'
+                        loader: 'style-loader'
                     },
                     {
                         loader: 'css-loader',

@@ -1,10 +1,21 @@
 import React from 'react';
 import NavBar from 'pdv/navBar'
+import { Popover, Button } from 'antd';
 import './index.less'
-
+const content = (
+    <div>
+        <p>Content</p>
+        <p>Content</p>
+    </div>
+);
 export default () => {
+
     return <div className="user-container">
         <NavBar>用户中心</NavBar>
-        <div>姓名：李四</div>
+        <div className="user-body">
+            <Popover content={content} title="Title">
+                <Button type="primary">Hover me</Button>
+            </Popover>
+        </div>
     </div>
 }
