@@ -36,7 +36,7 @@ class Login extends React.Component {
 
     render() {
         const { count,actions, decrement, increment,incrementAsync } = this.props;
-        return (<div className="pdv-login">
+        return (<div className="login-container">
             <NavBar>登录</NavBar>
             <form>
                 <div className="item">

@@ -24,7 +24,7 @@ export default (props) => {
     dispatch(actions.incrementAction)
   }
 
-  return <div className="pdv-home">
+  return <div className="home-container">
     <NavBar
       left={false}
       onLeftClick={handleLeftClick}
