@@ -16,6 +16,9 @@ export default () => {
             <Popover content={content} title="Title">
                 <Button type="primary">Hover me</Button>
             </Popover>
+            <div className="user-content">
+                constent
+            </div>
         </div>
     </div>
 }
