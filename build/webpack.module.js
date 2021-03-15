@@ -67,16 +67,14 @@ module.exports = {
                     loader:'style-loader'
                 },
                 {
-                    loader: "css-loader",
-                    options:{
-                        sourceMap: true,
-                        modules: false,
-                    }
+                    loader: "css-loader"
+                },
+                {
+                    loader: "postcss-loader"
                 },
                 {
                     loader: "less-loader",
                     options: {
-                        sourceMap: true,
                         javascriptEnabled: true,
                     },
                 },
@@ -89,12 +87,11 @@ module.exports = {
                     loader:'style-loader'
                 },
                 {
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true,
-                        modules: false,
-                    }
-                }
+                    loader: 'css-loader'
+                },
+                {
+                    loader: "postcss-loader"
+                },
             ]
         },
         {

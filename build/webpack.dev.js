@@ -66,7 +66,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             'publicModule': path.join(__dirname, "../build/publicModule"),
-            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
+            'pdv': path.join(__dirname, '..', 'src', 'pdv-components'),
             ...aliasModule,
         }
     },
@@ -79,14 +79,16 @@ module.exports = {
                 test: /\.less$/i,
                 use: [
                     {
-                        loader:'style-loader'
+                        loader: 'style-loader'
                     },
                     {
                         loader: "css-loader",
-                        options:{
-                            sourceMap: true,
-                            modules: false,
+                        options: {
+                            sourceMap: true
                         }
+                    },
+                    {
+                        loader: "postcss-loader"
                     },
                     {
                         loader: "less-loader",
@@ -101,14 +103,16 @@ module.exports = {
                 test: /\.css$/i,
                 use: [
                     {
-                        loader:'style-loader'
+                        loader: 'style-loader'
                     },
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true,
-                            modules: false,
+                            sourceMap: true
                         }
+                    },
+                    {
+                        loader: "postcss-loader"
                     }
                 ]
             },

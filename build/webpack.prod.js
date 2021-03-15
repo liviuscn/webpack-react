@@ -65,7 +65,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             'publicModule': path.join(__dirname, "../build/publicModule"),
-            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
+            'pdv': path.join(__dirname, '..', 'src', 'pdv-components'),
             ...aliasModule
         }
     },
@@ -81,16 +81,14 @@ module.exports = {
                         loader: 'style-loader'
                     },
                     {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true,
-                            modules: false,
-                        }
+                        loader: "css-loader"
+                    },
+                    {
+                        loader: "postcss-loader"
                     },
                     {
                         loader: "less-loader",
                         options: {
-                            sourceMap: true,
                             javascriptEnabled: true,
                         },
                     },
@@ -103,12 +101,11 @@ module.exports = {
                         loader: 'style-loader'
                     },
                     {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                            modules: false,
-                        }
-                    }
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: "postcss-loader"
+                    },
                 ]
             },
             {
