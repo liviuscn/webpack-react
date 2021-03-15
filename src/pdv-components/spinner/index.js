@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Spin from '@/components/spin'
+import Spin from 'pdv/spin'
 import './index.less'
 
 export default (props) => {

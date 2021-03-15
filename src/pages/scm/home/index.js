@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import NavBar from '@/components/navBar'
-import Modal from '@/components/modal'
-import Drawer from '@/components/drawer'
-import Spin from '@/components/spin'
-import Swiper from '@/components/swiper'
-import Tabbar from '@/components/tabbar'
+import NavBar from 'pdv/navBar'
+import Modal from 'pdv/modal'
+import Drawer from 'pdv/drawer'
+import Spin from 'pdv/spin'
+import Swiper from 'pdv/swiper'
+import Tabbar from 'pdv/tabbar'
 import * as actions from '@/redux/home/action'
 import './index.less'
 
@@ -24,7 +24,7 @@ export default (props) => {
     dispatch(actions.incrementAction)
   }
 
-  return <div >
+  return <div className="pdv-home">
     <NavBar
       left={false}
       onLeftClick={handleLeftClick}

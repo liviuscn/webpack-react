@@ -1,9 +1,9 @@
 import React from 'react';
-import NavBar from '@/components/navBar'
+import NavBar from 'pdv/navBar'
 import './index.less'
 
 export default () => {
-    return <div>
+    return <div className="pdv-setting">
         <NavBar>设置</NavBar>
         <ul>
             <li>上传头像</li>

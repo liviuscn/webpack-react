@@ -8,23 +8,22 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 
 import ErrorBoundary from '@/utils/errorBoundary';
-import Spinner from '@/components/spinner'
+import Spinner from 'pdv/spinner'
 import Router from '@/router';
 import store from '@/store/store';
 //测试DLL Mapped Mode 
-import beta from '@/assets/js/beta'
+// import beta from '@/assets/js/beta'
 //测试DLL Scoped Mode
-import a from 'assets/src/assets/js/a'
-import b from 'assets/src/assets/js/b'
-import c from 'assets/src/assets/js/c'
-import d from 'assets/src/assets/js/d'
-import "antd/dist/antd.css";
+// import a from 'assets/src/assets/js/a'
+// import b from 'assets/src/assets/js/b'
+// import c from 'assets/src/assets/js/c'
+// import d from 'assets/src/assets/js/d'
 import '@/assets/style/global.less'
 
 moment.locale('zh-cn');
 
-console.log(beta, 'beta');
-console.log(a, b, c, d, 'a,b,c,d');
+// console.log(beta, 'beta');
+// console.log(a, b, c, d, 'a,b,c,d');
 
 const App = () => {
     return <Provider store={store}>

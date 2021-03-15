@@ -65,6 +65,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             'publicModule': path.join(__dirname, "../build/publicModule"),
+            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
             ...aliasModule
         }
     },

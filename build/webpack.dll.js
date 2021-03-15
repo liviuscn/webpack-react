@@ -70,7 +70,8 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'publicModule': path.join(__dirname, "../build/publicModule")
+            'publicModule': path.join(__dirname, "../build/publicModule"),
+            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
         }
     },
     module: {
