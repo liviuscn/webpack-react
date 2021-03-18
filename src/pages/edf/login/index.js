@@ -1,83 +1,71 @@
 import React from 'react';
-import { Layout, Form, Input } from 'antd';
-import { connect } from 'react-redux'
+import { Layout, Form, Input, Button, Checkbox } from 'antd';
+import { useHistory } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import * as actions from '@/redux/login/action'
 const { Header, Content, Footer } = Layout;
 
 import './index.less';
-class Login extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            dataSource: props.list
-        }
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+};
+const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+};
 
-    componentDidMount() {
+export default () => {
+    let history = useHistory();
 
-    }
+    const onFinish = (values) => {
+        console.log('Success:', values);
+        history.replace("/portal/home");
+    };
 
-    componentDidUpdate() {
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
 
-    }
+    return (
+        <Layout>
 
-    componentWillUnMount() {
-
-    }
-
-    handleSubmit(e) {
-        //登录
-        e.preventDefault()
-    }
-
-    render() {
-        const { count, actions, decrement, increment, incrementAsync } = this.props;
-        return (<Layout className="login-container">
-            <Header>登录</Header>
+            <Header>
+                欢迎来到！
+            </Header>
             <Content>
-                <Form>
-                    <div className="item">
-                        <Input placeholder='账号' />
-                    </div>
-                    <div className="item">
-                        <Input placeholder='密码' />
-                    </div>
-                    {/* <button type="submit" onClick={this.handleSubmit}>登录</button> */}
-                    <div>
-                        <div> 数量：{count}</div>
-                        <button onClick={() => increment(5)}>+</button>
-                        <button onClick={decrement}>-</button>
-                        <button onClick={() => incrementAsync(5)}>+</button>
-                    </div>
+                <Form
+                    {...layout}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                >
+                    <Form.Item
+                        label="账号"
+                        name="username"
+                        rules={[{ required: true, message: '请输入登录账号!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="密码"
+                        name="password"
+                        rules={[{ required: true, message: '请输入登录密码!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                        <Checkbox>记住密码</Checkbox>
+                    </Form.Item>
+
+                    <Form.Item {...tailLayout}>
+                        <Button type="primary" htmlType="submit">
+                            登录
+                        </Button>
+                    </Form.Item>
                 </Form>
             </Content>
-            <Footer>@1988</Footer>
-        </Layout>)
-    }
-}
-
-function mapStateToProps(state) {
-    return {
-        count: state.login.count,
-        list: state.login.list
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    // return {
-    //     increment: () => dispatch(actions.increment()),
-    //     decrement: () => dispatch(actions.decrement())
-    // }
-    // return {
-    //     actions:bindActionCreators(actions,dispatch)
-    // }
-    return bindActionCreators({
-        increment: actions.increment,
-        decrement: actions.decrement,
-        incrementAsync: actions.incrementAsync
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+            <Footer>liviuscn@1991</Footer>
+        </Layout>
+    );
+};
