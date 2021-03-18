@@ -70,7 +70,7 @@ export default () => {
     const handleClickMenu = ({ item, key }) => {
         console.log(key, item)
         add({
-            title: item.props.title,
+            title: item.props.title || key,
             key: key,
         })
     }
