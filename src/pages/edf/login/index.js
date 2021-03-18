@@ -1,8 +1,10 @@
 import React from 'react';
+import { Layout, Form, Input } from 'antd';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
-import NavBar from 'pdv/navBar'
 import * as actions from '@/redux/login/action'
+const { Header, Content, Footer } = Layout;
+
 import './index.less';
 class Login extends React.Component {
     constructor(props) {
@@ -10,15 +12,11 @@ class Login extends React.Component {
         this.state = {
             dataSource: props.list
         }
-
         this.handleSubmit = this.handleSubmit.bind(this)
-
     }
 
     componentDidMount() {
-        //  let url = 'https://etax.shanghai.chinatax.gov.cn/wszx-web/bszm/apps/views/beforeLogin/indexBefore/pageIndex.html'
-        // this.open_new_window(url)
-        console.log("login page mount")
+
     }
 
     componentDidUpdate() {
@@ -35,25 +33,28 @@ class Login extends React.Component {
     }
 
     render() {
-        const { count,actions, decrement, increment,incrementAsync } = this.props;
-        return (<div className="login-container">
-            <NavBar>登录</NavBar>
-            <form>
-                <div className="item">
-                    <input placeholder='账号'/>
-                </div>
-                <div className="item">
-                    <input placeholder='密码'/>
-                </div>
-                {/* <button type="submit" onClick={this.handleSubmit}>登录</button> */}
-                <div>
-                    <div> 数量：{count}</div>
-                    <button onClick={()=>increment(5)}>+</button>
-                    <button onClick={decrement}>-</button>
-                    <button onClick={()=>incrementAsync(5)}>+</button>  
-                </div>
-            </form>
-        </div>)
+        const { count, actions, decrement, increment, incrementAsync } = this.props;
+        return (<Layout className="login-container">
+            <Header>登录</Header>
+            <Content>
+                <Form>
+                    <div className="item">
+                        <Input placeholder='账号' />
+                    </div>
+                    <div className="item">
+                        <Input placeholder='密码' />
+                    </div>
+                    {/* <button type="submit" onClick={this.handleSubmit}>登录</button> */}
+                    <div>
+                        <div> 数量：{count}</div>
+                        <button onClick={() => increment(5)}>+</button>
+                        <button onClick={decrement}>-</button>
+                        <button onClick={() => incrementAsync(5)}>+</button>
+                    </div>
+                </Form>
+            </Content>
+            <Footer>@1988</Footer>
+        </Layout>)
     }
 }
 
@@ -73,10 +74,10 @@ function mapDispatchToProps(dispatch) {
     //     actions:bindActionCreators(actions,dispatch)
     // }
     return bindActionCreators({
-            increment:actions.increment,
-            decrement:actions.decrement,
-            incrementAsync:actions.incrementAsync
-        }, dispatch)
+        increment: actions.increment,
+        decrement: actions.decrement,
+        incrementAsync: actions.incrementAsync
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

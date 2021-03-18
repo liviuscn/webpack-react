@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { HashRouter, Switch } from 'react-router-dom';
+import { HashRouter, Switch,Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import moment from 'moment';
@@ -18,6 +18,7 @@ import store from '@/store/store';
 // import b from 'assets/src/assets/js/b'
 // import c from 'assets/src/assets/js/c'
 // import d from 'assets/src/assets/js/d'
+
 import '@/assets/style/global.less'
 
 moment.locale('zh-cn');
@@ -31,9 +32,7 @@ const App = () => {
             <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>
                     <ConfigProvider locale={zhCN}>
-                        <Switch>
-                            <Router />
-                        </Switch>
+                        <Router/>
                     </ConfigProvider>
                 </Suspense>
             </ErrorBoundary>

@@ -3,16 +3,15 @@ import { Layout, Menu, Tabs } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import Router from '@/router/portal';
-import Home from '@/pages/scm/home'
+import Router from '@/router/scm';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
-import './index.less'
-let newTabIndex = 0
+import './index.less';
+let newTabIndex = 0;
 export default () => {
     let { path, url } = useRouteMatch();
-
+    console.log(path,url,'-----------------')
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('0')
     const [panes, setPanes] = useState([
@@ -86,8 +85,8 @@ export default () => {
                     defaultOpenKeys={['sub1']}
                 >
                     <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                        <Menu.Item key="1">option1</Menu.Item>
-                        <Menu.Item key="2">option2</Menu.Item>
+                        <Menu.Item key="1"><Link to={`${url}/home`}>Home</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to={`${url}/user`}>User</Link></Menu.Item>
                         <Menu.Item key="3">option3</Menu.Item>
                         <Menu.Item key="4">option4</Menu.Item>
                     </SubMenu>
@@ -118,19 +117,12 @@ export default () => {
                 >
                     {panes.map(pane => (
                         <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                            <Link to={`${url}/home`}>Home</Link>
+                            
                         </TabPane>
                     ))}
                 </Tabs>
                 <Content className="content" >
-                    <Switch>
-                        <Route exact path={path}>
-                            <h3>Please select a topic.</h3>
-                        </Route>
-                        <Route path={`${path}/:topicId`}>
-                            <Home />
-                        </Route>
-                    </Switch>
+                    <Router path={path} />
                 </Content>
             </Layout>
         </Layout>

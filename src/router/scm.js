@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Redirect, useRouteMatch } from 'react-router-dom';
+import { Route, Redirect, useRouteMatch, Switch } from 'react-router-dom';
 import scm from 'scm'
 
 //tips:React.lazy 目前只支持默认导出（default exports）
@@ -21,24 +21,23 @@ export default class RouteConfig extends Component {
     }
 
     render() {
-        let { url } = useRouteMatch();
-        console.log(url, 'url')
-        let pathname = this.props.location.pathname;
+        let matchpath = this.props.path;
+        console.log(matchpath, 'matchpath')
         let { apps } = this.state;
         if (apps.length === 0) {
             return null
         }
-        return <>
+        return <Switch>
             {
                 apps.map(({ name, path, exact = false, component }, index) => {
                     return <Route
                         key={index}
-                        path={`${url}/${path}`}
+                        path={`${matchpath}${path}`}
                         exact={exact}
                         component={component}
                     />
                 })
             }
-        </>
+        </Switch>
     }
 }
