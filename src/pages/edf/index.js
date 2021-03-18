@@ -1,29 +1,21 @@
-import React from 'react';
-import publicModule from 'publicModule'
-const Login = React.lazy(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
-const Register = React.lazy(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
-const Portal = React.lazy(() => import(/* webpackChunkName: "edf.portal" */`@/pages/edf/portal`))
+import loadable from '@loadable/component'
+import publicModule from 'publicModule';
+const Portal = loadable(() => import(/* webpackChunkName: "edf.portal" */`@/pages/edf/portal`))
+const Login = loadable(() => import(/* webpackChunkName: "edf.login" */`@/pages/edf/login`))
+const Register = loadable(() => import(/* webpackChunkName: "edf.register" */`@/pages/edf/register`))
 
 const arr = [
     {
-        exact: true,
-        path: '/',
+        path: '/portal',
         component: Portal
     },
     {
-        exact: true,
         path: '/login',
         component: Login
     },
     {
-        exact: true,
         path: '/register',
         component: Register
-    },
-    {
-        exact: true,
-        path: '/portal',
-        component: Portal
     }
 ]
 

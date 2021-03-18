@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { Layout, Menu, Tabs } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import Router from '@/router';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import Router from '@/router/portal';
+import Home from '@/pages/scm/home'
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
 import './index.less'
 let newTabIndex = 0
 export default () => {
+    let { path, url } = useRouteMatch();
+
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('0')
     const [panes, setPanes] = useState([
@@ -53,7 +57,7 @@ export default () => {
         setPanes(newPanes);
         setTabActiveKey(newActiveKey);
     }
-    
+
     return <Layout className="portal-container">
         <Header className="header">
             <div className="logo" />
@@ -113,11 +117,20 @@ export default () => {
                     tabBarGutter={1}
                 >
                     {panes.map(pane => (
-                        <TabPane tab={pane.title} key={pane.key} closable={pane.closable}></TabPane>
+                        <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+                            <Link to={`${url}/home`}>Home</Link>
+                        </TabPane>
                     ))}
                 </Tabs>
                 <Content className="content" >
-                    
+                    <Switch>
+                        <Route exact path={path}>
+                            <h3>Please select a topic.</h3>
+                        </Route>
+                        <Route path={`${path}/:topicId`}>
+                            <Home />
+                        </Route>
+                    </Switch>
                 </Content>
             </Layout>
         </Layout>
