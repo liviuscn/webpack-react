@@ -1,10 +1,73 @@
-import React from 'react';
-import NavBar from 'pdv/navBar'
+import React, { useState } from 'react';
+import { Layout, Menu, Breadcrumb } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+
+const { SubMenu } = Menu;
+const { Header, Content, Sider } = Layout;
 import './index.less'
 
 export default () => {
-    return <div className="portal-container">
-        <NavBar>门户</NavBar>
-        <div>门户</div>
-    </div>
+    const [collapsed, setCollapsed] = useState(false)
+    const onCollapse = (collapsed) => {
+        setCollapsed(collapsed)
+    }
+    return <Layout className="portal-container">
+        <Header className="header">
+            <div className="logo" />
+            <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['2']}>
+                <Menu.Item key="1">nav 1</Menu.Item>
+                <Menu.Item key="2">nav 2</Menu.Item>
+                <Menu.Item key="3">nav 3</Menu.Item>
+            </Menu>
+        </Header>
+        <Layout className="content-layout">
+            <Sider
+                collapsible
+                collapsed={collapsed}
+                onCollapse={onCollapse}
+                width={200}
+                className="sider"
+            >
+                <Menu
+                    className="menu"
+                    theme="dark"
+                    mode="inline"
+                    defaultSelectedKeys={['1']}
+                    defaultOpenKeys={['sub1']}
+                >
+                    <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
+                        <Menu.Item key="1">option1</Menu.Item>
+                        <Menu.Item key="2">option2</Menu.Item>
+                        <Menu.Item key="3">option3</Menu.Item>
+                        <Menu.Item key="4">option4</Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
+                        <Menu.Item key="5">option5</Menu.Item>
+                        <Menu.Item key="6">option6</Menu.Item>
+                        <Menu.Item key="7">option7</Menu.Item>
+                        <Menu.Item key="8">option8</Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
+                        <Menu.Item key="9">option9</Menu.Item>
+                        <Menu.Item key="10">option10</Menu.Item>
+                        <Menu.Item key="11">option11</Menu.Item>
+                        <Menu.Item key="12">option12</Menu.Item>
+                    </SubMenu>
+                </Menu>
+            </Sider>
+            <Layout className="content-container" >
+                <Breadcrumb className="breadcrumb" >
+                    <Breadcrumb.Item>Home</Breadcrumb.Item>
+                    <Breadcrumb.Item>List</Breadcrumb.Item>
+                    <Breadcrumb.Item>App</Breadcrumb.Item>
+                </Breadcrumb>
+                <Content className="content" >
+                    Content
+                </Content>
+            </Layout>
+        </Layout>
+    </Layout>
 }

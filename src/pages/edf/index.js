@@ -7,6 +7,11 @@ const Portal = React.lazy(() => import(/* webpackChunkName: "edf.portal" */`@/pa
 const arr = [
     {
         exact: true,
+        path: '/',
+        component: Portal
+    },
+    {
+        exact: true,
         path: '/login',
         component: Login
     },

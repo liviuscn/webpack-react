@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from 'pdv/navBar'
-import { Popover, Button } from 'antd';
+import { Popover, Button, Layout } from 'antd';
+const { Header, Content, Sider, Footer } = Layout
 import './index.less'
 const content = (
     <div>

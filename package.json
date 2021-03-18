@@ -68,6 +68,7 @@
     "webpack-manifest-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.5.0",
     "@babel/polyfill": "^7.8.7",
     "@babel/runtime": "^7.9.2",
     "antd": "^4.13.1",

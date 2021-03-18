@@ -4,7 +4,6 @@ const Home = React.lazy(() => import(/* webpackChunkName: "scm.home" */`@/pages/
 const User = React.lazy(() => import(/* webpackChunkName: "scm.user" */`@/pages/scm/user`))
 
 const arr = [
-    { exact: true, path: '/', component: Home },
     { exact: true, path: '/home', component: Home },
     { exact: true, path: '/user', component: User },
 ]
