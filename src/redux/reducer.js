@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import home from './home/reducer'
 import login from './login/reducer'
+import portal from './portal/reducer'
 /* 
 使用combineReducers拆分reducer
 reducer按照page拆分
@@ -9,7 +10,8 @@ reducer按照page拆分
 */
 export default combineReducers({
     home,
-    login
+    login,
+    portal
 })
 /*
 combineReducers等同于合并为一个方法

@@ -1,11 +1,8 @@
 import React from 'react';
 import { Layout, Form, Input, Button, Checkbox } from 'antd';
 import { useHistory } from "react-router-dom";
-import { bindActionCreators } from "redux";
-import * as actions from '@/redux/login/action'
-const { Header, Content, Footer } = Layout;
-
 import './index.less';
+const { Header, Content, Footer } = Layout;
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -15,7 +12,7 @@ const tailLayout = {
 };
 
 export default () => {
-    let history = useHistory();
+    const history = useHistory();
 
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -28,7 +25,6 @@ export default () => {
 
     return (
         <Layout>
-
             <Header>
                 欢迎来到！
             </Header>

@@ -1,31 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Layout, Menu, Tabs } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 import Router from '@/router/scm';
+import * as actions from '@/redux/portal/action'
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
 import './index.less';
 let newTabIndex = 0;
+
+
 export default () => {
+    const history = useHistory();
     let { path, url } = useRouteMatch();
-    console.log(path,url,'-----------------')
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('0')
-    const [panes, setPanes] = useState([
-        {
-            title: '工作台',
-            content: '工作台',
-            key: '0',
-            closable: false
-        },
-    ])
+    const portalState = useSelector((state) => state.portal);
+    const dispatch = useDispatch()
+    const { panes } = portalState;
+    const setPanes = useCallback(
+        (payload) => dispatch({
+            type: 'INCREMENT_PANES',
+            payload
+        }),
+        [dispatch]
+    )
+
     const onCollapse = (collapsed) => {
         setCollapsed(collapsed)
     }
     const handleTabChange = (activeKey) => {
+        history.push(activeKey)
         setTabActiveKey(activeKey)
     }
     const handleTabEdit = (targetKey, action) => {
@@ -35,12 +42,15 @@ export default () => {
             remove(targetKey)
         }
     }
-    const add = (targetKey) => {
-        const activeKey = `newTab${newTabIndex++}`;
-        const newPanes = [...panes];
-        newPanes.push({ title: 'New Tab', content: 'Content of new Tab', key: activeKey })
-        setPanes(newPanes);
-        setTabActiveKey(activeKey);
+    const add = (newPane) => {
+        const index = panes.findIndex(item => item.key === newPane.key)
+        if (index === -1) {
+            const newPanes = [...panes];
+            newPanes.push(newPane)
+            setPanes(newPanes);
+        }
+        history.push(newPane.key)
+        setTabActiveKey(newPane.key);
     }
     const remove = (targetKey) => {
         let newActiveKey = tabActiveKey;
@@ -54,9 +64,16 @@ export default () => {
             }
         }
         setPanes(newPanes);
+        history.push(newActiveKey)
         setTabActiveKey(newActiveKey);
     }
-
+    const handleClickMenu = ({ item, key }) => {
+        console.log(key, item)
+        add({
+            title: item.props.title,
+            key: key,
+        })
+    }
     return <Layout className="portal-container">
         <Header className="header">
             <div className="logo" />
@@ -83,12 +100,11 @@ export default () => {
                     mode="inline"
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
+                    onClick={handleClickMenu}
                 >
                     <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                        <Menu.Item key="1"><Link to={`${url}/home`}>Home</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to={`${url}/user`}>User</Link></Menu.Item>
-                        <Menu.Item key="3">option3</Menu.Item>
-                        <Menu.Item key="4">option4</Menu.Item>
+                        <Menu.Item title="user" key={`${url}/user`}>User</Menu.Item>
+                        <Menu.Item title="address" key={`${url}/address`}>address</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
                         <Menu.Item key="5">option5</Menu.Item>
@@ -111,13 +127,13 @@ export default () => {
                     onChange={handleTabChange}
                     activeKey={tabActiveKey}
                     onEdit={handleTabEdit}
-                    hideAdd={false}
+                    hideAdd={true}
                     size="small"
                     tabBarGutter={1}
                 >
                     {panes.map(pane => (
                         <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                            
+
                         </TabPane>
                     ))}
                 </Tabs>
