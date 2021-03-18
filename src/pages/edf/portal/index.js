@@ -1,16 +1,59 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Tabs } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-
+import { useSelector, useDispatch } from 'react-redux';
+import Router from '@/router';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const { TabPane } = Tabs;
 import './index.less'
-
+let newTabIndex = 0
 export default () => {
-    const [collapsed, setCollapsed] = useState(false)
+    const [collapsed, setCollapsed] = useState(false);
+    const [tabActiveKey, setTabActiveKey] = useState('0')
+    const [panes, setPanes] = useState([
+        {
+            title: '工作台',
+            content: '工作台',
+            key: '0',
+            closable: false
+        },
+    ])
     const onCollapse = (collapsed) => {
         setCollapsed(collapsed)
     }
+    const handleTabChange = (activeKey) => {
+        setTabActiveKey(activeKey)
+    }
+    const handleTabEdit = (targetKey, action) => {
+        if (action === 'add') {
+            add(targetKey)
+        } else if (action === 'remove') {
+            remove(targetKey)
+        }
+    }
+    const add = (targetKey) => {
+        const activeKey = `newTab${newTabIndex++}`;
+        const newPanes = [...panes];
+        newPanes.push({ title: 'New Tab', content: 'Content of new Tab', key: activeKey })
+        setPanes(newPanes);
+        setTabActiveKey(activeKey);
+    }
+    const remove = (targetKey) => {
+        let newActiveKey = tabActiveKey;
+        let lastIndex = panes.findIndex(pane => pane.key === targetKey) - 1;
+        const newPanes = panes.filter(pane => pane.key !== targetKey);
+        if (newPanes.length && newActiveKey === targetKey) {
+            if (lastIndex >= 0) {
+                newActiveKey = newPanes[lastIndex].key;
+            } else {
+                newActiveKey = newPanes[0].key;
+            }
+        }
+        setPanes(newPanes);
+        setTabActiveKey(newActiveKey);
+    }
+    
     return <Layout className="portal-container">
         <Header className="header">
             <div className="logo" />
@@ -59,13 +102,22 @@ export default () => {
                 </Menu>
             </Sider>
             <Layout className="content-container" >
-                <Breadcrumb className="breadcrumb" >
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
+                <Tabs
+                    className="tabs"
+                    type="editable-card"
+                    onChange={handleTabChange}
+                    activeKey={tabActiveKey}
+                    onEdit={handleTabEdit}
+                    hideAdd={false}
+                    size="small"
+                    tabBarGutter={1}
+                >
+                    {panes.map(pane => (
+                        <TabPane tab={pane.title} key={pane.key} closable={pane.closable}></TabPane>
+                    ))}
+                </Tabs>
                 <Content className="content" >
-                    Content
+                    
                 </Content>
             </Layout>
         </Layout>
