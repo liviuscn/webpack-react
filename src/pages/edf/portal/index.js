@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Layout, Menu, Tabs } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
 import Router from '@/router/scm';
 import * as actions from '@/redux/portal/action';
 const { SubMenu } = Menu;
@@ -12,9 +12,10 @@ import './index.less';
 
 export default () => {
     const history = useHistory();
-    let { path, url } = useRouteMatch();
+    const { path, url } = useRouteMatch();
+    const {pathname} = useLocation();
     const [collapsed, setCollapsed] = useState(false);
-    const [tabActiveKey, setTabActiveKey] = useState('0')
+    const [tabActiveKey, setTabActiveKey] = useState('/portal/home')
     const portalState = useSelector((state) => state.portal);
     const dispatch = useDispatch()
     const { panes } = portalState;
@@ -25,7 +26,9 @@ export default () => {
         }),
         [dispatch]
     )
-
+    useEffect(() => {
+        setTabActiveKey(pathname)
+    }, [pathname])
     const onCollapse = (collapsed) => {
         setCollapsed(collapsed)
     }
@@ -35,12 +38,13 @@ export default () => {
     }
     const handleTabEdit = (targetKey, action) => {
         if (action === 'add') {
-            add(targetKey)
+            addTab(targetKey)
         } else if (action === 'remove') {
-            remove(targetKey)
+            removeTab(targetKey)
         }
     }
-    const add = (newPane) => {
+
+    const addTab = (newPane) => {
         const index = panes.findIndex(item => item.key === newPane.key)
         if (index === -1) {
             const newPanes = [...panes];
@@ -50,7 +54,8 @@ export default () => {
         history.push(newPane.key)
         setTabActiveKey(newPane.key);
     }
-    const remove = (targetKey) => {
+
+    const removeTab = (targetKey) => {
         let newActiveKey = tabActiveKey;
         let lastIndex = panes.findIndex(pane => pane.key === targetKey) - 1;
         const newPanes = panes.filter(pane => pane.key !== targetKey);
@@ -65,8 +70,9 @@ export default () => {
         history.push(newActiveKey)
         setTabActiveKey(newActiveKey);
     }
+
     const handleClickMenu = ({ item, key }) => {
-        add({
+        addTab({
             title: item.props.title || key,
             key: key,
             src: item.props.src
