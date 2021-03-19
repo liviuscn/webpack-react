@@ -9,8 +9,6 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
 import './index.less';
-let newTabIndex = 0;
-
 
 export default () => {
     const history = useHistory();
@@ -102,21 +100,19 @@ export default () => {
                     defaultOpenKeys={['sub1']}
                     onClick={handleClickMenu}
                 >
-                    <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                        <Menu.Item title="user" key={`${url}/user`}>User</Menu.Item>
-                        <Menu.Item title="address" key={`${url}/address`}>address</Menu.Item>
+                    <SubMenu key="sub1" icon={<UserOutlined />} title="用户中心">
+                        <Menu.Item title="user" key={`${url}/user`}>个人信息</Menu.Item>
+                        <Menu.Item title="address" key={`${url}/address`}>收货地址</Menu.Item>
                     </SubMenu>
-                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                        <Menu.Item key="5">option5</Menu.Item>
-                        <Menu.Item key="6">option6</Menu.Item>
-                        <Menu.Item key="7">option7</Menu.Item>
-                        <Menu.Item key="8">option8</Menu.Item>
+                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="订单">
+                        <Menu.Item key={`${url}/shoplist`} >商品</Menu.Item>
+                        <Menu.Item key={`${url}/shopcard`}>购物车</Menu.Item>
+                        <Menu.Item key={`${url}/orderlist`}>订单</Menu.Item>
                     </SubMenu>
-                    <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                        <Menu.Item key="9">option9</Menu.Item>
-                        <Menu.Item key="10">option10</Menu.Item>
-                        <Menu.Item key="11">option11</Menu.Item>
-                        <Menu.Item key="12">option12</Menu.Item>
+                    <SubMenu key="sub3" icon={<NotificationOutlined />} title="系统">
+                        <Menu.Item key={`${url}/setting`}>设置</Menu.Item>
+                        <Menu.Item key={`${url}/upload`}>上传文件</Menu.Item>
+                        <Menu.Item key={`${url}/iframe`}>iframe</Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>
