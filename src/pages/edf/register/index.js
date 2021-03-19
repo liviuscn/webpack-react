@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout } from 'antd'
+import { Layout, Form, Input, Button, Checkbox } from 'antd';
+import { useHistory } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 import './index.less'
 const layout = {
@@ -37,23 +38,27 @@ export default () => {
                 <Form.Item
                     label="账号"
                     name="username"
-                    rules={[{ required: true, message: '请输入登录账号!' }]}
+                    rules={[{ required: true, message: '请输入账号!' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
                     label="密码"
                     name="password"
-                    rules={[{ required: true, message: '请输入登录密码!' }]}
+                    rules={[{ required: true, message: '请输入密码!' }]}
                 >
                     <Input.Password />
                 </Form.Item>
-                <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                    <Checkbox>记住密码</Checkbox>
+                <Form.Item
+                    label="再次输入密码"
+                    name="password"
+                    rules={[{ required: true, message: '请再次输入密码!' }]}
+                >
+                    <Input.Password />
                 </Form.Item>
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
-                        登录
+                        立即注册
                         </Button>
                 </Form.Item>
             </Form>

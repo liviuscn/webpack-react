@@ -20,7 +20,7 @@ const arr = [
     { path: '/shopdetail', component: ShopDetail },
     { path: '/shoplist', component: ShopList },
     { path: '/upload', component: Upload },
-    { path: '/iframe', component: Iframe },
+    { path: '/iframe/:id', component: Iframe },
 ]
 
 publicModule.set('scm',arr);

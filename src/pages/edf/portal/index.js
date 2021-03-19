@@ -66,12 +66,13 @@ export default () => {
         setTabActiveKey(newActiveKey);
     }
     const handleClickMenu = ({ item, key }) => {
-        console.log(key, item)
         add({
             title: item.props.title || key,
             key: key,
+            src: item.props.src
         })
     }
+
     return <Layout className="portal-container">
         <Header className="header">
             <div className="logo" />
@@ -79,7 +80,7 @@ export default () => {
                 theme="dark"
                 mode="horizontal"
                 defaultSelectedKeys={['2']}>
-                <Menu.Item key="1">nav 1</Menu.Item>
+                <Menu.Item key="1">介绍</Menu.Item>
                 <Menu.Item key="2">nav 2</Menu.Item>
                 <Menu.Item key="3">nav 3</Menu.Item>
             </Menu>
@@ -112,7 +113,8 @@ export default () => {
                     <SubMenu key="sub3" icon={<NotificationOutlined />} title="系统">
                         <Menu.Item title="设置" key={`${url}/setting`}>设置</Menu.Item>
                         <Menu.Item title="上传文件" key={`${url}/upload`}>上传文件</Menu.Item>
-                        <Menu.Item title="iframe" key={`${url}/iframe`}>iframe</Menu.Item>
+                        <Menu.Item title="登录" key={`${url}/iframe/login`} src='/#/login'>登录</Menu.Item>
+                        <Menu.Item title="注册" key={`${url}/iframe/register`} src='/#/register'>注册</Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>
@@ -129,7 +131,6 @@ export default () => {
                 >
                     {panes.map(pane => (
                         <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-
                         </TabPane>
                     ))}
                 </Tabs>

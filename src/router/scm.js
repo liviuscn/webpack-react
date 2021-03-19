@@ -21,8 +21,7 @@ export default class RouteConfig extends Component {
     }
 
     render() {
-        let matchpath = this.props.path;
-        console.log(matchpath, 'matchpath')
+        let { path: matchpath } = this.props;
         let { apps } = this.state;
         if (apps.length === 0) {
             return null
@@ -38,7 +37,7 @@ export default class RouteConfig extends Component {
                     />
                 })
             }
-                        <Route>
+            <Route>
                 <NotFound />
             </Route>
         </Switch>
