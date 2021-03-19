@@ -1,10 +1,64 @@
 import React from 'react';
-import NavBar from 'pdv/navBar'
+import { Layout } from 'antd'
+const { Header, Content, Footer } = Layout;
 import './index.less'
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+};
+const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+};
 
 export default () => {
-    return <div className="register-container">
-        <div>注册账号</div>
-        <div>已注册？<a>立即登录</a></div>
-    </div>
+    const history = useHistory();
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+        history.replace("/portal/home");
+    };
+
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    return <Layout className="register-container">
+        <Header>
+            注册
+        </Header>
+        <Content>
+            <Form
+                {...layout}
+                name="basic"
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+            >
+                <Form.Item
+                    label="账号"
+                    name="username"
+                    rules={[{ required: true, message: '请输入登录账号!' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="密码"
+                    name="password"
+                    rules={[{ required: true, message: '请输入登录密码!' }]}
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                    <Checkbox>记住密码</Checkbox>
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                        登录
+                        </Button>
+                </Form.Item>
+            </Form>
+            <div>已有账号？<a>立即登录</a></div>
+        </Content>
+        <Footer>liviuscn@1991</Footer>
+    </Layout>
 }

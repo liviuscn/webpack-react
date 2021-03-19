@@ -1,8 +1,12 @@
 import React from 'react';
+import { Layout } from 'antd'
+const { Header, Content } = Layout;
 import './index.less'
 
 export default () => {
-    return <div className="shopcard-container">
-      购物车
-    </div>
+    return <Layout className="shopcard-container">
+        <Content>
+            购物车
+        </Content>
+    </Layout>
 }

@@ -53,13 +53,13 @@ export default () => {
                     <Form.Item {...tailLayout} name="remember" valuePropName="checked">
                         <Checkbox>记住密码</Checkbox>
                     </Form.Item>
-
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
                             登录
                         </Button>
                     </Form.Item>
                 </Form>
+                <div>没有账号？<a>立即注册</a></div>
             </Content>
             <Footer>liviuscn@1991</Footer>
         </Layout>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popover, Button, Layout } from 'antd';
-const { Header, Content, Sider, Footer } = Layout
+const { Header, Content } = Layout
 import './index.less'
 const content = (
     <div>
@@ -18,7 +18,7 @@ export default () => {
                 </Popover>
                 <div className="user-content">
                     constent
-            </div>
+                </div>
             </div>
         </Content>
     </Layout>

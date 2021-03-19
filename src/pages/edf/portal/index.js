@@ -4,7 +4,7 @@ import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 import Router from '@/router/scm';
-import * as actions from '@/redux/portal/action'
+import * as actions from '@/redux/portal/action';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
@@ -101,18 +101,18 @@ export default () => {
                     onClick={handleClickMenu}
                 >
                     <SubMenu key="sub1" icon={<UserOutlined />} title="用户中心">
-                        <Menu.Item title="user" key={`${url}/user`}>个人信息</Menu.Item>
-                        <Menu.Item title="address" key={`${url}/address`}>收货地址</Menu.Item>
+                        <Menu.Item title="个人信息" key={`${url}/user`}>个人信息</Menu.Item>
+                        <Menu.Item title="收货地址" key={`${url}/address`}>收货地址</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<LaptopOutlined />} title="订单">
-                        <Menu.Item key={`${url}/shoplist`} >商品</Menu.Item>
-                        <Menu.Item key={`${url}/shopcard`}>购物车</Menu.Item>
-                        <Menu.Item key={`${url}/orderlist`}>订单</Menu.Item>
+                        <Menu.Item title="商品" key={`${url}/shoplist`} >商品</Menu.Item>
+                        <Menu.Item title="购物车" key={`${url}/shopcard`}>购物车</Menu.Item>
+                        <Menu.Item title="订单" key={`${url}/orderlist`}>订单</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub3" icon={<NotificationOutlined />} title="系统">
-                        <Menu.Item key={`${url}/setting`}>设置</Menu.Item>
-                        <Menu.Item key={`${url}/upload`}>上传文件</Menu.Item>
-                        <Menu.Item key={`${url}/iframe`}>iframe</Menu.Item>
+                        <Menu.Item title="设置" key={`${url}/setting`}>设置</Menu.Item>
+                        <Menu.Item title="上传文件" key={`${url}/upload`}>上传文件</Menu.Item>
+                        <Menu.Item title="iframe" key={`${url}/iframe`}>iframe</Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>

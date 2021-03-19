@@ -1,9 +1,10 @@
 import React from 'react';
-
+import { Layout } from 'antd'
+const { Header, Content } = Layout;
 import './index.less'
 
 export default () => {
-    return <div className="address-container">
-        <div>新增</div>
-    </div>
+    return <Layout className="address-container">
+        <Content>收货地址</Content>
+    </Layout>
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd'
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 import './index.less'
 
 export default (props) => {
