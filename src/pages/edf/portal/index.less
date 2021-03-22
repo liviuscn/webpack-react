@@ -4,14 +4,10 @@
         border-right:0
     }
     .content-container{
-        padding: 0 24px 24px;
-        .content{
-            padding: 24px;
-            margin: 0;
-            min-height: 280;
-        }
-        .nav-tabs{
-            margin-top: 12px;
+        padding: 0 12px 12px;
+        .nav-tabs-wrap{
+            height: 28px;
+            margin: 12px 0;
             .ant-tabs-nav{
                 margin-bottom: 0;
                 .ant-tabs-nav-list{
@@ -21,6 +17,10 @@
                     }
                 }
             }
+        }
+        .content{
+            margin: 0;
+            overflow: auto;
         }
         .fullscreen:hover{
             .anticon{

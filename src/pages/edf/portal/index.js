@@ -107,7 +107,7 @@ export default () => {
      * 点击tabs右键菜单
      * @param {*} param0 
      */
-    const handleContextMenuClick=({ item, key })=>{
+    const handleContextMenuClick = ({ item, key }) => {
 
     }
 
@@ -177,41 +177,40 @@ export default () => {
                 </Menu>
             </Sider>
             <Layout className="content-container" >
-                <Tabs
-                    className="nav-tabs"
-                    type="editable-card"
-                    onChange={handleTabChange}
-                    activeKey={tabActiveKey}
-                    onEdit={handleTabEdit}
-                    hideAdd={true}
-                    size="small"
-                    tabBarGutter={0}
-                    tabBarExtraContent={{
-                        right: <div className="fullscreen">
-                            <Popover
-                                overlayClassName="fullscreen_wrap"
-                                placement="bottom"
-                                content={fullScreened ? '退出全屏' : '全屏显示'}
-                                onClick={() => {
-                                    setFullScreened(!fullScreened);
-                                    toggleFullscreen();
-                                }}
-                                arrowPointAtCenter={true}
-                            >
-                                {fullScreened ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-                            </Popover>
-                        </div>
-                    }}
-                    renderTabBar={renderTabBar}
-                >
-                    {panes.map(pane => (
-                        <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                        </TabPane>
-                    ))}
-                </Tabs>
-                <Content className="content" >
+                <div className="nav-tabs-wrap">
+                    <Tabs
+                        type="editable-card"
+                        onChange={handleTabChange}
+                        activeKey={tabActiveKey}
+                        onEdit={handleTabEdit}
+                        hideAdd={true}
+                        size="small"
+                        tabBarExtraContent={{
+                            right: <div className="fullscreen">
+                                <Popover
+                                    overlayClassName="fullscreen_wrap"
+                                    placement="bottom"
+                                    content={fullScreened ? '退出全屏' : '全屏显示'}
+                                    onClick={() => {
+                                        setFullScreened(!fullScreened);
+                                        toggleFullscreen();
+                                    }}
+                                    arrowPointAtCenter={true}
+                                >
+                                    {fullScreened ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+                                </Popover>
+                            </div>
+                        }}
+                        renderTabBar={renderTabBar}
+                    >
+                        {panes.map(pane => (
+                            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}></TabPane>
+                        ))}
+                    </Tabs>
+                </div>
+                <Layout className="content" >
                     <Router path={path} />
-                </Content>
+                </Layout>
             </Layout>
         </Layout>
     </Layout>
