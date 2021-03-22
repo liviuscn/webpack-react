@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Form, Layout, Table, Input, Pagination } from 'antd';
-const { Header, Content } = Layout
+import { Form, Layout, Table, Input, Pagination, Button } from 'antd';
+import { RedoOutlined } from '@ant-design/icons';
+import Condition from '@/components/Condition'
+const { Header, Content } = Layout;
 import './index.less'
 const columns = [
     {
@@ -29,6 +31,7 @@ for (let i = 0; i < 46; i++) {
 export default (props) => {
     const tableRef = useRef(null);
     const [y, setY] = useState(0)
+    const [visible, setVisible] = useState(false)
     useEffect(() => {
         let height = tableRef.current.offsetHeight - 55.33
         setY(height)
@@ -44,8 +47,13 @@ export default (props) => {
             window.removeEventListener('resize', resize)
         }
     })
+    const handleOk = (visible) => {
+        // setVisible(visible)
+    }
     return <Layout className="user-container">
         <div className="form-container">
+
+
             <Form
                 name="basic"
                 labelCol={{
@@ -56,6 +64,27 @@ export default (props) => {
                 }}
                 layout="inline"
             >
+                <Condition
+                    visible={visible}
+                    onOk={() => setVisible(false)}
+                    onCancle={() => setVisible(false)}
+                    onReset={() => setVisible(false)}
+                >
+                    <Form.Item
+                        label="年龄"
+                        name="age"
+                        rules={[{ required: true, message: 'Please input your age!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="地址"
+                        name="age"
+                        rules={[{ required: true, message: 'Please input your age!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Condition>
                 <Form.Item
                     label="姓名"
                     name="username"
@@ -70,6 +99,10 @@ export default (props) => {
                 >
                     <Input />
                 </Form.Item>
+                <span className="redooutlined-icon">
+                    <RedoOutlined title="刷新"/>
+                </span>
+                <Button onClick={() => setVisible(!visible)}>高级查询</Button>
             </Form>
         </div>
         <Content>
