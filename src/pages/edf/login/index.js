@@ -1,15 +1,8 @@
 import React from 'react';
 import { Layout, Form, Input, Button, Checkbox } from 'antd';
-import { useHistory } from "react-router-dom";
+import { useHistory,Link } from "react-router-dom";
 import './index.less';
 const { Header, Content, Footer } = Layout;
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
 
 export default () => {
     const history = useHistory();
@@ -24,13 +17,15 @@ export default () => {
     };
 
     return (
-        <Layout>
-            <Header>
-                欢迎来到！
+        <Layout className="login-container">
+            <Header className="header">
+                欢迎来到后台管理系统！请登录
             </Header>
-            <Content>
+            <Content className="content-container">
                 <Form
-                    {...layout}
+                    className="form-container"
+                    labelCol={{ span: 4 }}
+                    wrapperCol={{ span: 12 }}
                     name="basic"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
@@ -41,27 +36,29 @@ export default () => {
                         name="username"
                         rules={[{ required: true, message: '请输入登录账号!' }]}
                     >
-                        <Input />
+                        <Input placeholder="登录账号"/>
                     </Form.Item>
                     <Form.Item
                         label="密码"
                         name="password"
                         rules={[{ required: true, message: '请输入登录密码!' }]}
                     >
-                        <Input.Password />
+                        <Input.Password placeholder="登录密码"/>
                     </Form.Item>
-                    <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                    <Form.Item wrapperCol={{ offset: 4, span: 12 }} name="remember" valuePropName="checked">
                         <Checkbox>记住密码</Checkbox>
                     </Form.Item>
-                    <Form.Item {...tailLayout}>
+                    <Form.Item wrapperCol={{ offset: 4, span: 12 }}>
                         <Button type="primary" htmlType="submit">
                             登录
                         </Button>
                     </Form.Item>
+                    <Form.Item wrapperCol={{ offset: 4, span: 12 }}>
+                        没有账号？<Link  to="/register">立即注册</Link>
+                    </Form.Item>
                 </Form>
-                <div>没有账号？<a>立即注册</a></div>
             </Content>
-            <Footer>liviuscn@1991</Footer>
+            <Footer className="footer">liviuscn@1991</Footer>
         </Layout>
     );
 };
