@@ -1,21 +1,24 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Layout, Menu, Tabs } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import { Layout, Menu, Tabs, Dropdown, Popover } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Link, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 import Router from '@/router/scm';
 import * as actions from '@/redux/portal/action';
+import { toggleFullscreen } from '@/utils/fullscreen';
+import Header from './Header'
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 const { TabPane } = Tabs;
-import './index.less';
 
+import './index.less';
 export default () => {
     const history = useHistory();
     const { path, url } = useRouteMatch();
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('/portal/home')
+    const [fullScreened, setFullScreened] = useState(false)
     const portalState = useSelector((state) => state.portal);
     const dispatch = useDispatch()
     const { panes } = portalState;
@@ -29,13 +32,26 @@ export default () => {
     useEffect(() => {
         setTabActiveKey(pathname)
     }, [pathname])
+    /**
+     * 左侧菜单切换
+     * @param {*} collapsed 
+     */
     const onCollapse = (collapsed) => {
         setCollapsed(collapsed)
     }
+    /**
+     * tab改变时
+     * @param {*} activeKey 
+     */
     const handleTabChange = (activeKey) => {
         history.push(activeKey)
         setTabActiveKey(activeKey)
     }
+    /**
+     * tab增加或移除
+     * @param {*} targetKey 
+     * @param {*} action 
+     */
     const handleTabEdit = (targetKey, action) => {
         if (action === 'add') {
             addTab(targetKey)
@@ -43,7 +59,10 @@ export default () => {
             removeTab(targetKey)
         }
     }
-
+    /**
+     * 增加tab
+     * @param {*} newPane 
+     */
     const addTab = (newPane) => {
         const index = panes.findIndex(item => item.key === newPane.key)
         if (index === -1) {
@@ -54,7 +73,10 @@ export default () => {
         history.push(newPane.key)
         setTabActiveKey(newPane.key);
     }
-
+    /**
+     * 移除tab
+     * @param {*} targetKey 
+     */
     const removeTab = (targetKey) => {
         let newActiveKey = tabActiveKey;
         let lastIndex = panes.findIndex(pane => pane.key === targetKey) - 1;
@@ -70,27 +92,57 @@ export default () => {
         history.push(newActiveKey)
         setTabActiveKey(newActiveKey);
     }
-
-    const handleClickMenu = ({ item, key }) => {
+    /**
+     * 点击左侧菜单
+     * @param {*} param0 
+     */
+    const handleMenuClick = ({ item, key }) => {
         addTab({
             title: item.props.title || key,
             key: key,
             src: item.props.src
         })
     }
+    /**
+     * 点击tabs右键菜单
+     * @param {*} param0 
+     */
+    const handleContextMenuClick=({ item, key })=>{
+
+    }
+
+    const renderTabBar = (props, DefaultTabBar) => {
+        return (
+            <DefaultTabBar {...props} className="site-custom-tab-bar" >
+                { (node) => (
+                    <Dropdown
+                        key={node.key}
+                        overlay={<Menu onClick={handleContextMenuClick}>
+                            <Menu.Item>
+                                <div>关闭</div>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <div>关闭其他</div>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <div>关闭全部</div>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <div>刷新页面</div>
+                            </Menu.Item>
+                        </Menu>
+                        }
+                        trigger={['contextMenu']
+                        }
+                    >{node}
+                    </Dropdown>
+                )}
+            </DefaultTabBar>
+        )
+    };
 
     return <Layout className="portal-container">
-        <Header className="header">
-            <div className="logo" />
-            <Menu
-                theme="dark"
-                mode="horizontal"
-                defaultSelectedKeys={['2']}>
-                <Menu.Item key="1">介绍</Menu.Item>
-                <Menu.Item key="2">nav 2</Menu.Item>
-                <Menu.Item key="3">nav 3</Menu.Item>
-            </Menu>
-        </Header>
+        <Header notifications={[{}]}></Header>
         <Layout className="content-layout">
             <Sider
                 collapsible
@@ -101,11 +153,11 @@ export default () => {
             >
                 <Menu
                     className="menu"
-                    theme="dark"
+                    theme="light"
                     mode="inline"
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
-                    onClick={handleClickMenu}
+                    onClick={handleMenuClick}
                 >
                     <SubMenu key="sub1" icon={<UserOutlined />} title="用户中心">
                         <Menu.Item title="个人信息" key={`${url}/user`}>个人信息</Menu.Item>
@@ -126,14 +178,31 @@ export default () => {
             </Sider>
             <Layout className="content-container" >
                 <Tabs
-                    className="tabs"
+                    className="nav-tabs"
                     type="editable-card"
                     onChange={handleTabChange}
                     activeKey={tabActiveKey}
                     onEdit={handleTabEdit}
                     hideAdd={true}
                     size="small"
-                    tabBarGutter={1}
+                    tabBarGutter={0}
+                    tabBarExtraContent={{
+                        right: <div className="fullscreen">
+                            <Popover
+                                overlayClassName="fullscreen_wrap"
+                                placement="bottom"
+                                content={fullScreened ? '退出全屏' : '全屏显示'}
+                                onClick={() => {
+                                    setFullScreened(!fullScreened);
+                                    toggleFullscreen();
+                                }}
+                                arrowPointAtCenter={true}
+                            >
+                                {fullScreened ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+                            </Popover>
+                        </div>
+                    }}
+                    renderTabBar={renderTabBar}
                 >
                     {panes.map(pane => (
                         <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>

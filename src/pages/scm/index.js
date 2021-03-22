@@ -11,6 +11,7 @@ const Upload = loadable(() => import(/* webpackChunkName: "scm.upload" */`@/page
 const User = loadable(() => import(/* webpackChunkName: "scm.user" */`@/pages/scm/user`))
 const Iframe = loadable(() => import(/* webpackChunkName: "scm.iframe" */`@/pages/scm/iframe`))
 const arr = [
+    { path: '/', exact: true, component: Home },
     { path: '/home', component: Home },
     { path: '/user', component: User },
     { path: '/address', component: Address },
@@ -23,6 +24,6 @@ const arr = [
     { path: '/iframe/:id', component: Iframe },
 ]
 
-publicModule.set('scm',arr);
+publicModule.set('scm', arr);
 
 export default arr;

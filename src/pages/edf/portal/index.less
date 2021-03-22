@@ -1,11 +1,4 @@
 .portal-container{
-    .logo {
-        float: left;
-        width: 120px;
-        height: 31px;
-        margin: 16px 24px 16px 0;
-        background: rgba(255, 255, 255, 0.3);
-    }
     .menu{
         height: 100%;
         border-right:0
@@ -17,5 +10,30 @@
             margin: 0;
             min-height: 280;
         }
+        .nav-tabs{
+            margin-top: 12px;
+            .ant-tabs-nav{
+                margin-bottom: 0;
+                .ant-tabs-nav-list{
+                    height: 28px;
+                    .ant-tabs-tab{
+                        border:none;
+                    }
+                }
+            }
+        }
+        .fullscreen:hover{
+            .anticon{
+                transform: scale(1.4);
+                color: #1890ff;
+            }
+        }
     }
 } 
+
+.fullscreen_wrap{
+    .ant-popover-inner-content{
+        padding: 0 4px;
+        font-size: 12px;
+    }
+}

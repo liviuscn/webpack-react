@@ -6,6 +6,11 @@ const Register = loadable(() => import(/* webpackChunkName: "edf.register" */`@/
 
 const arr = [
     {
+        path: '/',
+        exact: true,
+        component: Login
+    },
+    {
         path: '/portal',
         component: Portal
     },
