@@ -74,13 +74,52 @@ export default () => {
         setTabActiveKey(newPane.key);
     }
     /**
-     * 移除tab
+     * 关闭tab
      * @param {*} targetKey 
      */
     const removeTab = (targetKey) => {
         let newActiveKey = tabActiveKey;
         let lastIndex = panes.findIndex(pane => pane.key === targetKey) - 1;
         const newPanes = panes.filter(pane => pane.key !== targetKey);
+        if (newPanes.length && newActiveKey === targetKey) {
+            if (lastIndex >= 0) {
+                newActiveKey = newPanes[lastIndex].key;
+            } else {
+                newActiveKey = newPanes[0].key;
+            }
+        }
+        setPanes(newPanes);
+        history.push(newActiveKey)
+        setTabActiveKey(newActiveKey);
+    }
+    /**
+     * 关闭其他tab
+     * @param {*} targetKey 
+     */
+    const removeOtherTab = (targetKey) => {
+        let newActiveKey = tabActiveKey;
+
+        const newPanes = panes.filter(pane => (pane.key === targetKey || pane.closable === false));
+
+        let lastIndex = newPanes.findIndex(pane => pane.key === targetKey);
+        if (newPanes.length) {
+            if (lastIndex >= 0) {
+                newActiveKey = newPanes[lastIndex].key;
+            } else {
+                newActiveKey = newPanes[0].key;
+            }
+        }
+        setPanes(newPanes);
+        history.push(newActiveKey)
+        setTabActiveKey(newActiveKey);
+    }
+    /**
+     * 关闭所有tab
+     */
+    const removeAllTab = (targetKey) => {
+        let newActiveKey = tabActiveKey;
+        const newPanes = panes.filter(pane => pane.closable === false);
+        let lastIndex = newPanes.findIndex(pane => pane.key === targetKey) - 1;
         if (newPanes.length && newActiveKey === targetKey) {
             if (lastIndex >= 0) {
                 newActiveKey = newPanes[lastIndex].key;
@@ -111,32 +150,45 @@ export default () => {
 
     }
 
+    //刷新页面
+    const handleRefresh = (node) => {
+        console.log(node)
+        if (node.key.includes('iframe')) {
+            window.frames[0].location.reload()
+        }
+    }
+
     const renderTabBar = (props, DefaultTabBar) => {
+
         return (
             <DefaultTabBar {...props} className="site-custom-tab-bar" >
-                { (node) => (
-                    <Dropdown
-                        key={node.key}
-                        overlay={<Menu onClick={handleContextMenuClick}>
-                            <Menu.Item>
-                                <div>关闭</div>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <div>关闭其他</div>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <div>关闭全部</div>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <div>刷新页面</div>
-                            </Menu.Item>
-                        </Menu>
-                        }
-                        trigger={['contextMenu']
-                        }
-                    >{node}
-                    </Dropdown>
-                )}
+                { (node) => {
+                    const pane = props.panes.find(item => item.key === node.key) || {};
+                    return (
+                        <Dropdown
+                            key={node.key}
+                            overlay={<Menu onClick={handleContextMenuClick}>
+                                {pane.props.closable !== false && <Menu.Item onClick={() => removeTab(node.key)}>
+                                    <div>关闭</div>
+                                </Menu.Item>}
+                                <Menu.Item onClick={() => removeOtherTab(node.key)}>
+                                    <div>关闭其他</div>
+                                </Menu.Item>
+                                <Menu.Item onClick={() => removeAllTab(node.key)}>
+                                    <div>关闭全部</div>
+                                </Menu.Item>
+                                {!!pane.props.isIframe && props.activeKey === node.key && <Menu.Item onClick={() => handleRefresh(node)}>
+                                    <div>刷新页面</div>
+                                </Menu.Item>}
+                            </Menu>
+                            }
+                            trigger={['contextMenu']
+                            }
+                        >{node}
+                        </Dropdown>
+                    )
+                }
+                }
             </DefaultTabBar>
         )
     };
@@ -204,7 +256,7 @@ export default () => {
                         renderTabBar={renderTabBar}
                     >
                         {panes.map(pane => (
-                            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}></TabPane>
+                            <TabPane tab={pane.title} key={pane.key} closable={pane.closable} isIframe={pane.src}></TabPane>
                         ))}
                     </Tabs>
                 </div>
