@@ -199,7 +199,7 @@ export default () => {
             </DefaultTabBar>
         )
     };
-    
+
     return <Layout className="portal-container">
         <Header notifications={[{}]}></Header>
         <Layout className="content-layout">
@@ -223,7 +223,7 @@ export default () => {
                         <Menu.Item title="收货地址" key={`${url}/address`}>收货地址</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<LaptopOutlined />} title="商品">
-                        <Menu.Item title="购物车" key={`${url}/shopcard`}>商品分类</Menu.Item>
+                        <Menu.Item title="购物车" key={`${url}/shopcategory`}>商品分类</Menu.Item>
                         <Menu.Item title="商品" key={`${url}/shoplist`} >商品管理</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub3" icon={<LaptopOutlined />} title="订单">
