@@ -6,6 +6,10 @@ const { Header, Content } = Layout;
 import './index.less'
 const columns = [
     {
+        title: 'ID',
+        dataIndex: 'id',
+    },
+    {
         title: '名称',
         dataIndex: 'name',
     },
@@ -22,7 +26,8 @@ const columns = [
 const data = [];
 for (let i = 0; i < 46; i++) {
     data.push({
-        key: i,
+        key: i + 1,
+        id: i,
         name: `Edward King ${i}`,
         age: 32,
         address: `London, Park Lane no. ${i}`,
@@ -96,7 +101,7 @@ export default (props) => {
                     <Input />
                 </Form.Item>
                 <span className="redooutlined-icon">
-                    <RedoOutlined title="刷新"/>
+                    <RedoOutlined title="刷新" />
                 </span>
                 <Button onClick={() => setVisible(!visible)}>高级查询</Button>
             </Form>
@@ -117,12 +122,14 @@ export default (props) => {
                 </Table>
             </div>
         </Content>
-        <div className='pagination-container'><Pagination
-            pageSize={10}
-            current={1}
-            total={46}
-            pageSizeOptions={['10', '20', '30', '40', '50']}
-            showSizeChanger={true}
-        /></div>
+        <div className='pagination-container'>
+            <Pagination
+                pageSize={10}
+                current={1}
+                total={46}
+                pageSizeOptions={['10', '20', '30', '40', '50']}
+                showSizeChanger={true}
+            />
+        </div>
     </Layout>
 }
