@@ -60,7 +60,7 @@ export default () => {
         }
     }
     /**
-     * 增加tab
+     * 打开新tab
      * @param {*} newPane 
      */
     const addTab = (newPane) => {
@@ -149,15 +149,22 @@ export default () => {
     const handleContextMenuClick = ({ item, key }) => {
 
     }
-
-    //刷新页面
+    /**
+     * iframe刷新页面
+     * @param {*} node 
+     */
     const handleRefresh = (node) => {
         console.log(node)
         if (node.key.includes('iframe')) {
             window.frames[0].location.reload()
         }
     }
-
+    /**
+     * TabBar渲染修改，增加右键菜单
+     * @param {*} props 
+     * @param {*} DefaultTabBar 
+     * @returns 
+     */
     const renderTabBar = (props, DefaultTabBar) => {
 
         return (
@@ -192,7 +199,7 @@ export default () => {
             </DefaultTabBar>
         )
     };
-
+    
     return <Layout className="portal-container">
         <Header notifications={[{}]}></Header>
         <Layout className="content-layout">
@@ -211,17 +218,19 @@ export default () => {
                     defaultOpenKeys={['sub1']}
                     onClick={handleMenuClick}
                 >
-                    <SubMenu key="sub1" icon={<UserOutlined />} title="用户中心">
-                        <Menu.Item title="个人信息" key={`${url}/user`}>个人信息</Menu.Item>
+                    <SubMenu key="sub1" icon={<UserOutlined />} title="用户">
+                        <Menu.Item title="个人信息" key={`${url}/userlist`}>用户管理</Menu.Item>
                         <Menu.Item title="收货地址" key={`${url}/address`}>收货地址</Menu.Item>
                     </SubMenu>
-                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="订单">
-                        <Menu.Item title="商品" key={`${url}/shoplist`} >商品</Menu.Item>
-                        <Menu.Item title="购物车" key={`${url}/shopcard`}>购物车</Menu.Item>
-                        <Menu.Item title="订单" key={`${url}/orderlist`}>订单</Menu.Item>
+                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="商品">
+                        <Menu.Item title="购物车" key={`${url}/shopcard`}>商品分类</Menu.Item>
+                        <Menu.Item title="商品" key={`${url}/shoplist`} >商品管理</Menu.Item>
                     </SubMenu>
-                    <SubMenu key="sub3" icon={<NotificationOutlined />} title="系统">
-                        <Menu.Item title="设置" key={`${url}/setting`}>设置</Menu.Item>
+                    <SubMenu key="sub3" icon={<LaptopOutlined />} title="订单">
+                        <Menu.Item title="订单" key={`${url}/orderlist`}>订单管理</Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="sub4" icon={<NotificationOutlined />} title="系统">
+                        <Menu.Item title="设置" key={`${url}/setting`}>系统设置</Menu.Item>
                         <Menu.Item title="上传文件" key={`${url}/upload`}>上传文件</Menu.Item>
                         <Menu.Item title="登录" key={`${url}/iframe/login`} src='/#/login'>登录</Menu.Item>
                         <Menu.Item title="注册" key={`${url}/iframe/register`} src='/#/register'>注册</Menu.Item>

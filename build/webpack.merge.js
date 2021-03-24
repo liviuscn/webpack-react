@@ -2,8 +2,7 @@ const path = require('path');
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
-const { moduleNames } = require('./config');
-
+const moduleNames = fs.readdirSync(path.resolve(__dirname, '../src/pages'));
 console.log('-------------------------------------')
 console.log('---------开始合并业务资源------------')
 console.log('-------------------------------------')

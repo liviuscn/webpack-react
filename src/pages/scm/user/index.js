@@ -47,13 +47,9 @@ export default (props) => {
             window.removeEventListener('resize', resize)
         }
     })
-    const handleOk = (visible) => {
-        // setVisible(visible)
-    }
+
     return <Layout className="user-container">
         <div className="form-container">
-
-
             <Form
                 name="basic"
                 labelCol={{

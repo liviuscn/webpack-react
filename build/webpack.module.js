@@ -12,10 +12,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const { moduleName } = require('./config');
-const webpackCompileParams = require('./webpackCompileParams')
-
-console.log('开始构建', moduleName, '模块')
+const webpackCompileParams = require('./webpackCompileParams');
+const argv = JSON.parse(process.env.npm_config_argv);
+const moduleName = argv.original[2] ? argv.original[2].slice(2).toLowerCase() : null;
+if (!moduleName) {
+    console.error("请指定构建模块");
+    return;
+}
+console.log('开始构建', moduleName, '模块');
 const { aliasModule } = webpackCompileParams();
 module.exports = {
     mode: "production",
@@ -26,7 +30,7 @@ module.exports = {
         filename: '[name].[chunkhash:8].bundle.js',
         chunkFilename: '[name].[chunkhash:8].chunk.js',
         path: path.resolve(__dirname, '..', 'dist', moduleName),
-        publicPath: `/${moduleName}/`
+        publicPath: `/${moduleName}/`,
     },
     plugins: [
         new CleanWebpackPlugin({
@@ -52,7 +56,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             'publicModule': path.join(__dirname, "../build/publicModule"),
-            'pdv':path.join(__dirname, '..', 'src','pdv-components'),
+            'pdv': path.join(__dirname, '..', 'src', 'pdv-components'),
             ...aliasModule
         }
     },
@@ -60,11 +64,11 @@ module.exports = {
 
     },
     module: {
-        rules: [            {
+        rules: [{
             test: /\.less$/i,
             use: [
                 {
-                    loader:'style-loader'
+                    loader: 'style-loader'
                 },
                 {
                     loader: "css-loader"
@@ -84,7 +88,7 @@ module.exports = {
             test: /\.css$/i,
             use: [
                 {
-                    loader:'style-loader'
+                    loader: 'style-loader'
                 },
                 {
                     loader: 'css-loader'

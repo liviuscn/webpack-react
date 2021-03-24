@@ -1,6 +1,6 @@
 const path = require("path")
 const fs = require("fs");
-const { moduleNames } = require('./config');
+
 let start_params;
 try {
     start_params = JSON.parse(process.env.npm_config_argv)
@@ -28,6 +28,7 @@ function checkRunParams(name) {
 
 function webpackCompileParams(mode) {
     const aliasModule = {};
+    const moduleNames = fs.readdirSync(path.resolve(__dirname, '../src/pages'));
     moduleNames.forEach(item => {
         if (mode == 'development') {
             let file = path.resolve(__dirname, `../src/pages/${item}/index.js`);
