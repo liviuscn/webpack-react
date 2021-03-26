@@ -44,7 +44,7 @@ class Child extends Component {
     getSnapshotBeforeUpdate(prevProps, prevState) {
         console.log("Child getSnapshotBeforeUpdate")
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         console.log("Child componentDidUpdate")
     }
     render() {

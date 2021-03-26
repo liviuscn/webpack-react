@@ -1,8 +1,14 @@
 /**
  * 
  * UNSAFE_componentWillReceiveProps
- * componentWillReceiveProps 生命周期经常被误用，会产生问题。因此，该方法将被废弃。
- * componentWillReceiveProps 可能在一次更新中被多次调用
+ * 经常被误用，会产生问题。因此，该方法将被废弃。
+ * 可能在一次更新中被多次调用
+ * 
+ * 改进示例
+ * 旧：基于 props 更新 state 改进：改用getDerivedStateFromProps
+ * 旧：props 更新的副作用 改进：使用componentDidUpdate代替
+ * 旧：props 更新时获取外部数据 改进：使用getDerivedStateFromProps+componentDidUpdate代替
+ * 
  */
 
 // Before
