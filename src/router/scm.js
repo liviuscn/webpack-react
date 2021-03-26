@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect, useRouteMatch, Switch } from 'react-router-dom';
 import scm from 'scm'
+import skill from 'skill'
 import NotFound from '@/components/NotFound'
 
 // 路由守卫
@@ -9,7 +10,7 @@ export default class RouteConfig extends Component {
         apps: []
     }
     componentDidMount() {
-        Promise.all([scm]).then((res) => {
+        Promise.all([scm,skill]).then((res) => {
             let apps = []
             res.forEach((item) => {
                 apps = [...apps, ...item]

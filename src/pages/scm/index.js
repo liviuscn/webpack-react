@@ -29,15 +29,15 @@ const arr = [
     { path: '/shopcategory', component: ShopCategory },
     { path: '/shoplist', component: ShopList },
     { path: '/shopdetail', component: ShopDetail },
-    
+
     { path: '/orderlist', component: OrderList },
     { path: '/orderdetail/:id', component: OrderDetail },
 
     { path: '/setting', component: Setting },
-   
+
     { path: '/upload', component: Upload },
     { path: '/address', component: Address },
-   
+
 ]
 
 publicModule.set('scm', arr);
