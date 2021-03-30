@@ -163,7 +163,7 @@ export default (props) => {
                     pagination={{
                         pageSizeOptions: ['10', '20', '30', '40', '50'],
                         showSizeChanger: true,
-                        showQuickJumper: { goButton: <Button>跳转</Button> },
+                        showQuickJumper: { goButton: <Button  style={{marginLeft:8}}>跳转</Button> },
                         showTotal: handleShowTotal,
                         ...pagination
                     }}

@@ -168,7 +168,9 @@ export default (props) => {
             showTotal={handleShowTotal}
             showQuickJumper={true}
             className="ant-table-pagination ant-table-pagination-right"
-            showQuickJumper={{ goButton: <Button>跳转</Button> }}
+            showQuickJumper={{ goButton: <Button
+                style={{marginLeft:8}}
+            >跳转</Button> }}
             {...pagination}
         />
     </Layout>
