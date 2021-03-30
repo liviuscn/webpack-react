@@ -7,7 +7,7 @@
  * 改进示例
  * 旧：基于 props 更新 state 改进：改用getDerivedStateFromProps
  * 旧：props 更新的副作用 改进：使用componentDidUpdate代替
- * 旧：props 更新时获取外部数据 改进：使用getDerivedStateFromProps+componentDidUpdate代替
+ * 旧：props 更新时获取外部数据 改进：使用getDerivedStateFromProps + componentDidUpdate代替
  * 
  */
 
@@ -25,14 +25,6 @@ class ExampleComponentBefore extends React.Component {
         }
     }
 }
-
-/**
- * getDerivedStateFromProps 静态生命周期方法
- * 组件实例化之后以及重新渲染之前调用
- * 可以返回一个对象来更新 state，或者返回 null 来表示新的 props 不需要任何 state 的更新
- * 与 componentDidUpdate 一起，这个新的生命周期涵盖过时的 componentWillReceiveProps 的所有用例
- * 创建组件以及每次组件由于 props 或 state 的改变而重新渲染时都会调用该生命周期
- */
 
 // After
 class ExampleComponentAfter extends React.Component {

@@ -4,6 +4,7 @@ import { RedoOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition'
 const { Header, Content } = Layout;
 import './index.less'
+import { actions } from '@/redux/portal/action';
 const columns = [
     {
         title: '商品名称',
@@ -36,14 +37,21 @@ export default (props) => {
     const tableRef = useRef(null);
     const [y, setY] = useState(0)
     const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 46
+    })
+    const [dataSource, setDataSource] = useState(data);
     useEffect(() => {
-        let height = tableRef.current.offsetHeight - 55.33
+        let height = tableRef.current.offsetHeight - 55.333 - 64
         setY(height)
     })
 
     useEffect(() => {
         const resize = () => {
-            let height = tableRef.current.offsetHeight - 55.33
+            let height = tableRef.current.offsetHeight - 55.333 - 64
             setY(height)
         }
         window.addEventListener('resize', resize)
@@ -54,6 +62,37 @@ export default (props) => {
     const handleOk = (visible) => {
         // setVisible(visible)
     }
+    const handleTableChange = (nextpagination, filters, sorter, extra) => {
+        const { action, currentDataSource } = extra
+        let { pageSize, current } = nextpagination
+        if (action === 'paginate') {
+            if (pageSize !== pagination.pageSize) {
+                current = 1
+            }
+        }
+        setPagination({ ...nextpagination, current, total: 200 })
+        setLoading(true)
+        setTimeout(() => {
+            let data = [];
+            for (let i = 0; i < pageSize; i++) {
+                data.push({
+                    key: i + 1 + (current - 1) * pageSize,
+                    id: i + (current - 1) * pageSize,
+                    name: `Edward King ${i + (current - 1) * pageSize}`,
+                    price: "￥3200.00",
+                    address: `London, Park Lane no. ${i}`,
+                });
+            }
+            setDataSource(data)
+            setLoading(false)
+        }, 3000)
+
+    }
+
+    const handleShowTotal = (total, range) => {
+        return `共${total}条`
+    }
+
     return <Layout className="order-list-container">
         <div className="form-container">
             <Form
@@ -115,24 +154,24 @@ export default (props) => {
             <div className="table-container" ref={tableRef}>
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={dataSource}
                     bordered={true}
-                    loading={false}
-                    pagination={false}
                     scroll={{
                         x: '100%',
                         y: y
                     }}
+                    pagination={{
+                        pageSizeOptions: ['10', '20', '30', '40', '50'],
+                        showSizeChanger: true,
+                        showQuickJumper: { goButton: <Button>跳转</Button> },
+                        showTotal: handleShowTotal,
+                        ...pagination
+                    }}
+                    onChange={handleTableChange}
+                    loading={loading}
                 >
                 </Table>
             </div>
         </Content>
-        <div className='pagination-container'><Pagination
-            pageSize={10}
-            current={1}
-            total={46}
-            pageSizeOptions={['10', '20', '30', '40', '50']}
-            showSizeChanger={true}
-        /></div>
     </Layout>
 }
