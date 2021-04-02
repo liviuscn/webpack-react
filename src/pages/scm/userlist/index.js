@@ -35,7 +35,7 @@ for (let i = 0; i < 10; i++) {
 }
 export default (props) => {
     const tableRef = useRef(null);
-    const [y, setY] = useState(0)
+    const [y, setY] = useState(false)
     const [visible, setVisible] = useState(false)
     const [pagination, setPagination] = useState({
         current: 1,
@@ -43,15 +43,28 @@ export default (props) => {
         total: 46
     })
     const [loading, setLoading] = useState(false);
-    const [dataSource, setDataSource] = useState(data)
+    const [dataSource, setDataSource] = useState(data);
+    const getY = () => {
+        let y = tableRef.current.offsetHeight - 55.33
+        let tbody = tableRef.current.querySelector('tbody.ant-table-tbody')
+        if (tbody && tbody.offsetHeight < y) {
+            y = false;
+            tbody = null;
+        }
+        return y
+    }
     useEffect(() => {
-        let height = tableRef.current.offsetHeight - 55.33
-        setY(height)
+        let y = getY()
+        setY(y)
     })
     useEffect(() => {
+        let timer = null
         const resize = () => {
-            let height = tableRef.current.offsetHeight - 55.33
-            setY(height)
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+                const y = getY();
+                setY(y)
+            }, 200)
         }
         window.addEventListener('resize', resize)
         return () => {
@@ -161,16 +174,18 @@ export default (props) => {
             </div>
         </Content>
         <Pagination
-            pageSizeOptions={['10', '20', '30', '40', '50']}
+            pageSizeOptions={['1','10', '20', '30', '40', '50']}
             showSizeChanger={true}
             // onShowSizeChange={handleShowSizeChange}
             onChange={handleCurrentPageChange}
             showTotal={handleShowTotal}
             showQuickJumper={true}
             className="ant-table-pagination ant-table-pagination-right"
-            showQuickJumper={{ goButton: <Button
-                style={{marginLeft:8}}
-            >跳转</Button> }}
+            showQuickJumper={{
+                goButton: <Button
+                    style={{ marginLeft: 8 }}
+                >跳转</Button>
+            }}
             {...pagination}
         />
     </Layout>
