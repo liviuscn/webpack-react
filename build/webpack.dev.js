@@ -2,17 +2,21 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const path = require("path");
 const webpackCompileParams = require('./webpackCompileParams')
 const { aliasModule } = webpackCompileParams('development')
 
 module.exports = {
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     mode: "development",
     entry: {
         app: path.join(__dirname, '..', 'src', 'index.js')
     },
     plugins: [
+        new LodashModuleReplacementPlugin({
+            'paths': true
+        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
@@ -131,7 +135,18 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /(node_modules|bower_components)/,
-                use: 'babel-loader'
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        compact: true,
+                        //lodash 按需加载
+                        plugins: [
+                            ['lodash']
+                        ],
+                        cacheDirectory: true
+                    }
+                }
+                ]
             },
             {
                 test: /\.(ts|tsx)?$/,
