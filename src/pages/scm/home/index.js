@@ -4,8 +4,9 @@ const { Header, Content } = Layout;
 import './index.less'
 
 export default (props) => {
+  
   return <Layout className="home-container">
-    <Content>
+    <Content a>
       这里是工作台
     </Content>
   </Layout>

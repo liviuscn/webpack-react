@@ -174,4 +174,5 @@ module.exports = {
             }
         }
     },
+    target:"web"
 }

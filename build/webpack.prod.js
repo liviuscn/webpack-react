@@ -141,4 +141,5 @@ module.exports = {
             new UglifyJsPlugin(),//生产模式压缩js
         ],
     },
+    target:'browserslist'
 };
