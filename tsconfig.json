@@ -1,31 +1,31 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": false,
-        "allowSyntheticDefaultImports": true,
-        "module": "es6",
-        "target": "es5",
-        "jsx": "react",
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "strictNullChecks":false,
-        "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": {
-                "@/*": ["./src/*"]
-        }
+      "outDir": "build/dist",
+      "module": "commonjs",
+      "target": "es5",
+      "lib": ["es6", "dom"],
+      "sourceMap": true,
+      "allowJs": true,
+      "jsx": "react",
+      "moduleResolution": "node",
+      "rootDir": "src",
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true
     },
     "exclude": [
-        "node_modules",
-        "config",
-        "webpack.common.js",
-        "webpack.dev.js",
-        "webpack.prod.js",
-        ".eslintrc.js"
+      "node_modules",
+      "build",
+      "scripts",
+      "acceptance-tests",
+      "webpack",
+      "jest",
+      "src/setupTests.ts",
+      "dll",
+      ".eslintrc.js"
     ],
-    "include": [ 
-          "src"
+    "types": [
+      "typePatches"
     ]
 }
