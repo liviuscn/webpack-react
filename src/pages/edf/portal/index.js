@@ -7,11 +7,15 @@ import Router from '@/router/scm';
 import * as actions from '@/redux/portal/action';
 import { toggleFullscreen } from '@/utils/fullscreen';
 import Header from './Header'
+import SiderMenu from './SiderMenu'
+import fakeMenus from './fakeMenus'
+import './index.less';
+
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 const { TabPane } = Tabs;
 
-import './index.less';
+
 export default () => {
     const history = useHistory();
     const { path, url } = useRouteMatch();
@@ -19,6 +23,7 @@ export default () => {
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('/portal/home')
     const [fullScreened, setFullScreened] = useState(false)
+    const [menus, setMenus] = useState([])
     const portalState = useSelector((state) => state.portal);
     const dispatch = useDispatch()
     const { panes } = portalState;
@@ -29,6 +34,10 @@ export default () => {
         }),
         [dispatch]
     )
+    useEffect(() => {
+        //第一次打开，设置菜单数据
+        setMenus(fakeMenus)
+    }, [])
     useEffect(() => {
         setTabActiveKey(pathname)
     }, [pathname])
@@ -136,9 +145,10 @@ export default () => {
      * @param {*} param0 
      */
     const handleMenuClick = ({ item, key }) => {
+        let newKey = `${url}/key`
         addTab({
-            title: item.props.title || key,
-            key: key,
+            title: item.props.title || newKey,
+            key: newKey,
             src: item.props.src
         })
     }
@@ -210,7 +220,7 @@ export default () => {
                 width={200}
                 className="sider"
             >
-                <Menu
+                {/* <Menu
                     className="menu"
                     theme="light"
                     mode="inline"
@@ -235,7 +245,11 @@ export default () => {
                         <Menu.Item title="登录" key={`${url}/iframe/login`} src='/#/login'>登录</Menu.Item>
                         <Menu.Item title="注册" key={`${url}/iframe/register`} src='/#/register'>注册</Menu.Item>
                     </SubMenu>
-                </Menu>
+                </Menu> */}
+                <SiderMenu
+                    menus={menus}
+                    onClick={handleMenuClick}
+                />
             </Sider>
             <Layout className="content-container" >
                 <div className="nav-tabs-wrap">
