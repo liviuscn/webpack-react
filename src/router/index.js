@@ -1,40 +1,45 @@
-import React, { Component } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import edf from 'edf'
+import scm from 'scm'
+import skill from 'skill'
 import NotFound from '@/components/NotFound'
 
-// 路由守卫
-export default class RouteConfig extends Component {
-    state = {
-        apps: []
-    }
-    componentDidMount() {
-        Promise.all([edf]).then((res) => {
+export default (props) => {
+    const [apps, setApps] = useState([])
+    const { pathname } = useLocation();
+    const { parentPath } = props;
+    useEffect(() => {
+        let arr = []
+        if (!parentPath.includes("portal") && pathname.includes("portal")) {
+            //门户页
+            arr = [edf]
+        } else {
+            //非门户页
+            arr = [scm, skill]
+        }
+        Promise.all(arr).then((res) => {
             let apps = []
             res.forEach((item) => {
                 apps = [...apps, ...item]
             })
-            this.setState({
-                apps
-            })
+            setApps(apps)
         })
-    }
+    }, [])
 
-    render() {
-      
-        let { apps } = this.state;
-        if (apps.length === 0) {
-            return null
+    return apps.length > 0 ? <Switch>
+        {
+            apps.map(({ name, path, exact = false, component }, index) => {
+                return <Route
+                    path={`${parentPath}${path}`}
+                    exact={exact}
+                    component={component}
+                    key={index}
+                />
+            })
         }
-        return <Switch>
-            {
-                apps.map(({ name, path, exact = false, component }, index) => {
-                    return <Route path={path} exact={exact} component={component} key={index} />
-                })
-            }
-            <Route>
-                <NotFound />
-            </Route>
-        </Switch>
-    }
+        <Route>
+            <NotFound />
+        </Route>
+    </Switch> : null
 }

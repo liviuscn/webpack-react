@@ -32,7 +32,7 @@ const App = () => {
             <ErrorBoundary>
                 <Suspense fallback={<Spinner />}>
                     <ConfigProvider locale={zhCN}>
-                        <Router/>
+                        <Router parentPath=""/>
                     </ConfigProvider>
                 </Suspense>
             </ErrorBoundary>

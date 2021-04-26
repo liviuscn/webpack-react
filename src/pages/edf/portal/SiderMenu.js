@@ -1,16 +1,25 @@
 import React from "react";
 import { Menu } from "antd";
-let id = 0;
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+
+const icon = {
+    'UserOutlined': <UserOutlined />,
+    'LaptopOutlined': <LaptopOutlined />,
+    'NotificationOutlined': <NotificationOutlined />,
+}
 export default (props) => {
     const renderMenuItem = (menu) => {
-        id++;
         if (menu.children && menu.children.length > 0) {
             const renderChildrenItems = [];
             for (const child of menu.children) {
                 renderChildrenItems.push(renderMenuItem(child));
             }
             return (
-                <Menu.SubMenu dataKey={key} key={id} title={menu.title}>
+                <Menu.SubMenu
+                    key={menu.code}
+                    title={menu.title}
+                    icon={icon[menu.icon] || <LaptopOutlined />}
+                >
                     {renderChildrenItems}
                 </Menu.SubMenu>
             );

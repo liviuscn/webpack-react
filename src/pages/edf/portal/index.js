@@ -1,20 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Layout, Menu, Tabs, Dropdown, Popover } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
+import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Link, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
-import Router from '@/router/scm';
-import * as actions from '@/redux/portal/action';
+import { useRouteMatch, useHistory, useLocation } from 'react-router-dom';
+import Router from '@/router';
+import { handleIncrementPanes } from '@/redux/portal/action';
 import { toggleFullscreen } from '@/utils/fullscreen';
 import Header from './Header'
 import SiderMenu from './SiderMenu'
-import fakeMenus from './fakeMenus'
 import './index.less';
 
-const { SubMenu } = Menu;
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 const { TabPane } = Tabs;
-
 
 export default () => {
     const history = useHistory();
@@ -23,21 +20,14 @@ export default () => {
     const [collapsed, setCollapsed] = useState(false);
     const [tabActiveKey, setTabActiveKey] = useState('/portal/home')
     const [fullScreened, setFullScreened] = useState(false)
-    const [menus, setMenus] = useState([])
+
     const portalState = useSelector((state) => state.portal);
     const dispatch = useDispatch()
-    const { panes } = portalState;
+    const { panes, menus } = portalState;
     const setPanes = useCallback(
-        (payload) => dispatch({
-            type: 'INCREMENT_PANES',
-            payload
-        }),
+        (payload) => dispatch(handleIncrementPanes(payload)),
         [dispatch]
     )
-    useEffect(() => {
-        //第一次打开，设置菜单数据
-        setMenus(fakeMenus)
-    }, [])
     useEffect(() => {
         setTabActiveKey(pathname)
     }, [pathname])
@@ -145,7 +135,7 @@ export default () => {
      * @param {*} param0 
      */
     const handleMenuClick = ({ item, key }) => {
-        let newKey = `${url}/key`
+        let newKey = `${url}/${key}`
         addTab({
             title: item.props.title || newKey,
             key: newKey,
@@ -220,32 +210,6 @@ export default () => {
                 width={200}
                 className="sider"
             >
-                {/* <Menu
-                    className="menu"
-                    theme="light"
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
-                    onClick={handleMenuClick}
-                >
-                    <SubMenu key="sub1" icon={<UserOutlined />} title="用户">
-                        <Menu.Item title="个人信息" key={`${url}/userlist`}>用户管理</Menu.Item>
-                        <Menu.Item title="收货地址" key={`${url}/address`}>收货地址</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="商品">
-                        <Menu.Item title="购物车" key={`${url}/shopcategory`}>商品分类</Menu.Item>
-                        <Menu.Item title="商品" key={`${url}/shoplist`} >商品管理</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub3" icon={<LaptopOutlined />} title="订单">
-                        <Menu.Item title="订单" key={`${url}/orderlist`}>订单管理</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub4" icon={<NotificationOutlined />} title="系统">
-                        <Menu.Item title="设置" key={`${url}/setting`}>系统设置</Menu.Item>
-                        <Menu.Item title="上传文件" key={`${url}/upload`}>上传文件</Menu.Item>
-                        <Menu.Item title="登录" key={`${url}/iframe/login`} src='/#/login'>登录</Menu.Item>
-                        <Menu.Item title="注册" key={`${url}/iframe/register`} src='/#/register'>注册</Menu.Item>
-                    </SubMenu>
-                </Menu> */}
                 <SiderMenu
                     menus={menus}
                     onClick={handleMenuClick}
@@ -284,7 +248,7 @@ export default () => {
                     </Tabs>
                 </div>
                 <Layout className="content" >
-                    <Router path={path} />
+                    <Router parentPath={path} />
                 </Layout>
             </Layout>
         </Layout>
