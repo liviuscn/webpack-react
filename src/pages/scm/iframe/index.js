@@ -9,7 +9,7 @@ export default (props) => {
     const portalState = useSelector((state) => state.portal);
     const { panes } = portalState;
     const { path, url } = useRouteMatch()
-
+    console.log(panes, path, url)
     const getSrc = () => {
         let item = panes.find(pane => pane.key === url)
         return item ? item.src : null;

@@ -1,13 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Form, Layout, Table, Input, Pagination, Button } from 'antd';
 import { RedoOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import Condition from '@/components/Condition'
-const { Content } = Layout;
+import { open_new_tab } from '@/utils/common'
+
 import './index.less'
+const { Content } = Layout;
+
 const columns = [
     {
         title: 'ID',
         dataIndex: 'id',
+        render: (text, record, index) => {
+            return <Link to={`userDetail/${text}`}>{text}</Link>
+        }
     },
     {
         title: '名称',
@@ -157,6 +164,11 @@ export default (props) => {
                 <Button onClick={() => setVisible(!visible)}>高级查询</Button>
             </Form>
         </div>
+        <Button
+            onClick={() => {
+                props.open_new_tab(`iframe/home`, '详情','https://www.diwork.com/#/service/HRPM0510')
+            }}
+        >测试</Button>
         <Content>
             <div className="table-container" ref={tableRef}>
                 <Table
@@ -174,7 +186,7 @@ export default (props) => {
             </div>
         </Content>
         <Pagination
-            pageSizeOptions={['1','10', '20', '30', '40', '50']}
+            pageSizeOptions={['1', '10', '20', '30', '40', '50']}
             showSizeChanger={true}
             // onShowSizeChange={handleShowSizeChange}
             onChange={handleCurrentPageChange}

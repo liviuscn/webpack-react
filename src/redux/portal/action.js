@@ -7,6 +7,9 @@ export const handleIncrementPanes = (payload) => {
     }
 }
 
-export const a = () => {
-
+export const handleChangePane = (payload) => {
+    return {
+        type: types.CHANGE_PANE,
+        payload
+    }
 }

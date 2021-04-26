@@ -3,6 +3,7 @@ import update from "immutability-helper";
 import session from '@/utils/session'
 
 const initialState = {
+    currentPane: "/portal/home",
     panes: [{
         title: '工作台',
         content: '工作台',
@@ -16,21 +17,12 @@ const initialState = {
             icon: 'UserOutlined',
             children: [
                 {
-                    code: '11',
-                    title: '用户管理',
-                    children: [{
-                        code: "111",
-                        title: "用户信息",
-                        path: 'userlist/userinfo'
-                    }]
-                },
-                {
-                    id: '12',
+                    id: '11',
                     title: '用户列表',
                     path: 'userlist'
                 },
                 {
-                    id: '13',
+                    id: '12',
                     title: '收货地址',
                     path: 'address'
                 },
@@ -106,6 +98,11 @@ export default (state = initialState, action) => {
             return update(state, {
                 panes: { $set: action.payload }
             });
+        }
+        case types.CHANGE_PANE: {
+            return update(state, {
+                currentPane: { $set: action.payload }
+            })
         }
         default: {
             let TABS_DATA = session.getItem('TABS_DATA');

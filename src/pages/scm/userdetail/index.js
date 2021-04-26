@@ -5,6 +5,6 @@ export default (props)=>{
         //request用户详情
     })
     return <Layout>
-
+        详情
     </Layout>
 }

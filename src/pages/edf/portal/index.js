@@ -4,7 +4,7 @@ import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 import Router from '@/router';
-import { handleIncrementPanes } from '@/redux/portal/action';
+import { handleIncrementPanes, handleChangePane } from '@/redux/portal/action';
 import { toggleFullscreen } from '@/utils/fullscreen';
 import Header from './Header'
 import SiderMenu from './SiderMenu'
@@ -18,18 +18,17 @@ export default () => {
     const { path, url } = useRouteMatch();
     const { pathname } = useLocation();
     const [collapsed, setCollapsed] = useState(false);
-    const [tabActiveKey, setTabActiveKey] = useState('/portal/home')
     const [fullScreened, setFullScreened] = useState(false)
 
     const portalState = useSelector((state) => state.portal);
     const dispatch = useDispatch()
-    const { panes, menus } = portalState;
+    const { panes, menus, currentPane } = portalState;
     const setPanes = useCallback(
         (payload) => dispatch(handleIncrementPanes(payload)),
         [dispatch]
     )
     useEffect(() => {
-        setTabActiveKey(pathname)
+        dispatch(handleChangePane(pathname))
     }, [pathname])
     /**
      * 左侧菜单切换
@@ -44,7 +43,7 @@ export default () => {
      */
     const handleTabChange = (activeKey) => {
         history.push(activeKey)
-        setTabActiveKey(activeKey)
+        dispatch(handleChangePane(activeKey))
     }
     /**
      * tab增加或移除
@@ -70,14 +69,14 @@ export default () => {
             setPanes(newPanes);
         }
         history.push(newPane.key)
-        setTabActiveKey(newPane.key);
+        dispatch(handleChangePane(newPane.key))
     }
     /**
      * 关闭tab
      * @param {*} targetKey 
      */
     const removeTab = (targetKey) => {
-        let newActiveKey = tabActiveKey;
+        let newActiveKey = currentPane;
         let lastIndex = panes.findIndex(pane => pane.key === targetKey) - 1;
         const newPanes = panes.filter(pane => pane.key !== targetKey);
         if (newPanes.length && newActiveKey === targetKey) {
@@ -89,14 +88,14 @@ export default () => {
         }
         setPanes(newPanes);
         history.push(newActiveKey)
-        setTabActiveKey(newActiveKey);
+        dispatch(handleChangePane(newActiveKey))
     }
     /**
      * 关闭其他tab
      * @param {*} targetKey 
      */
     const removeOtherTab = (targetKey) => {
-        let newActiveKey = tabActiveKey;
+        let newActiveKey = currentPane;
 
         const newPanes = panes.filter(pane => (pane.key === targetKey || pane.closable === false));
 
@@ -110,13 +109,13 @@ export default () => {
         }
         setPanes(newPanes);
         history.push(newActiveKey)
-        setTabActiveKey(newActiveKey);
+        dispatch(handleChangePane(newActiveKey))
     }
     /**
      * 关闭所有tab
      */
     const removeAllTab = (targetKey) => {
-        let newActiveKey = tabActiveKey;
+        let newActiveKey = currentPane;
         const newPanes = panes.filter(pane => pane.closable === false);
         let lastIndex = newPanes.findIndex(pane => pane.key === targetKey) - 1;
         if (newPanes.length && newActiveKey === targetKey) {
@@ -128,7 +127,7 @@ export default () => {
         }
         setPanes(newPanes);
         history.push(newActiveKey)
-        setTabActiveKey(newActiveKey);
+        dispatch(handleChangePane(newActiveKey))
     }
     /**
      * 点击左侧菜单
@@ -140,6 +139,13 @@ export default () => {
             title: item.props.title || newKey,
             key: newKey,
             src: item.props.src
+        })
+    }
+    const open_new_tab = (path, title, src) => {
+        addTab({
+            title: title,
+            key: `${url}/${path}`,
+            src: src
         })
     }
     /**
@@ -220,7 +226,7 @@ export default () => {
                     <Tabs
                         type="editable-card"
                         onChange={handleTabChange}
-                        activeKey={tabActiveKey}
+                        activeKey={currentPane}
                         onEdit={handleTabEdit}
                         hideAdd={true}
                         size="small"
@@ -248,7 +254,7 @@ export default () => {
                     </Tabs>
                 </div>
                 <Layout className="content" >
-                    <Router parentPath={path} />
+                    <Router parentPath={path} open_new_tab={open_new_tab} />
                 </Layout>
             </Layout>
         </Layout>

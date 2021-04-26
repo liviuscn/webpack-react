@@ -26,14 +26,29 @@ export default (props) => {
             setApps(apps)
         })
     }, [])
-
+    const open_new_window_tab = (link, title, src) => {
+        let url = `${window.location.origin}/#/${link}`
+        if (src) {
+            //如果是iframe直接打开iframe
+            url = src.startsWith('/') ? `${window.location.origin}${src}` : src
+        }
+        try {
+            window.open('javascript:window.name;', `<script>location.replace("${url}")</script>`);
+        } catch (e) {
+            window.open(url);
+            // window.open(link, '', 'height=500,width=611,scrollbars=yes,status =yes')
+        }
+    }
     return apps.length > 0 ? <Switch>
         {
-            apps.map(({ name, path, exact = false, component }, index) => {
+            apps.map(({ name, path, exact = false, component: Component }, index) => {
                 return <Route
                     path={`${parentPath}${path}`}
                     exact={exact}
-                    component={component}
+                    // component={component}
+                    render={() => {
+                        return <Component open_new_tab={props.open_new_tab || open_new_window_tab} />
+                    }}
                     key={index}
                 />
             })
