@@ -11,8 +11,8 @@ export default (props) => {
     const { parentPath } = props;
     useEffect(() => {
         let arr = []
-        if (!parentPath.includes("portal") && pathname.includes("portal")) {
-            //门户页
+        if (parentPath === '' && (pathname === '/' || pathname.includes("login") || pathname.includes("register") || pathname.includes("portal"))) {
+            //需要门户页
             arr = [edf]
         } else {
             //非门户页
