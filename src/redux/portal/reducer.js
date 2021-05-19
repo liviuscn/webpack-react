@@ -19,12 +19,12 @@ const initialState = {
                 {
                     id: '11',
                     title: '用户列表',
-                    path: 'userlist'
+                    path: '/userlist'
                 },
                 {
                     id: '12',
                     title: '收货地址',
-                    path: 'address'
+                    path: '/address'
                 },
             ]
         },
@@ -36,12 +36,12 @@ const initialState = {
                 {
                     code: "21",
                     title: '商品分类',
-                    path: "shopcategory"
+                    path: "/shopcategory"
                 },
                 {
                     code: "22",
                     title: "商品管理",
-                    path: "shoplist"
+                    path: "/shoplist"
                 }
             ]
         },
@@ -53,7 +53,7 @@ const initialState = {
                 {
                     code: "31",
                     title: "订单管理",
-                    path: "orderlist"
+                    path: "/orderlist"
                 }
             ]
         },
@@ -65,12 +65,12 @@ const initialState = {
                 {
                     code: "41",
                     title: "系统设置",
-                    path: "setting"
+                    path: "/setting"
                 },
                 {
                     code: "42",
                     title: "上传文件",
-                    path: "upload"
+                    path: "/upload"
                 },
                 {
                     code: "43",

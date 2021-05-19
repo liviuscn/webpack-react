@@ -17,9 +17,9 @@ let unsubscribe = subscribe(() => {
     console.log("store状态已改变：", getState());
     // setInterval(() => {
     //     dispatch({
-    //         type: "home_increment"
+    //         type: "home_increment11111111111111111111111111"
     //     })
-    // }, 1000);
+    // }, 5000);
     //unsubscribe();//调用可解除监听
 })
 export default store;

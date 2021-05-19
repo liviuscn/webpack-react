@@ -3,32 +3,11 @@ import { Form, Layout, Table, Input, Pagination, Button } from 'antd';
 import { RedoOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Condition from '@/components/Condition'
-import { open_new_tab } from '@/utils/common'
 
 import './index.less'
 const { Content } = Layout;
 
-const columns = [
-    {
-        title: 'ID',
-        dataIndex: 'id',
-        render: (text, record, index) => {
-            return <Link to={`userDetail/${text}`}>{text}</Link>
-        }
-    },
-    {
-        title: '名称',
-        dataIndex: 'name',
-    },
-    {
-        title: '年龄',
-        dataIndex: 'age',
-    },
-    {
-        title: '地址',
-        dataIndex: 'address',
-    },
-];
+
 
 let data = [];
 for (let i = 0; i < 10; i++) {
@@ -108,9 +87,40 @@ export default (props) => {
         }, 3000)
 
     }
+
     const handleShowTotal = (total, range) => {
         return `共${total}条`
     }
+
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            render: (text, record, index) => {
+                return <div>
+                    <Link to={`/portal/userdetail/${text}`}>{text}</Link>
+                    <a onClick={() => {
+                        props.open_new_tab(`/portal/userdetail/${text}`, '用户详情')
+                    }}>
+                        {text}
+                    </a>
+                </div>
+
+            }
+        },
+        {
+            title: '名称',
+            dataIndex: 'name',
+        },
+        {
+            title: '年龄',
+            dataIndex: 'age',
+        },
+        {
+            title: '地址',
+            dataIndex: 'address',
+        },
+    ];
     return <Layout className="user-container">
         <div className="form-container">
             <Form
@@ -166,7 +176,7 @@ export default (props) => {
         </div>
         <Button
             onClick={() => {
-                props.open_new_tab(`iframe/home`, '详情','https://www.diwork.com/#/service/HRPM0510')
+                props.open_new_tab(`/portal/iframe/home`, '详情', 'https://www.baidu.com/')
             }}
         >测试</Button>
         <Content>

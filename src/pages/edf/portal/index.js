@@ -134,7 +134,7 @@ export default () => {
      * @param {*} param0 
      */
     const handleMenuClick = ({ item, key }) => {
-        let newKey = `${url}/${key}`
+        let newKey = `${url}${key}`
         addTab({
             title: item.props.title || newKey,
             key: newKey,
@@ -144,7 +144,7 @@ export default () => {
     const open_new_tab = (path, title, src) => {
         addTab({
             title: title,
-            key: `${url}/${path}`,
+            key: `${path}`,
             src: src
         })
     }
