@@ -31,3 +31,6 @@ UNSAFE_componentWillReceiveProps()
 React.createFactory()已弃用，用React.createElement() 来替代它
 //过期的组件
 react-addons-css-transition-group已弃用，改用react-transition-group
+
+
+//实验：分模块打包，打包dll静态资源
